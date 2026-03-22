@@ -1,6 +1,6 @@
 # contao-sources-bundle
 Dieses Bundle bietet eine einfache Verwaltung von Quellen für das CMS Contao. 
-Quellen wird hier in einem **weiten Sinne** verwendet und meint vor allem **literarische Quellen, Karten, Pläne und Risse, aber auch Fotos, Websites** und andere Entitäten, auf die in Texten oder von Websites aus verweisen werden soll.  
+Der Begriff "Quellen" wird hier in einem relativ **weiten Sinne** verwendet und meint vor allem **literarische Quellen, Karten, Pläne und Risse, aber auch Fotos, Websites** und andere Entitäten, auf die in Texten oder von Websites aus verweisen werden soll.  
 
 Zurzeit befindet es sich noch in Entwicklung. 
 
