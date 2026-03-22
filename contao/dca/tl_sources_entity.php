@@ -23,11 +23,11 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	],
 	'list' => [
 		'sorting' =>  [
-            'mode'                  => DataContainer::MODE_SORTED,
-			'fields'                => ['name'],
-			'headerFields'          => ['name'],
+            'mode'                  => DataContainer::MODE_SORTABLE,
+			'fields'                => ['type','title'],
+			'headerFields'          => ['type','title'],
 			'panelLayout'           => 'filter;sort,search,limit',
-            'defaultSearchField'    => 'name',
+            'defaultSearchField'    => 'title',
             #'renderAsGrid'  => true,
 			#'limitHeight'   => 160
 
@@ -35,12 +35,12 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'sortableListView' => true,
 		],
 		'label' =>  [
-			'fields' =>  ['name'],
+			'fields' =>  ['type','title'],
             // If true Contao will generate a table header with column names (e.g. back end member list)
             // If the DCA uses showColumns then the return value of the list.label.label-Callback
             // must be an array of strings. Otherwise just the label as a string.
             'showColumns' => false,
-			#'format' => '%s',
+			'format' => '%s %s',
 		],
 		'operations' =>  [
             'edit',
@@ -52,24 +52,26 @@ $GLOBALS['TL_DCA'][$strTable] = [
 
 	// Palettes
 	'palettes' =>  [
-		'__selector__'  =>  [],
+		'__selector__'  =>  ['type','addDigitalCopy'],
 		'default'       =>
-            '{name_legend},name,base_sku;' .
-            '{variant_legend},variants;' .
-            '{image_legend},multiSRC;',
+            '{type_legend},type;' .
+            '{author_legend},authors;' .
+            '{title_legend},title;' .
+            '{data_legend},signature,signature_alt;' .
+            '{online_legend},link_catalog,addDigitalCopy;' .
+            ''
+        ,
 	],
 
 	// Subpalettes
 	'subpalettes' =>  [
-        #'addImage'          => 'fullsize,size,floating,overwriteMeta',
-        #'interval_daily'    => 'startTime',
-        #'interval_weekly'   => 'startWeekday,startTime',
+        'addDigitalCopy'    => 'link_digitalcopy,extent_digitalcopy',
     ],
 
 	// Fields
 	'fields' => [
         /**********************************************************************
-         * test_legend
+         * without legend
          **********************************************************************/
         'id'        => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
         'tstamp'    => ['sql' => "int(10) unsigned NOT NULL default 0",],
@@ -78,33 +80,22 @@ $GLOBALS['TL_DCA'][$strTable] = [
         #'sorting'=> ['sql' => "int(10) unsigned NOT NULL default 0",],
 
         /**********************************************************************
-         * name_legend
+         * type_legend
          **********************************************************************/
-        'name' => [
-            'inputType'     => 'text',
-            'eval'          => [
-                'mandatory' => false,
-                'unique'    => true,
-                'tl_class'  =>'w25'
-            ],
-            'sql'       => [
-                'type'      => 'string',
-                'length'    => 255,
-                'fixed'     => true,
-                'default'   => '',
-            ]
-        ],
-        /**********************************************************************
-         * source_page_legend
-         **********************************************************************/
-        'sourcePage' => [
-            'inputType'     => 'pageTree',
-            'foreignKey'    => 'tl_page.title',
-            'eval'          => [
-                'mandatory' => true,
-                'fieldType' => 'radio'
-            ],
+        'type' => [
+            'inputType' => 'select',
+            'flag'      => DataContainer::SORT_ASC,
+            'sorting'   => true,
+            'filter'    => true,
+            'foreignKey'=> 'tl_sources_type.type_sgl',
             'relation'      => ['type'=>'belongsTo', 'load'=>'lazy'],
+            //'reference' => &$GLOBALS['TL_LANG']['CTE'],
+            'eval'      => [
+                'helpwizard'    =>true,
+                'chosen'        =>true,
+                'submitOnChange'=>true,
+                'tl_class'      =>'w25'
+            ],
             'sql'           => [
                 'type'      => 'integer',
                 'unsigned'  => true,
@@ -113,12 +104,50 @@ $GLOBALS['TL_DCA'][$strTable] = [
             ],
         ],
         /**********************************************************************
-         * actions_legend
+         * author_legend
          **********************************************************************/
-        'actions' => [
+        'authors' => [
+            'search'    => true,
+            'filter'    => true,
+            #'sorting' => true,
+            'inputType' => 'select',
+            'foreignKey' => 'tl_sources_author.family_name',
+            'relation'  => [
+                'type'  => 'hasMany',
+                'load'  => 'lazy'
+            ],
+            'eval'      => [
+                'includeBlankOption' => false,
+                'tl_class' => '',
+                'multiple' => true,
+                'chosen' => true
+            ],
+            //'sql' => "longblob NULL default NULL",
+            'sql' => [
+                'type'    => 'blob',
+                'notnull' => false,
+                'default' => 'NULL',
+            ]
         ],
         /**********************************************************************
-         * code_legend
+         * title_legend
+         **********************************************************************/
+        'title' => [
+            'inputType'     => 'text',
+            'eval'          => [
+                'mandatory' => true,
+                'unique'    => false,
+                //'tl_class'  =>'w25'
+            ],
+            'sql'       => [
+                'type'      => 'text',
+                'length'    => 4096,
+                //'fixed'     => true,
+                'default'   => '',
+            ]
+        ],
+        /**********************************************************************
+         * data_legend
          **********************************************************************/
         'html' => [
             'inputType'     => 'textarea',
@@ -173,5 +202,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'default' => false
             ],
         ],
+        /**********************************************************************
+         * online_legend
+         **********************************************************************/
 	],
 ];

@@ -1,7 +1,9 @@
 <?php
 
+use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
 
+use Cmette\ContaoSourcesBundle\Models\SourcesTypeModel;
 use Contao\ArrayUtil;
 use Contao\System;
 
@@ -17,7 +19,7 @@ $assetsDir          = "bundles/ContaoSourcesBundle";
 $moduleSources = [
     'sources' => [
         'sources_entities'    => [
-            'tables'        => ['tl_source_entity'],
+            'tables'        => ['tl_sources_entity'],
             'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
             //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
 
@@ -25,14 +27,23 @@ $moduleSources = [
             //'disablePermissionChecks' => false
             // module is always shown in the navigation.
         ],
+        'sources_authors' => [
+            'tables'        => ['tl_sources_author'],
+            //'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
+            //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
+        ],
+        'sources_types' => [
+            'tables'        => ['tl_sources_type'],
+            //'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
+            //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
+        ],
     ],
 ];
 
-#ArrayUtil::arrayInsert($GLOBALS['BE_MOD'],count($GLOBALS['BE_MOD']['system']), $moduleMaintenance);
 ArrayUtil::arrayInsert($GLOBALS['BE_MOD'],0, $moduleSources);
 
 // Front end modules
-#$GLOBALS['FE_MOD']['pedigree'] = array
+#$GLOBALS['FE_MOD']['sources'] = array
 #(
 #	'pedigree_module'   => SupervisorFrontendModuleController::class
 #);
@@ -43,26 +54,11 @@ $GLOBALS['TL_PERMISSIONS'][] = 'ped_tree';
 
 // register backend widgets
 //$GLOBALS['BE_FFL']['supervisorImageWidget']             = SupervisorImageWidget::class;
-//$GLOBALS['BE_FFL']['supervisorTaskStackWidget']         = SupervisorTaskStackWidget::class;
-//$GLOBALS['BE_FFL']['supervisorDomainStateWidget']       = SupervisorDomainStateWidget::class;
-//$GLOBALS['BE_FFL']['supervisorFtpWidget']               = SupervisorFtpWidget::class;
-//$GLOBALS['BE_FFL']['supervisorIntervalWidget']          = SupervisorIntervalWidget::class;
-//$GLOBALS['BE_FFL']['supervisorForeignTableWidget']      = SupervisorForeignTableWidget::class;
-//
+
 // register model classes
-$GLOBALS['TL_MODELS']['tl_sources_entity'] = SourcesEntityModel::class;
-//// instances / Web-Instanzen
-//$GLOBALS['TL_MODELS']['tl_supervisor_instance']         = SupervisorInstanceModel::class;
-//// instances->tasks / aktive Tasks pro Instanz
-//$GLOBALS['TL_MODELS']['tl_supervisor_instance_task']    = SupervisorInstanceTaskModel::class;
-//// instance->tasks_log / alle bisher ausgeführten Tasks pro Instanz
-//$GLOBALS['TL_MODELS']['tl_supervisor_instance_task_log']= SupervisorInstanceTaskLogModel::class;
-//
-//$GLOBALS['TL_MODELS']['tl_supervisor_task_prototype']   = SupervisorTaskPrototypeModel::class;
-//$GLOBALS['TL_MODELS']['tl_supervisor_task_interval']    = SupervisorTaskIntervalModel::class;
-//$GLOBALS['TL_MODELS']['tl_supervisor_instance_diary']   = SupervisorInstanceDiaryModel::class;
-//
-//$GLOBALS['TL_MODELS']['tl_supervisor_config']           = SupervisorConfigModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_entity']  = SourcesEntityModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_type']    = SourcesTypeModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_author']  = SourcesAuthorModel::class;
 
 // Style sheet
 if ($isBackendRequest) {

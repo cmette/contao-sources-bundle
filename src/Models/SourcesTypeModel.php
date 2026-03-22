@@ -28,15 +28,15 @@ use Contao\Model\Collection;
  * @property int $id
  * @property int $tstamp
  *
- * @method static SourcesEntityModel|null findById($id, array $opt=array())
- * @method static Collection|array<SourcesEntityModel>|SourcesEntityModel|null findByPid($val, array $opt = [])
+ * @method static SourcesTypeModel|null findById($id, array $opt=array())
+ * @method static Collection|array<SourcesTypeModel>|SourcesTypeModel|null findByPid($val, array $opt = [])
  */
-class SourcesEntityModel extends Model
+class SourcesTypeModel extends Model
 {
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $strTable = 'tl_sources_entity';
+    protected static $strTable = 'tl_sources_type';
 }
