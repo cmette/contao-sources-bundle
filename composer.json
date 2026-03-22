@@ -1,0 +1,51 @@
+{
+    "name": "cmette/contao-sources-bundle",
+    "description": "Contao 5 Sources-Bundle.",
+    "version": "dev-main",
+    "type": "contao-bundle",
+    "license": "Apache-2.0",
+    "website" : "https://github.com/cmette/contao-sources-bundle",
+    "authors": [
+        {
+            "name": "Christian Mette",
+            "homepage": "https://github.com/cmette/contao-sources-bundle",
+            "role":"Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "contao/core-bundle": "5.*"
+    },
+    "autoload":{
+        "psr-4": {
+            "Cmette\\ContaoSourcesBundle\\": "src/"
+        }
+    },
+    "scripts": {
+        "rector": "vendor/bin/rector p --ansi",
+        "rector-dry": "vendor/bin/rector p --dryrun --ansi",
+        "check-cs": "vendor/bin/ecs check --ansi",
+        "fix-cs": "vendor/bin/ecs check --fix --ansi"
+    },
+    "extra":{
+        "contao-manager-plugin": "Cmette\\ContaoSourcesBundle\\ContaoManager\\Plugin"
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "php-http/discovery": true,
+            "contao/manager-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "conflict": {
+        "contao/manager-plugin": "<2.0 || >=3.0"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "@stable",
+        "contao/easy-coding-standard": "@stable",
+        "rector/rector": "@stable",
+        "phpstan/phpstan": "@stable",
+        "contao/contao-rector": "dev-main"
+    }
+}
