@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  Cmette\ContaoSourcesBundle\:
+    resource: '../src/*'
+    exclude: '../src/{ContaoManager,DependencyInjection}'
