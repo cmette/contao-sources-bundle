@@ -5,7 +5,7 @@ use Contao\DC_Table;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 
-$strTable = 'tl_sources_author';
+$strTable = 'tl_sources_publisher';
 
 System::loadLanguageFile($strTable);
 
@@ -24,8 +24,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'list' => [
 		'sorting' =>  [
             'mode'                  => DataContainer::MODE_SORTED,
-			'fields'                => ['family_name','first_name'],
-			'headerFields'          => ['family_name','first_name'],
+			'fields'                => ['string'],
+			'headerFields'          => ['string'],
 			'panelLayout'           => 'filter;sort,search,limit',
             'defaultSearchField'    => 'type_sgl',
             #'renderAsGrid'  => true,
@@ -35,12 +35,12 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'sortableListView' => true,
 		],
 		'label' =>  [
-			'fields' =>  ['family_name','first_name'],
+			'fields' =>  ['string'],
             // If true Contao will generate a table header with column names (e.g. back end member list)
             // If the DCA uses showColumns then the return value of the list.label.label-Callback
             // must be an array of strings. Otherwise just the label as a string.
             'showColumns' => false,
-			#'format' => '%s, ',
+			#'format' => '%s',
 		],
 		'operations' =>  [
             'edit',
@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{name_legend},family_name,first_name,isPublisher;' .
+            '{type_legend},string;' .
             '',
 	],
 
@@ -76,48 +76,18 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * type_legend
          **********************************************************************/
-        'family_name' => [
-            'inputType' => 'text',
-            'search'    => true,
-            'filter'    => true,
-            'sorting'   => true,
+        'string' => [
+            'inputType'     => 'text',
             'eval'          => [
                 'mandatory' => true,
                 'unique'    => true,
-                'tl_class'  =>'w25'
+                'tl_class'  =>'w50'
             ],
             'sql'       => [
                 'type'      => 'string',
                 'length'    => 255,
                 'fixed'     => true,
                 'default'   => '',
-            ]
-        ],
-        'first_name' => [
-            'inputType' => 'text',
-            'search'    => true,
-            'filter'    => true,
-            'sorting'   => true,
-            'eval'          => [
-                'mandatory' => true,
-                'unique'    => true,
-                'tl_class'  =>'w25'
-            ],
-            'sql'       => [
-                'type'      => 'string',
-                'length'    => 255,
-                'fixed'     => true,
-                'default'   => '',
-            ]
-        ],
-        'isPublisher' => [
-            'inputType' => 'checkbox',
-            'eval'      => [
-                'tl_class'=>'w25'
-            ],
-            'sql'       => [
-                'type' => 'boolean',
-                'default' => false
             ]
         ],
         /**********************************************************************

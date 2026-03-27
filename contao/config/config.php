@@ -3,7 +3,6 @@
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
 
-use Cmette\ContaoSourcesBundle\Models\SourcesTypeModel;
 use Contao\ArrayUtil;
 use Contao\System;
 
@@ -14,13 +13,13 @@ $scopeMatcher       = System::getContainer()->get('contao.routing.scope_matcher'
 $isBackendRequest   = $scopeMatcher->isBackendRequest($currentRequest ?? Request::create(''));
 $isFrontendRequest  = $scopeMatcher->isFrontendRequest($currentRequest ?? Request::create(''));
 
-$assetsDir          = "bundles/ContaoSourcesBundle";
+$assetsDir          = "bundles/contaosources";
 
 $moduleSources = [
     'sources' => [
         'sources_entities'    => [
             'tables'        => ['tl_sources_entity'],
-            'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
+            'stylesheet'    => ["$assetsDir/scss/sources.css"],
             //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
 
             // permission checks are always executed
@@ -32,11 +31,21 @@ $moduleSources = [
             //'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
             //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
         ],
-        'sources_types' => [
-            'tables'        => ['tl_sources_type'],
+        'sources_series' => [
+            'tables'        => ['tl_sources_serie'],
             //'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
             //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
         ],
+        'sources_publishers' => [
+            'tables'        => ['tl_sources_publisher'],
+            //'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
+            //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
+        ],
+        #'sources_types' => [
+        #    'tables'        => ['tl_sources_type'],
+        #    'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
+        #    'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
+        #],
     ],
 ];
 
@@ -57,7 +66,7 @@ $GLOBALS['TL_PERMISSIONS'][] = 'ped_tree';
 
 // register model classes
 $GLOBALS['TL_MODELS']['tl_sources_entity']  = SourcesEntityModel::class;
-$GLOBALS['TL_MODELS']['tl_sources_type']    = SourcesTypeModel::class;
+#$GLOBALS['TL_MODELS']['tl_sources_type']    = SourcesTypeModel::class;
 $GLOBALS['TL_MODELS']['tl_sources_author']  = SourcesAuthorModel::class;
 
 // Style sheet

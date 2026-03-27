@@ -3,7 +3,22 @@
  */
 #tl_navigation {
   a.group-sources {
-    //background: url("../img/shield-alert.svg") 3px 2px no-repeat;
-    background-size: 18px 18px;
+    background: url("../img/book-open-text.svg") 3px 2px no-repeat;
+    background-size: 13px 13px;
+  }
+}
+
+.tl_file_list
+{
+  .source-entity
+  {
+    display: flex;
+    border: 1px solid red;
+
+    .initiale
+    {
+      font-size: 200%;
+      aspect-ratio: 1;
+    }
   }
 }

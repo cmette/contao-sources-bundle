@@ -1,0 +1,17 @@
+#
+# Backend modules
+#
+MOD:
+  sources: Quellenregister
+  sources_entities:
+    - Quellen
+    - Register der Quellen
+  sources_authors:
+    - AutorenInnen
+    - Register der AutorInnen
+  sources_series:
+    - Periodika
+    - Register der Reihen und Zeitschriften
+  sources_publishers:
+    - Verlage
+    - Register der Verlage

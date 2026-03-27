@@ -3,23 +3,25 @@
 declare(strict_types=1);
 
 /*
- * Skeleton Bundle for Contao Open Source CMS
- * @author     Web Ex Machina
+ * This file is part of the Contao Sources Bundle.
  *
- * @see        https://github.com/Web-Ex-Machina/contao-skeleton-bundle/
- * @license    https://www.apache.org/licenses/LICENSE-2.0 Apache 2.0
+ * (c) Christian Mette
+ *
+ * @license LGPL-3.0-or-later
  */
 
 namespace Cmette\ContaoSourcesBundle;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ContaoSourcesBundle extends AbstractBundle
+// class ContaoSourcesBundle extends AbstractBundle {    public function
+// loadExtension(array $config, ContainerConfigurator $containerConfigurator,
+// ContainerBuilder $containerBuilder): void    {
+// $containerConfigurator->import('../config/services.yaml');    }
+class ContaoSourcesBundle extends Bundle
 {
-    public function loadExtension(array $config, ContainerConfigurator $containerConfigurator, ContainerBuilder $containerBuilder): void
+    public function getPath(): string
     {
-        $containerConfigurator->import('../config/services.yaml');
+        return \dirname(__DIR__);
     }
 }

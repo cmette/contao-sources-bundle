@@ -1,0 +1,88 @@
+tl_sources_entity:
+
+  type_legend: Art der Quelle
+  type:
+    - Quellen-Typ
+    - Bitte wählen Sie hier die Art der Quelle
+  type_options:
+    monograph:
+      - Monografie
+      - Monografien
+    series:
+      - Reihe
+      - Reihen
+    anthology:
+      - Sammelband
+      - Sammelbände
+    essay:
+      - Aufsatz
+      - Aufsätze
+    periodicals:
+      - Zeitschrift
+      - Zeitschriften
+    onlinesource:
+      - online-Quelle (URL, URN, DOI etc.)
+      - online-Quellen
+    map:
+      - Landkarte, Riss, Skizze, Grafik
+      - Landkarten/Risse/Skizzen etc.
+    handwriting:
+      - Handschrift
+      - Handschriften
+    photography:
+      - Fotografie
+      - Fotografien
+
+  author_legend: AutorInnen und HerausgeberInnen
+  authors:
+    - Alle AutorInnen
+    - Wählen Sie hier die AutorInnen aus dem Register. Wenn die gesuchten Personen nicht vorhanden sind, ergänzen Sie sie im Register.
+
+  title_legend: Titel der Publikation
+  title:
+    - Titel der Publikation
+    - Geben Sie hier den Titel der Publikation ein.
+
+  volume_legend: Angaben zum Periodikum
+  series:
+    - Reihe / Zeitschrift
+    - Wählen Sie hier das Periodikum aus. Erfassen Sie fehlende Periodika unter Periodika
+  volume_title:
+    - Bandtitel
+    - Geben Sie hier den Titel des Bandes oder der Ausgabe ein. Die Angabe ist optional.
+  volume:
+    - Band
+    - Geben Sie hier die Bandnummer ein.
+  issue:
+    - Heft-Nr. / Ausgabe
+    - Geben Sie hier die Heft-Nummer oder die Nummer der Ausgabe ein.
+
+  publisher_legend: Herausgeber
+  publisher:
+    - Ort und Verlag
+    - Wählen Sie hier den Verlag. Erfassen Sie fehlende Verlage unter Verlage.
+  edition:
+    - Auflage
+    - Geben Sie hier die Auflage ein.
+  year:
+    - Jahr der Auflage
+    - Geben Sie hier das Yahr für die angegebene Auflage ein.
+
+  catalog_legend: Kataloge
+  catalogs:
+    - Kataloge
+    - Komment
+  catalog_fields:
+      provider:
+        - Katalog
+      url:
+        - URL
+      date:
+        - Datum des Abrufs
+
+
+
+
+
+
+
