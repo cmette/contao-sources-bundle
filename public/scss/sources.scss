@@ -8,17 +8,47 @@
   }
 }
 
-.tl_file_list
-{
-  .source-entity
-  {
+.tl_file_list {
+  .source-entity {
     display: flex;
-    border: 1px solid red;
+    //border: 1px solid red;
 
-    .initiale
-    {
+    .initiale {
       font-size: 200%;
       aspect-ratio: 1;
+      width: 2rem;
+    }
+
+    .data {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      align-content: stretch;
+      flex: 2 2 auto;
+
+      & > div {
+        border: 1px solid blueviolet;
+      }
+
+      &:first-child {
+
+      }
     }
   }
+}
+
+table#ctrl_catalogs
+{
+  //border: 1px solid var(--form-border);
+  //border-radius: 1rem;
+
+  *[id^="ctrl_catalogs"] {
+    border: none;
+    background-color: #F6F6F8;
+  }
+
+  //*[id$="[provider]"] { width: 21rem; }
+  //*[id$="[url]"]      { width: 21rem; }
+  //*[id$="[date]"]     { width: 8rem; }
+
 }

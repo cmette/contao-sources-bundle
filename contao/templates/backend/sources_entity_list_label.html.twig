@@ -1,4 +1,11 @@
 <div class="source-entity">
-    <div class="initiale">{{ row._initiale }}</div>
-    <div class="data">{{ row.getAuthors().family_name }}{{ row.title }}</div>
+    <div class="initiale"><img src='bundles/contaosources/img/{{ source.type }}.svg'></div>
+    <div class="data">
+        <div>
+            {% include '@Contao/content_element/sources_authors.html.twig'  with { 'source': source } %}
+            {% include '@Contao/content_element/sources_titles.html.twig'   with { 'source': source } %}
+
+        </div>
+        <div>{{ source._imageHtml|raw }}</div>
+    </div>
 </div>

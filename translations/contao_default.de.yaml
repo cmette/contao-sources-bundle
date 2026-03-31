@@ -1,0 +1,5 @@
+CTE:
+  sources: Quellen
+  sources_entity:
+    - Quelle
+    - Inhaltselement repräsentiert eine Quelle aus dem Quellenregister.

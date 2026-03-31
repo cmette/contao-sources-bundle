@@ -6,4 +6,4 @@ services:
 
   Cmette\ContaoSourcesBundle\:
     resource: '../src/*'
-    exclude: '../src/{ContaoManager,Controller,DependencyInjection}'
+    exclude: '../src/{ContaoManager,DependencyInjection}'

@@ -1,5 +1,6 @@
 <?php
 
+use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
 use Contao\DataContainer;
 use Contao\DC_Table;
@@ -54,32 +55,39 @@ $GLOBALS['TL_DCA'][$strTable] = [
 
 	// Palettes
 	'palettes' =>  [
-		'__selector__'  =>  ['type','addDigitalCopy'],
+		'__selector__'  =>  ['type','addSeries','addDigitalCopy','addImage'],
         'default' =>
             '{type_legend},type;' .
-            '{author_legend},authors;' .
-            '{title_legend},title;' .
+            '{author_legend},authors_hint,authors,etal;' .
+            '{title_legend},title,subtitle;' .
+            '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year;' .
             '{data_legend},signature,signature_alt;' .
             '{catalogs_legend},catalogs;' .
+            '{digitalcopy_legend},addDigitalCopy;' .
+            '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
             ''
         ,
         'series' =>
             '{type_legend},type;' .
-            '{author_legend},authors;' .
-            '{title_legend},title;' .
-            '{volume_legend},series,volume_title,volume,issue;' .
+            '{author_legend},authors_hint,authors,etal;' .
+            '{title_legend},title,subtitle;' .
+            '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year;' .
             '{data_legend},signature,signature_alt;' .
             '{catalogs_legend},catalogs;' .
+            '{digitalcopy_legend},addDigitalCopy;' .
+            '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
             ''
 	],
 
 	// Subpalettes
 	'subpalettes' =>  [
-        'addDigitalCopy'    => 'url_digitalcopy,extent_digitalcopy',
+        'addSeries'     => 'series,volume_title,volume,issue',
+        'addDigitalCopy'=> 'digitalcopy',
+        'addImage'      => 'singleSRC,fullsize,size,floating,overwriteMeta',
     ],
 
 	// Fields
@@ -121,28 +129,71 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * author_legend
          **********************************************************************/
+        # Liste der Digitalisate
+        'authors_hint' => [
+            'input_field_callback' => static fn () => "{$GLOBALS['TL_LANG'][$strTable]['authors_hint']}",
+            'eval' => ['tl_class' => 'w50', 'hideHead' => true],
+        ],
         'authors' => [
-            'inputType' => 'select',
-            'search'    => true,
-            'filter'    => true,
-            #'sorting' => true,
-            'foreignKey' => 'tl_sources_author.family_name',
-            'relation'  => [
-                'type'  => 'hasMany',
-                'load'  => 'lazy'
+            'inputType' => 'rowWizard',
+            'fields' => [
+                'author' => [
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['authors_fields']['author'],
+                    'inputType' => 'select',
+                    #'foreignKey' => "tl_sources_author.family_name",
+                    'options'   => SourcesAuthorModel::getAllUniqueAuthors(false),
+                    'relation'  => [
+                        'type'  => 'hasMany',
+                        'load'  => 'lazy'
+                    ],
+                    'eval'      => [
+                        'includeBlankOption'=> true,
+                        'blankOptionLabel'  => 'unbekannt',
+                        'tl_class' => 'w75',
+                        'multiple' => false,
+                        'chosen' => true,
+                    ],
+                ],
+                'role' => [
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['authors_fields']['role'],
+                    'search'    => true,
+                    'inputType' => 'select',
+                    'options'   => SourcesAuthorModel::ROLES,
+                    'reference' => &$GLOBALS['TL_LANG'][$strTable]['authors_fields']['role_options'],
+                    'eval'      => [
+                        'mandatory' => false,
+                        'includeBlankOption'=> true,
+                        'tl_class' => 'w25'
+                    ],
+                ],
             ],
-            'eval'      => [
-                'includeBlankOption'=> true,
-                'blankOptionLabel'  => 'kein/unbekannt',
-                'tl_class' => '',
-                'multiple' => true,
-                'chosen' => true
+            'eval' => [
+                'tl_class' => 'clr',
+                'actions' => [
+                    'copy',
+                    'delete',
+                    'enable',
+                ],
+                'min' => 1,         // minimum rows
+                'max' => 20,        // maximum rows
+                'sortable' => true, // disable the sorting, defaults to true
             ],
-            //'sql' => "longblob NULL default NULL",
             'sql' => [
-                'type'    => 'blob',
-                'notnull' => false,
-                'default' => 'NULL',
+                'type' => 'text',
+                'length' => MySQLPlatform::LENGTH_LIMIT_BLOB,
+                'notnull' => false
+            ],
+        ],
+        # et.al. bei mehr als drei Autoren verwenden
+        'etal' => [
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'tl_class' => 'w16',
+                #'submitOnChange'=>true
+            ],
+            'sql'       => [
+                'type' => 'boolean',
+                'default' => true
             ]
         ],
         /**********************************************************************
@@ -162,9 +213,30 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'default'   => '',
             ]
         ],
+        'subtitle' => [
+            'inputType'     => 'text',
+            'eval'          => [
+                //'tl_class'  =>'w25'
+            ],
+            'sql'       => [
+                'type'      => 'text',
+                'length'    => 1024,
+                //'fixed'     => true,
+                'default'   => '',
+            ]
+        ],
         /**********************************************************************
          * periodika_legend
          **********************************************************************/
+        # Reihenangaben hinzufügen
+        'addSeries' => [
+            'inputType' => 'checkbox',
+            'eval'      => ['submitOnChange'=>true],
+            'sql'       => [
+                'type' => 'boolean',
+                'default' => false
+            ]
+        ],
         # allg. Periodikum aus dem Reihen-Register
         'series' => [
             'inputType' => 'select',
@@ -173,7 +245,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             #'sorting' => true,
             'foreignKey' => 'tl_sources_serie.title',
             'relation'  => [
-                'type'  => 'hasMany',
+                'type'  => 'hasOne',
                 'load'  => 'lazy'
             ],
             'eval'      => [
@@ -188,7 +260,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'type'      => 'integer',
                 'unsigned'  => true,
                 'notnull'   => true,
-                'default'   => 0,            ]
+                'default'   => 0,
+            ]
         ],
         # Band-Titel, z.b. bei Lexika die Angabe "M bis P" oder "Maulbeere bis Pankow"
         'volume_title' => [
@@ -254,7 +327,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             ],
             'eval'      => [
                 'mandatory' => false,
-                'includeBlankOption' => false,
+                'includeBlankOption' => true,
                 'tl_class' => 'w66',
                 'multiple' => false,
                 'chosen' => true
@@ -305,6 +378,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
                     'label'     => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['provider'],
                     'inputType' => 'select',
                     'options'   => ['dnb', 'doi', 'lasa'],
+                    'reference' => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['provider_options'],
                     'eval'          => [
                         'mandatory' => true,
                         'tl_class'  => 'w25'
@@ -325,6 +399,74 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 ],
                 'date' => [
                     'label'     => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['date'],
+                    'inputType'     => 'text',
+                    'search'        => true,
+                    'eval'          => [
+                        'rgxp'      =>  'date',
+                        'mandatory' =>  false,
+                        'doNotCopy' => true,
+                        'datepicker'=> true,
+                        'tl_class'  => 'w16 wizard'
+                    ]
+                ],
+            ],
+            'eval' => [
+                'tl_class' => 'clr',
+                'actions' => [
+                    'copy',
+                    'delete',
+                    'enable',
+                ],
+                'min' => 1, // minimum rows
+                'max' => 5, // maximum rows
+                'sortable' => false, // disable the sorting, defaults to true
+            ],
+            'sql' => [
+                'type' => 'text',
+                'length' => MySQLPlatform::LENGTH_LIMIT_BLOB,
+                'notnull' => false
+            ],
+        ],
+        /**********************************************************************
+         * dataprovider_legend
+         **********************************************************************/
+        'addDigitalCopy' => [
+            'inputType' => 'checkbox',
+            'eval'      => ['submitOnChange'=>true],
+            'sql'       => [
+                'type' => 'boolean',
+                'default' => false
+            ]
+        ],
+        # Liste der Digitalisate
+        'digitalcopy' => [
+            'inputType' => 'rowWizard',
+            'fields' => [
+                'provider' => [
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['provider'],
+                    'inputType' => 'select',
+                    'options'   => ['blha','lasa','mobh','mdz'],
+                    'reference' => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['provider_options'],
+                    'eval'          => [
+                        'mandatory' => true,
+                        'tl_class'  => 'w25'
+                    ],
+                ],
+                'url' => [
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['url'],
+                    'inputType'     => 'text',
+                    'search'        => true,
+                    'eval'          => [
+                        'mandatory' => false,
+                        'rgxp'      => 'url',
+                        'decodeEntities'=>true,
+                        'maxlength' => 2048,
+                        'dcaPicker' => true,
+                        'tl_class'  => 'w25'
+                    ],
+                ],
+                'date' => [
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['date'],
                     'inputType'     => 'text',
                     'search'        => true,
                     'eval'          => [
@@ -352,6 +494,75 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'length' => MySQLPlatform::LENGTH_LIMIT_BLOB,
                 'notnull' => false
             ],
+        ],
+        /**********************************************************************
+         * image_legend
+         **********************************************************************/
+        'addImage' => [
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'submitOnChange' => true
+            ],
+            'sql'       => [
+                'type' => 'boolean',
+                'default' => false
+            ]
+        ],
+        'singleSRC' => [
+            'inputType' => 'fileTree',
+            'eval'      => [
+                'filesOnly' => true,
+                'fieldType' =>'radio',
+                'mandatory' => true,
+                'tl_class'  => 'clr'
+            ],
+            'sql'   => "binary(16) NULL"
+        ],
+        'fullsize' => [
+            'inputType'     => 'checkbox',
+            'eval'          => [
+                'tl_class'  => 'w50'
+            ],
+            'sql'   => [
+                'type'  => 'boolean',
+                'default' => false
+            ],
+        ],
+        'size' => [
+            'label'     => &$GLOBALS['TL_LANG']['MSC']['imgSize'],
+            'inputType' => 'imageSize',
+            'reference' => &$GLOBALS['TL_LANG']['MSC'],
+            'eval'      => [
+                'rgxp'  => 'natural',
+                'includeBlankOption' => true,
+                'nospace' => true,
+                'helpwizard' => true,
+                'tl_class' => 'w50 clr'
+            ],
+            'sql'   => [
+                'type'  => 'string',
+                'length'=> 255,
+                'default'=>'',
+                'platformOptions' =>['collation' => 'ascii_bin']
+            ]
+        ],
+        'floating' => [
+            'inputType' => 'radioTable',
+            'options'   => ['above', 'left', 'right', 'below'],
+            'eval'      => ['cols' => 4, 'tl_class' => 'w50'],
+            'reference' => &$GLOBALS['TL_LANG']['MSC'],
+            'sql'       => "varchar(32) COLLATE ascii_bin NOT NULL default 'above'"
+        ],
+        'overwriteMeta' => [
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'submitOnChange' => true,
+                'tl_class' => 'w50 clr'
+            ],
+            'sql'   => [
+                'type' => 'boolean',
+                'default' => false
+            ]
         ],
         /**********************************************************************
          * occurrences_legend

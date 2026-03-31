@@ -46,9 +46,25 @@ class SourcesEntityModel extends Model
         'photography', // Fotografie
     ];
 
-    public function getAuthors()
+    /**
+     * @return Collection
+     */
+    public function getAuthors(): array
     {
-        return $this->getRelated('authors');
+        // Achtung! das sind keine Autoren, es ist ein serialisiertes Array mit Autoren und anderen Daten,
+        // so wie sie im entsprechenden rowWizard im DCA codiert wurden
+        $arrAuthors = [];
+
+        foreach (StringUtil::deserialize($this->authors, true) as $author) {
+            $modelAuthor = SourcesAuthorModel::findById($author['author']);
+            if($modelAuthor === null) continue;
+
+            $row = $modelAuthor->row();
+            $row['role'] = $author['role'];
+            $arrAuthors[] = $row;
+        }
+
+        return $arrAuthors;
     }
 
     /**

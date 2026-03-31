@@ -1,0 +1,13 @@
+{# templates/content_element/example_element.html.twig #}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% set attributes = attrs()
+    .set('id', "sources_entity-" ~ source.id)
+    .addClass(source.type)
+    .mergeWith(attributes|default)
+%}
+
+{% block content %}
+    {% include  '@Contao/content_element/sources_authors.html.twig' with { 'source': source } %}
+    {% include '@Contao/content_element/sources_titles.html.twig'   with { 'source': source } %}
+{% endblock %}

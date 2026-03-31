@@ -23,7 +23,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	],
 	'list' => [
 		'sorting' =>  [
-            'mode'                  => DataContainer::MODE_SORTED,
+            'mode'                  => DataContainer::SORT_ASC,
+            'flag'                  => 1,
+            'disableGrouping'       => false,
 			'fields'                => ['family_name','first_name'],
 			'headerFields'          => ['family_name','first_name'],
 			'panelLayout'           => 'filter;sort,search,limit',
@@ -40,7 +42,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             // If the DCA uses showColumns then the return value of the list.label.label-Callback
             // must be an array of strings. Otherwise just the label as a string.
             'showColumns' => false,
-			#'format' => '%s, ',
+			#'format' => '%s, %s',
 		],
 		'operations' =>  [
             'edit',
@@ -99,7 +101,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'filter'    => true,
             'sorting'   => true,
             'eval'          => [
-                'mandatory' => true,
+                'mandatory' => false,
                 'unique'    => true,
                 'tl_class'  =>'w25'
             ],

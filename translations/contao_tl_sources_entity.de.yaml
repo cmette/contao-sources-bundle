@@ -25,7 +25,7 @@ tl_sources_entity:
       - online-Quellen
     map:
       - Landkarte, Riss, Skizze, Grafik
-      - Landkarten/Risse/Skizzen etc.
+      - Karten/Risse/Skizzen etc.
     handwriting:
       - Handschrift
       - Handschriften
@@ -34,21 +34,42 @@ tl_sources_entity:
       - Fotografien
 
   author_legend: AutorInnen und HerausgeberInnen
+  authors_hint: Die Autorinnen und Autoren sollte hier in der Reihenfolge wie im Einband angegeben erfasst werden.
   authors:
-    - Alle AutorInnen
-    - Wählen Sie hier die AutorInnen aus dem Register. Wenn die gesuchten Personen nicht vorhanden sind, ergänzen Sie sie im Register.
+    - Autoren und Autorinnen
+    - Wählen Sie hier die AutorInnen aus dem Autoren-Register. Wenn die gesuchten Personen nicht vorhanden sind, ergänzen Sie sie im Register.
+  authors_fields:
+    author:
+      - Autor/Autorin
+      - Wählen Sie hier den Autor / die Autorin aus der Liste.
+    role:
+      - Eigenschaft
+      - Wählen Sie hier die Rolle, in der publiziert wurde.
+    role_options:
+      isPublisher: "[Hrsg.]"
+      isCoAuthor: "[Mitw.]"
+      isContributor: "[Mitarb.]"
+  etal:
+    - et al. verwenden
+    - Bei mehr als 2 AutorInnen wird nur der/die erste AutorIn genannt und et al. ergänzt.
 
   title_legend: Titel der Publikation
   title:
     - Titel der Publikation
     - Geben Sie hier den Titel der Publikation ein.
+  subtitle:
+    - Untertitel (optional)
+    - Geben Sie hier einen Untertitel ein.
 
-  volume_legend: Angaben zum Periodikum
+  series_legend: Angaben zur Reihe oder einem Periodikum
+  addSeries:
+    - in Reihe
+    - Aktivieren Sie diese Option, wenn der Titel in einer Reihe oder einem Periodikum erschienen ist.
   series:
-    - Reihe / Zeitschrift
+    - "in: Reihe / Zeitschrift"
     - Wählen Sie hier das Periodikum aus. Erfassen Sie fehlende Periodika unter Periodika
   volume_title:
-    - Bandtitel
+    - Bandtitel (optional)
     - Geben Sie hier den Titel des Bandes oder der Ausgabe ein. Die Angabe ist optional.
   volume:
     - Band
@@ -66,23 +87,32 @@ tl_sources_entity:
     - Geben Sie hier die Auflage ein.
   year:
     - Jahr der Auflage
-    - Geben Sie hier das Yahr für die angegebene Auflage ein.
+    - Geben Sie hier das Jahr für die angegebene Auflage ein.
 
   catalog_legend: Kataloge
   catalogs:
     - Kataloge
-    - Komment
+    - Wählen Sie hier den Katalog.
   catalog_fields:
       provider:
         - Katalog
+      provider_options:
+        dnb: Deutsche Nationalbibliothek
+        doi: Digitaler Einheitstitel
+        lasa: Landesarchiv Sachsen-Anhalt
       url:
         - URL
       date:
         - Datum des Abrufs
 
-
-
-
-
-
-
+  digitalcopy_legend: Digitalisate
+  digitalcopy:
+    - Digitalisat
+    - Komment
+  digitalcopy_fields:
+    provider:
+      - Datengeber
+    url:
+      - URL
+    date:
+      - Datum des Abrufs
