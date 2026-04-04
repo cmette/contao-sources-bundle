@@ -24,8 +24,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'list' => [
 		'sorting' =>  [
             'mode'                  => DataContainer::MODE_SORTED,
-			'fields'                => ['string'],
-			'headerFields'          => ['string'],
+			'fields'                => ['name'],
+			'headerFields'          => ['name'],
 			'panelLayout'           => 'filter;sort,search,limit',
             'defaultSearchField'    => 'type_sgl',
             #'renderAsGrid'  => true,
@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'sortableListView' => true,
 		],
 		'label' =>  [
-			'fields' =>  ['string'],
+			'fields' =>  ['name'],
             // If true Contao will generate a table header with column names (e.g. back end member list)
             // If the DCA uses showColumns then the return value of the list.label.label-Callback
             // must be an array of strings. Otherwise just the label as a string.
@@ -44,9 +44,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 		],
 		'operations' =>  [
             'edit',
-            'activate',
+            '!toggle',
             '!delete',
-            #'toggle',
         ],
 	],
 
@@ -54,7 +53,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{type_legend},string;' .
+            '{type_legend},name;' .
             '',
 	],
 
@@ -70,13 +69,18 @@ $GLOBALS['TL_DCA'][$strTable] = [
          **********************************************************************/
         'id'        => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
         'tstamp'    => ['sql' => "int(10) unsigned NOT NULL default 0",],
-        'published' => ['toggle' => true,'inputType' => 'checkbox','sql' => ['type' => 'boolean', 'default' => false],],
-        # requires special bundle oneup/contao-backend-sortable-list-views
-        #'sorting'=> ['sql' => "int(10) unsigned NOT NULL default 0",],
+        'published' => [
+            'toggle'    => true,
+            'filter'    => true,
+            'flag'      => DataContainer::SORT_INITIAL_LETTER_DESC,
+            'inputType' => 'checkbox',
+            'eval'      => ['doNotCopy'=>true],
+            'sql'       => ['type' => 'boolean', 'default' => false],
+        ],
         /**********************************************************************
          * type_legend
          **********************************************************************/
-        'string' => [
+        'name' => [
             'inputType'     => 'text',
             'eval'          => [
                 'mandatory' => true,

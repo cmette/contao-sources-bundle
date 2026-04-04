@@ -1,0 +1,27 @@
+{# rendert Reihen mit den zugehörigen Angaben #}
+{% trans_default_domain "tl_sources_entity" %}
+
+{%- set publisher = source.getPublisher() -%}
+{%- set serie = source.getSerie() -%}
+
+{%- if source.type == 'monograph' -%}
+    {#
+        nur wenn eine Reihenangabe vorhanden ist, werden auch alle anderen Daten,
+        wie Band und Heftnummer mit ausgegeben
+    #}
+    {%- if(serie) -%}
+        <span class="serie">
+            <span class="title{{ (serie.published) ?' published':' unpublished' }}">(= {{- serie.title -}}{{- source.volume ? ', Bd. '~source.volume -}}{{- source.issue ? ', '~source.issue -}})</span>
+            {%- if(publisher)       -%}<span class="publisher{{- (publisher.published) ?' published':' unpublished' -}}">,&nbsp;{{- publisher.name -}}, </span>{%- endif -%}
+            {%- if(source.edition)  -%}<sup class="edition">{{- source.edition -}}</sup>{%- endif -%}
+            {%- if(source.year)     -%}<span class="year">{{- source.year -}}</span>{%- endif -%}
+            {%- if(source.firstyear)-%}<span class="firstyear"> [{{- source.firstyear -}}]</span>{%- endif -%}
+        </span>
+    {%- endif -%}
+{%- elseif source.type == 'map' -%}
+    {%- if(source.edition)  -%}<sup class="edition">{{- source.edition -}}</sup>{%- endif -%}
+    {%- if(source.year)     -%}<span class="year">{{- source.year -}}</span>{%- endif -%}
+    {%- if(source.firstyear)-%}<span class="firstyear"> [{{- source.firstyear -}}]</span>{%- endif -%}
+{%- else -%}
+
+{%- endif -%}

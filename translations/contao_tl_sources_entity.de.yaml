@@ -43,7 +43,7 @@ tl_sources_entity:
       - Autor/Autorin
       - Wählen Sie hier den Autor / die Autorin aus der Liste.
     role:
-      - Eigenschaft
+      - als (Eigenschaft)
       - Wählen Sie hier die Rolle, in der publiziert wurde.
     role_options:
       isPublisher: "[Hrsg.]"
@@ -63,10 +63,10 @@ tl_sources_entity:
 
   series_legend: Angaben zur Reihe oder einem Periodikum
   addSeries:
-    - in Reihe
-    - Aktivieren Sie diese Option, wenn der Titel in einer Reihe oder einem Periodikum erschienen ist.
+    - Reihe
+    - Aktivieren Sie diese Option, wenn der Titel in einer Reihe erschienen ist.
   series:
-    - "in: Reihe / Zeitschrift"
+    - "Reihe"
     - Wählen Sie hier das Periodikum aus. Erfassen Sie fehlende Periodika unter Periodika
   volume_title:
     - Bandtitel (optional)
@@ -80,39 +80,48 @@ tl_sources_entity:
 
   publisher_legend: Herausgeber
   publisher:
-    - Ort und Verlag
+    - "Ort und Verlag (siehe <a href='/contao?do=sources_publishers'>Verlage</a>)"
     - Wählen Sie hier den Verlag. Erfassen Sie fehlende Verlage unter Verlage.
   edition:
-    - Auflage
-    - Geben Sie hier die Auflage ein.
+    - zitierte Auflage
+    - Geben Sie hier die Auflage ein, aus der Sie zitiert haben.
   year:
-    - Jahr der Auflage
-    - Geben Sie hier das Jahr für die angegebene Auflage ein.
+    - Jahr zitierte Auflage
+    - Geben Sie hier das Erscheinungsjahr für die zitierte Auflage ein.
+  firstyear:
+    - Jahr Erstauflage
+    - Geben Sie hier das Jahr der Erstauflage ein.
 
-  catalog_legend: Kataloge
+  catalogs_legend: Die Quelle in einschlägigen Katalogen
   catalogs:
-    - Kataloge
-    - Wählen Sie hier den Katalog.
+    - "Katalog  (siehe <a href='/contao?do=sources_libraries'>Kataloge</a>)"
+    - Erfassen Sie hier Verweise auf einschlägige Bibliothekskataloge.
   catalog_fields:
       provider:
         - Katalog
-      provider_options:
-        dnb: Deutsche Nationalbibliothek
-        doi: Digitaler Einheitstitel
-        lasa: Landesarchiv Sachsen-Anhalt
+      signature:
+        - Signatur
       url:
-        - URL
+        - URL/URN
       date:
         - Datum des Abrufs
 
-  digitalcopy_legend: Digitalisate
-  digitalcopy:
-    - Digitalisat
-    - Komment
-  digitalcopy_fields:
+  digitalcopies_legend: Die Quelle als Digitalisat
+  addDigitalCopies:
+    - Es existieren Digitalisate
+    - Aktivieren Sie diese Funktion, um ein oder mehrere Verweise auf Digitalisate zu erfassen. Das Digitalisat selbst wird hier nicht gespeichert.
+  digitalcopies:
+    - Digitalisate
+    - Erfassen Sie hier Verweise auf verfügbare Digitalisate.
+  digitalcopies_fields:
     provider:
       - Datengeber
     url:
       - URL
     date:
       - Datum des Abrufs
+
+  image_legend: Bild zur Quelle
+  addImage:
+    - Ein Bild hinzufügen
+    - Aktivieren Sie diese Funktion, um ein Bild für die Quelle anzuzeigen.

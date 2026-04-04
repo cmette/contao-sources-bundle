@@ -3,6 +3,9 @@
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
 
+use Cmette\ContaoSourcesBundle\Models\SourcesLibraryModel;
+use Cmette\ContaoSourcesBundle\Models\SourcesPublisherModel;
+use Cmette\ContaoSourcesBundle\Models\SourcesSerieModel;
 use Contao\ArrayUtil;
 use Contao\System;
 
@@ -41,11 +44,11 @@ $moduleSources = [
             //'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
             //'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
         ],
-        #'sources_types' => [
-        #    'tables'        => ['tl_sources_type'],
-        #    'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
-        #    'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
-        #],
+        'sources_libraries' => [
+            'tables'        => ['tl_sources_library'],
+            #'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
+            #'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
+        ],
     ],
 ];
 
@@ -62,14 +65,14 @@ $GLOBALS['TL_PERMISSIONS'][] = 'ped_conf';
 $GLOBALS['TL_PERMISSIONS'][] = 'ped_tree';
 
 // register backend widgets
-//$GLOBALS['BE_FFL']['supervisorImageWidget']             = SupervisorImageWidget::class;
+//$GLOBALS['BE_FFL']['supervisorImageWidget']   = SupervisorImageWidget::class;
 
 // register model classes
-$GLOBALS['TL_MODELS']['tl_sources_entity']  = SourcesEntityModel::class;
-#$GLOBALS['TL_MODELS']['tl_sources_type']    = SourcesTypeModel::class;
-$GLOBALS['TL_MODELS']['tl_sources_author']  = SourcesAuthorModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_entity']      = SourcesEntityModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_author']      = SourcesAuthorModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_serie']       = SourcesSerieModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_publisher']   = SourcesPublisherModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_library']     = SourcesLibraryModel::class;
 
 // Style sheet
-if ($isBackendRequest) {
-    #$GLOBALS['TL_CSS'][] = "$assetsDir/scss/supervisor.scss|static";
-}
+$GLOBALS['TL_CSS'][] = "$assetsDir/scss/sources.css";

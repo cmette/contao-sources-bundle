@@ -15,3 +15,6 @@ MOD:
   sources_publishers:
     - Verlage
     - Register der Verlage
+  sources_libraries:
+    - Bibliotheken
+    - Register der Bibliotheken und Archive

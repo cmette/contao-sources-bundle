@@ -20,16 +20,14 @@ namespace Cmette\ContaoSourcesBundle\EventListener\DataContainer;
 
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
-use Contao\BackendUser;
+
 use Contao\Config;
-use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
+use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\DataContainer;
 use Contao\FrontendTemplate;
-use Contao\Image;
-use Contao\StringUtil;
-use Contao\System;
-use Twig\Environment;
+
+use Twig\Environment as TwigEnvironment;
 
 class SourcesEntityListener
 {
@@ -37,11 +35,12 @@ class SourcesEntityListener
 
     private const STR_BACKEND = '@Contao_ContaoSourcesBundle/backend';
 
-    public  Environment $twig;
-
-    public function __construct()
+    public function __construct(
+        private readonly Studio $imageStudio,
+        private readonly TwigEnvironment $twig,
+    )
     {
-        $this->twig = System::getContainer()->get('twig');
+
     }
 
     #[AsCallback(table: self::STR_TABLE, target: 'list.label.group')]
@@ -49,7 +48,6 @@ class SourcesEntityListener
     {
         // references the plural
         $result = $GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][1];
-        #dump($group, $mode, $field, $row, $dc);
 
         return $result;
     }
@@ -67,7 +65,7 @@ class SourcesEntityListener
 
         if($source) {
             $source->_initiale    = ucfirst($GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][0][0]);
-            $source->_imageHtml   = self::buildImage($source->singleSRC)->image;
+            $source->_imageHtml   = $this->buildImage($source->singleSRC)->image;
             $html = $this->twig->render(
                 self::STR_BACKEND.'/sources_entity_list_label.html.twig',
                 ['source' => $source,]
@@ -75,6 +73,12 @@ class SourcesEntityListener
         }
 
         return $html;
+    }
+
+    ##[AsCallback(table: self::STR_TABLE, target: 'fields.authors_hint.input_field')]
+    public function authorsHintInputFieldCallback(DataContainer $dc, string $extendedLabel): string
+    {
+        return "<div class='widget'><p class='tl_help tl_source_tip' data-contao--tooltips-target='tooltip'>{$GLOBALS['TL_LANG'][self::STR_TABLE]['authors_hint']}</p></div>";
     }
 
     #[AsCallback(table: self::STR_TABLE, target: 'fields.authors1.options')]
@@ -119,13 +123,13 @@ class SourcesEntityListener
         return $currentValue;
     }
 
-    public static function buildImage(?string $singleSrc, array $size = [160, 160, 'proportional']): \stdClass
+    public function buildImage(?string $singleSrc, array $size = [160, 160, 'proportional']): \stdClass
     {
         $objResult = new \stdClass();
 
         if ($singleSrc) {
             // get a figure builder instance
-            $figureBuilder  = System::getContainer()->get('contao.image.studio')->createFigureBuilder();
+            $figureBuilder  = $this->imageStudio->createFigureBuilder();
 
             try {
                 $figure = $figureBuilder->fromUUID($singleSrc)->setSize($size)->enableLightbox()->build();

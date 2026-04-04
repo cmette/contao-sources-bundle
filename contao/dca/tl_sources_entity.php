@@ -2,10 +2,11 @@
 
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
+use Cmette\ContaoSourcesBundle\Models\SourcesLibraryModel;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
-use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+
 use Doctrine\DBAL\Platforms\MySQLPlatform;
 
 $strTable = 'tl_sources_entity';
@@ -47,24 +48,23 @@ $GLOBALS['TL_DCA'][$strTable] = [
 		],
 		'operations' =>  [
             'edit',
-            'activate',
+            '!toggle',
             '!delete',
-            #'toggle',
         ],
 	],
 
 	// Palettes
 	'palettes' =>  [
-		'__selector__'  =>  ['type','addSeries','addDigitalCopy','addImage'],
+		'__selector__'  =>  ['type','addSeries','addDigitalCopies','addImage'],
         'default' =>
             '{type_legend},type;' .
             '{author_legend},authors_hint,authors,etal;' .
             '{title_legend},title,subtitle;' .
             '{series_legend},addSeries;' .
-            '{publisher_legend},publisher,edition,year;' .
+            '{publisher_legend},publisher,edition,year,firstyear;' .
             '{data_legend},signature,signature_alt;' .
             '{catalogs_legend},catalogs;' .
-            '{digitalcopy_legend},addDigitalCopy;' .
+            '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
             ''
@@ -77,17 +77,31 @@ $GLOBALS['TL_DCA'][$strTable] = [
             '{publisher_legend},publisher,edition,year;' .
             '{data_legend},signature,signature_alt;' .
             '{catalogs_legend},catalogs;' .
-            '{digitalcopy_legend},addDigitalCopy;' .
+            '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
             ''
+        ,
+        'map' =>
+            '{type_legend},type;' .
+            '{author_legend},authors_hint,authors,etal;' .
+            '{title_legend},title,subtitle;' .
+            '{series_legend},addSeries;' .
+            '{publisher_legend},publisher,edition,year,firstyear;' .
+            '{data_legend},signature,signature_alt;' .
+            '{catalogs_legend},catalogs;' .
+            '{digitalcopies_legend},addDigitalCopies;' .
+            '{image_legend},addImage;' .
+            #'{occurrences_legend},occurrences;' .
+            ''
+        ,
 	],
 
 	// Subpalettes
 	'subpalettes' =>  [
-        'addSeries'     => 'series,volume_title,volume,issue',
-        'addDigitalCopy'=> 'digitalcopy',
-        'addImage'      => 'singleSRC,fullsize,size,floating,overwriteMeta',
+        'addSeries'         => 'series,volume_title,volume,issue',
+        'addDigitalCopies'  => 'digitalcopies',
+        'addImage'          => 'singleSRC,fullsize,size,floating,overwriteMeta',
     ],
 
 	// Fields
@@ -97,7 +111,14 @@ $GLOBALS['TL_DCA'][$strTable] = [
          **********************************************************************/
         'id'        => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
         'tstamp'    => ['sql' => "int(10) unsigned NOT NULL default 0",],
-        'published' => ['toggle' => true,'inputType' => 'checkbox','sql' => ['type' => 'boolean', 'default' => false],],
+        'published' => [
+            'toggle'    => true,
+            'filter'    => true,
+            'flag'      => DataContainer::SORT_INITIAL_LETTER_DESC,
+            'inputType' => 'checkbox',
+            'eval'      => ['doNotCopy'=>true],
+            'sql'       => ['type' => 'boolean', 'default' => false],
+        ],
         # requires special bundle oneup/contao-backend-sortable-list-views
         #'sorting'=> ['sql' => "int(10) unsigned NOT NULL default 0",],
 
@@ -131,8 +152,10 @@ $GLOBALS['TL_DCA'][$strTable] = [
          **********************************************************************/
         # Liste der Digitalisate
         'authors_hint' => [
-            'input_field_callback' => static fn () => "{$GLOBALS['TL_LANG'][$strTable]['authors_hint']}",
-            'eval' => ['tl_class' => 'w50', 'hideHead' => true],
+            'eval' => [
+                'tl_class' => 'w50',
+                'hideHead' => true
+            ],
         ],
         'authors' => [
             'inputType' => 'rowWizard',
@@ -231,7 +254,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
         # Reihenangaben hinzufügen
         'addSeries' => [
             'inputType' => 'checkbox',
-            'eval'      => ['submitOnChange'=>true],
+            'eval'      => ['submitOnChange' => true],
             'sql'       => [
                 'type' => 'boolean',
                 'default' => false
@@ -242,17 +265,18 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'inputType' => 'select',
             'search'    => true,
             'filter'    => true,
-            #'sorting' => true,
+            'sorting'   => true,
             'foreignKey' => 'tl_sources_serie.title',
             'relation'  => [
                 'type'  => 'hasOne',
                 'load'  => 'lazy'
             ],
             'eval'      => [
+                // wenn addSeries true, dann muss eine Reihe angegeben werden!
                 'mandatory' => true,
                 'includeBlankOption'=> false,
                 #'blankOptionLabel'  => 'kein/unbekannt',
-                'tl_class' => 'w50',
+                'tl_class' => 'w33',
                 'multiple' => false,
                 'chosen' => true
             ],
@@ -269,7 +293,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'eval'          => [
                 'mandatory' => false,
                 'unique'    => false,
-                'tl_class'  =>'w50 clr'
+                'tl_class'  =>'w33'
             ],
             'sql'       => [
                 'type'      => 'text',
@@ -311,16 +335,17 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * publisher_legend
          **********************************************************************/
+        # Herausgeber
         'editor' => [
 
         ],
-        #
+        # Verlag
         'publisher' => [
             'search'    => true,
             'filter'    => true,
-            #'sorting' => true,
+            'sorting' => true,
             'inputType' => 'select',
-            'foreignKey' => 'tl_sources_publisher.string',
+            'foreignKey' => 'tl_sources_publisher.name',
             'relation'  => [
                 'type'  => 'hasMany',
                 'load'  => 'lazy'
@@ -328,7 +353,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'eval'      => [
                 'mandatory' => false,
                 'includeBlankOption' => true,
-                'tl_class' => 'w66',
+                'tl_class' => 'w50',
                 'multiple' => false,
                 'chosen' => true
             ],
@@ -340,8 +365,11 @@ $GLOBALS['TL_DCA'][$strTable] = [
             ],
         ],
         'year' => [
-            'inputType'     => 'text',
-            'eval'          => [
+            'search'    => true,
+            'filter'    => true,
+            'sorting'   => true,
+            'inputType' => 'text',
+            'eval'      => [
                 'mandatory' => false,
                 'unique'    => false,
                 'tl_class'  =>'w16'
@@ -354,8 +382,29 @@ $GLOBALS['TL_DCA'][$strTable] = [
             ]
         ],
         'edition' => [
-            'inputType'     => 'text',
-            'eval'          => [
+            'search'    => true,
+            'filter'    => true,
+            'sorting'   => true,
+            'inputType' => 'text',
+            'eval'      => [
+                'mandatory' => false,
+                'unique'    => false,
+                'tl_class'  =>'w16'
+            ],
+            'sql'       => [
+                'type'      => 'text',
+                'length'    => 5,
+                'fixed'     => true,
+                'default'   => '',
+            ]
+        ],
+        # Jahr der Erstausgabe
+        'firstyear' => [
+            'search'    => true,
+            'filter'    => true,
+            'sorting'   => true,
+            'inputType' => 'text',
+            'eval'      => [
                 'mandatory' => false,
                 'unique'    => false,
                 'tl_class'  =>'w16'
@@ -368,7 +417,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             ]
         ],
         /**********************************************************************
-         * references_legend
+         * catalogs_legend
          **********************************************************************/
         # list of links to catalogs
         'catalogs' => [
@@ -377,12 +426,29 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'provider' => [
                     'label'     => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['provider'],
                     'inputType' => 'select',
-                    'options'   => ['dnb', 'doi', 'lasa'],
-                    'reference' => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['provider_options'],
+                    'options'   => SourcesLibraryModel::getLibrariesOptions(true, false),
+                    #'foreignKey'=> 'tl_sources_library.name',
+                    #'relation'      => ['type'=>'belongsTo', 'load'=>'lazy'],
+                    #'reference' => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['provider_options'],
                     'eval'          => [
                         'mandatory' => true,
                         'tl_class'  => 'w25'
                     ],
+                ],
+                'signature' => [
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['signature'],
+                    'inputType' => 'text',
+                    'eval'      => [
+                        'mandatory' => false,
+                        'unique'    => false,
+                        'tl_class'  =>'w16'
+                    ],
+                    'sql'       => [
+                        'type'      => 'text',
+                        'length'    => 50,
+                        'fixed'     => true,
+                        'default'   => '',
+                    ]
                 ],
                 'url' => [
                     'label'     => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['url'],
@@ -393,8 +459,6 @@ $GLOBALS['TL_DCA'][$strTable] = [
                         'rgxp'      => 'url',
                         'decodeEntities'=>true,
                         'maxlength' => 2048,
-                        'dcaPicker' => true,
-                        'tl_class'  => 'w25'
                     ],
                 ],
                 'date' => [
@@ -417,9 +481,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
                     'delete',
                     'enable',
                 ],
-                'min' => 1, // minimum rows
-                'max' => 5, // maximum rows
-                'sortable' => false, // disable the sorting, defaults to true
+                'min'       => 0, // minimum rows
+                'max'       => 6, // maximum rows
+                'sortable'  => true, // disable the sorting, defaults to true
             ],
             'sql' => [
                 'type' => 'text',
@@ -430,7 +494,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * dataprovider_legend
          **********************************************************************/
-        'addDigitalCopy' => [
+        'addDigitalCopies' => [
             'inputType' => 'checkbox',
             'eval'      => ['submitOnChange'=>true],
             'sql'       => [
@@ -439,21 +503,20 @@ $GLOBALS['TL_DCA'][$strTable] = [
             ]
         ],
         # Liste der Digitalisate
-        'digitalcopy' => [
+        'digitalcopies' => [
             'inputType' => 'rowWizard',
             'fields' => [
                 'provider' => [
-                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['provider'],
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopies_fields']['provider'],
                     'inputType' => 'select',
-                    'options'   => ['blha','lasa','mobh','mdz'],
-                    'reference' => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['provider_options'],
+                    'options'   => SourcesLibraryModel::getLibrariesOptions(false, true),
                     'eval'          => [
                         'mandatory' => true,
                         'tl_class'  => 'w25'
                     ],
                 ],
                 'url' => [
-                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['url'],
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopies_fields']['url'],
                     'inputType'     => 'text',
                     'search'        => true,
                     'eval'          => [
@@ -466,11 +529,11 @@ $GLOBALS['TL_DCA'][$strTable] = [
                     ],
                 ],
                 'date' => [
-                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopy_fields']['date'],
+                    'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopies_fields']['date'],
                     'inputType'     => 'text',
                     'search'        => true,
                     'eval'          => [
-                        'rgxp'      =>  'datim',
+                        'rgxp'      =>  'date',
                         'mandatory' =>  false,
                         'doNotCopy' => true,
                         'datepicker'=> true,
@@ -485,9 +548,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
                     'delete',
                     'enable',
                 ],
-                'min' => 1, // minimum rows
-                'max' => 5, // maximum rows
-                'sortable' => false, // disable the sorting, defaults to true
+                'min'       => 0, // minimum rows
+                'max'       => 6, // maximum rows
+                'sortable'  => true, // disable the sorting, defaults to true
             ],
             'sql' => [
                 'type' => 'text',
@@ -543,7 +606,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'type'  => 'string',
                 'length'=> 255,
                 'default'=>'',
-                'platformOptions' =>['collation' => 'ascii_bin']
+                'platformOptions' => ['collation' => 'ascii_bin']
             ]
         ],
         'floating' => [
@@ -553,7 +616,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
             'sql'       => "varchar(32) COLLATE ascii_bin NOT NULL default 'above'"
         ],
-        'overwriteMeta' => [
+        # überschreibt die Metadaten mit den Daten der Quelle ToDo: noch nicht implementiert
+        'overwriteMetaFromSource' => [
             'inputType' => 'checkbox',
             'eval'      => [
                 'submitOnChange' => true,

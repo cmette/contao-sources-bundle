@@ -46,9 +46,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 		],
 		'operations' =>  [
             'edit',
-            'activate',
+            '!toggle',
             '!delete',
-            #'toggle',
         ],
 	],
 
@@ -72,7 +71,14 @@ $GLOBALS['TL_DCA'][$strTable] = [
          **********************************************************************/
         'id'        => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
         'tstamp'    => ['sql' => "int(10) unsigned NOT NULL default 0",],
-        'published' => ['toggle' => true,'inputType' => 'checkbox','sql' => ['type' => 'boolean', 'default' => false],],
+        'published' => [
+            'toggle'    => true,
+            'filter'    => true,
+            'flag'      => DataContainer::SORT_INITIAL_LETTER_DESC,
+            'inputType' => 'checkbox',
+            'eval'      => ['doNotCopy'=>true],
+            'sql'       => ['type' => 'boolean', 'default' => false],
+        ],
         # requires special bundle oneup/contao-backend-sortable-list-views
         #'sorting'=> ['sql' => "int(10) unsigned NOT NULL default 0",],
         /**********************************************************************

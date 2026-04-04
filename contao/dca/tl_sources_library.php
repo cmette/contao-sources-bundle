@@ -5,7 +5,7 @@ use Contao\DC_Table;
 use Contao\System;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 
-$strTable = 'tl_sources_serie';
+$strTable = 'tl_sources_library';
 
 System::loadLanguageFile($strTable);
 
@@ -24,8 +24,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'list' => [
 		'sorting' =>  [
             'mode'                  => DataContainer::MODE_SORTED,
-			'fields'                => ['title'],
-			'headerFields'          => ['title'],
+			'fields'                => ['name'],
+			'headerFields'          => ['name'],
 			'panelLayout'           => 'filter;sort,search,limit',
             'defaultSearchField'    => 'type_sgl',
             #'renderAsGrid'  => true,
@@ -35,7 +35,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'sortableListView' => true,
 		],
 		'label' =>  [
-			'fields' =>  ['title'],
+			'fields' =>  ['name'],
             // If true Contao will generate a table header with column names (e.g. back end member list)
             // If the DCA uses showColumns then the return value of the list.label.label-Callback
             // must be an array of strings. Otherwise just the label as a string.
@@ -44,8 +44,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
 		],
 		'operations' =>  [
             'edit',
-            '!toggle',
+            'activate',
             '!delete',
+            '!toggle',
         ],
 	],
 
@@ -53,7 +54,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{type_legend},title;' .
+            '{name_legend},name,abbreviation;' .
+            '{status_legend},asCatalog,asProvider;' .
             '',
 	],
 
@@ -82,7 +84,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * type_legend
          **********************************************************************/
-        'title' => [
+        # Bibliothek oder Datengeber
+        'name' => [
             'inputType'     => 'text',
             'eval'          => [
                 'mandatory' => true,
@@ -94,6 +97,48 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'length'    => 255,
                 'fixed'     => true,
                 'default'   => '',
+            ]
+        ],
+        # Kurzzeichen der Bibliothek
+        'abbreviation' => [
+            'inputType'     => 'text',
+            'eval'          => [
+                'mandatory' => false,
+                'unique'    => false,
+                'tl_class'  =>'w50'
+            ],
+            'sql'       => [
+                'type'      => 'string',
+                'length'    => 20,
+                'fixed'     => true,
+                'default'   => '',
+            ]
+        ],
+        /**********************************************************************
+         * status_legend
+         **********************************************************************/
+        # agiert als Katalog
+        'asCatalog' => [
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'tl_class' => 'w16',
+                #'submitOnChange'=>true
+            ],
+            'sql'       => [
+                'type' => 'boolean',
+                'default' => false
+            ]
+        ],
+        # agiert als Datengeber
+        'asProvider' => [
+            'inputType' => 'checkbox',
+            'eval'      => [
+                'tl_class' => 'w16',
+                #'submitOnChange'=>true
+            ],
+            'sql'       => [
+                'type' => 'boolean',
+                'default' => false
             ]
         ],
         /**********************************************************************

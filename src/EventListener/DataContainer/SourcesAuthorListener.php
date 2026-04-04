@@ -21,6 +21,7 @@ namespace Cmette\ContaoSourcesBundle\EventListener\DataContainer;
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Contao\BackendUser;
 use Contao\Controller;
+use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Contao\Image;
@@ -29,9 +30,11 @@ use Contao\StringUtil;
 class SourcesAuthorListener
 {
     private const STR_TABLE = 'tl_sources_author';
+    public string $requestToken = '';
 
-    public function __construct()
+    public function __construct(private readonly ContaoCsrfTokenManager $tokenManager)
     {
+        $this->requestToken = htmlspecialchars($this->tokenManager->getDefaultTokenValue());
     }
 
     #[AsCallback(table: self::STR_TABLE, target: 'list.label.group')]

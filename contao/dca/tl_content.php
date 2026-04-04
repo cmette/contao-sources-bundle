@@ -1,12 +1,8 @@
 <?php
 
-use Contao\CoreBundle\DataContainer\PaletteManipulator;
-use DMA\DmaSimpleGridDcaCallbacks;
-
 $GLOBALS['TL_DCA']['tl_content']['palettes']['sources_entity'] = '
     {type_legend},type,headline,title;
     {source_legend},sources_entity;
-    {text_legend},text;
     {image_legend},addImage;
     {template_legend:hide},customTpl;
     {protected_legend:hide},protected;
@@ -19,12 +15,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sources_entity'] =
     'inputType' => 'select',
     'search'    => true,
     'filter'    => true,
-    #'sorting' => true,
-    'foreignKey' => 'tl_sources_entity.title',
-    'relation'  => [
-        'type'  => 'hasOne',
-        'load'  => 'lazy'
-    ],
+    'sorting' => true,
+    #'foreignKey' => 'tl_sources_entity.title',
+    #'relation'  => ['type'  => 'hasOne','load'  => 'lazy'],
     'eval'      => [
         'mandatory' => true,
         'includeBlankOption'=> false,

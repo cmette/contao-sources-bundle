@@ -1,5 +1,5 @@
 /*
- *
+ *  global
  */
 #tl_navigation {
   a.group-sources {
@@ -7,6 +7,26 @@
     background-size: 13px 13px;
   }
 }
+
+*[class^="arn-"]::before {
+  background-color: #fff0f0;
+  border: 0px solid #808080;
+  border-radius: 4px;
+  padding: 0 4px;
+  margin-right: 4px;
+}
+
+.arn-author::before         { content: "Autoren:"; }
+.arn-title::before          { content: "Titel:"; }
+.arn-title                  { font-weight: bold; }
+.arn-dataprovider::before   { content: "Datengeber:"; }
+.arn-signature::before      { content: "Signatur:"; }
+.arn-odai::before           { content: "OAI-Identifier:"; }
+.arn-takenon::before        { content: "abgerufen am:"; }
+.arn-digitalcopy::before    { content: "Digitalisat:"; }
+.arn-license::before        { content: "Lizenz:"; }
+
+/***********************************************************************************/
 
 .tl_file_list {
   .source-entity {
@@ -27,28 +47,102 @@
       flex: 2 2 auto;
 
       & > div {
-        border: 1px solid blueviolet;
+        //border: 1px solid blueviolet;
       }
 
-      &:first-child {
+      span {
+        &.author {
+          font-weight: bold;
+        }
 
+         &.unpublished {
+           text-decoration: line-through;
+           color: red;
+         }
       }
     }
   }
 }
 
-table#ctrl_catalogs
-{
-  //border: 1px solid var(--form-border);
-  //border-radius: 1rem;
+/*--------------------------------------------------------------------------
+  edit mode tl_sources_entity
+ --------------------------------------------------------------------------*/
+form#tl_sources_entity {
 
-  *[id^="ctrl_catalogs"] {
-    border: none;
-    background-color: #F6F6F8;
+  // tips ändern
+  .tl_tip {
+    color: blue;
+    margin-top: 0.5rem;
   }
 
-  //*[id$="[provider]"] { width: 21rem; }
-  //*[id$="[url]"]      { width: 21rem; }
-  //*[id$="[date]"]     { width: 8rem; }
+  // rowWizard catalogs
+  table#ctrl_catalogs,
+  table#ctrl_digitalcopies {
+    //border: 1px solid var(--form-border);
+    //border-radius: 1rem;
 
+    *[id^="ctrl_catalogs"],
+    *[id^="ctrl_digitalcopies"] {
+      border: none;
+      background-color: #F6F6F8;
+    }
+
+    td:has(>[id$="[provider]"]) {
+      width: 30%;
+
+      select {
+        background-color: #ecf4ff;
+      }
+    }
+
+    td:has(>[id$="[signature]"]) {
+      width: 16%;
+
+      input {
+        background-color: #ffecec;
+      }
+    }
+
+    td:has(>[id$="[date]"]) {
+      width: 10%;
+
+      input {
+        background-color: #fffbec;
+      }
+    }
+  }
+
+  // rowWizard catalogs
+  table#ctrl_digitalcopy {
+    //border: 1px solid var(--form-border);
+    //border-radius: 1rem;
+
+    *[id^="ctrl_digitalcopy"] {
+      border: none;
+      background-color: #F6F6F8;
+    }
+
+    td:has(>[id$="[provider]"]) {
+      width: 30%;
+
+      select {
+        background-color: #ecf4ff;
+      }
+    }
+
+    td:has(>[id$="[url]"]) {
+      //width: 40%;
+      input {
+        //background-color: #ffecec;
+      }
+    }
+
+    td:has(>[id$="[date]"]) {
+      width: 10%;
+
+      input {
+        background-color: #fffbec;
+      }
+    }
+  }
 }
