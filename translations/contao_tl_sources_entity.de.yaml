@@ -80,7 +80,7 @@ tl_sources_entity:
 
   publisher_legend: Herausgeber
   publisher:
-    - "Ort und Verlag (siehe <a href='/contao?do=sources_publishers'>Verlage</a>)"
+    - "Ort und Verlag"
     - Wählen Sie hier den Verlag. Erfassen Sie fehlende Verlage unter Verlage.
   edition:
     - zitierte Auflage
@@ -94,7 +94,7 @@ tl_sources_entity:
 
   catalogs_legend: Die Quelle in einschlägigen Katalogen
   catalogs:
-    - "Katalog  (siehe <a href='/contao?do=sources_libraries'>Kataloge</a>)"
+    - Katalog
     - Erfassen Sie hier Verweise auf einschlägige Bibliothekskataloge.
   catalog_fields:
       provider:
@@ -108,7 +108,7 @@ tl_sources_entity:
 
   digitalcopies_legend: Die Quelle als Digitalisat
   addDigitalCopies:
-    - Es existieren Digitalisate
+    - Ein oder mehrere Digitalisate hinzufügen
     - Aktivieren Sie diese Funktion, um ein oder mehrere Verweise auf Digitalisate zu erfassen. Das Digitalisat selbst wird hier nicht gespeichert.
   digitalcopies:
     - Digitalisate
@@ -121,7 +121,9 @@ tl_sources_entity:
     date:
       - Datum des Abrufs
 
-  image_legend: Bild zur Quelle
+  image_legend: Symbolbild für die Quelle
   addImage:
-    - Ein Bild hinzufügen
+    - Ein Symbolbild hinzufügen
     - Aktivieren Sie diese Funktion, um ein Bild für die Quelle anzuzeigen.
+  singleSRC:
+    - Datei auswählen

@@ -19,6 +19,12 @@
         </span>
     {%- endif -%}
 {%- elseif source.type == 'map' -%}
+    {#
+        wie eine Karten-Serie gehandhabt wird, ist noch unklar
+        wenn Auflage oder Erscheinungsjahr oder Ersterscheinungsjahr gegeben sind, dann wird
+        vor dem Jahr ein Leerzeichen eingefügt
+    #}
+    {{- (source.edition or source.year or source.firstyear) ? " " -}}
     {%- if(source.edition)  -%}<sup class="edition">{{- source.edition -}}</sup>{%- endif -%}
     {%- if(source.year)     -%}<span class="year">{{- source.year -}}</span>{%- endif -%}
     {%- if(source.firstyear)-%}<span class="firstyear"> [{{- source.firstyear -}}]</span>{%- endif -%}

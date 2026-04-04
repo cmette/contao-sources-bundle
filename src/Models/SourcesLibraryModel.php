@@ -52,6 +52,23 @@ class SourcesLibraryModel extends Model
          }
         }
 
+        asort($options);
+
         return $options;
+    }
+
+    /**
+     * count all usages inside a rowWizard field
+     *
+     * @return int
+     */
+    public function countUsage(): int
+    {
+        $id = $this->id;
+        $len= strlen((string)$id);
+
+        $entities = SourcesEntityModel::findBy(["catalogs LIKE '%\"provider\";s:$len:\"$id\"%'"],[]);
+
+        return !is_null($entities) ? $entities->count() : 0;
     }
 }

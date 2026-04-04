@@ -50,18 +50,22 @@ class SourcesAuthorModel extends Model
                 $options[$author->id] = $author->getUniqueAuthor($withCount);
             }
 
+        natcasesort($options);
+
         return $options;
     }
 
     public function getUniqueAuthor(bool $withCount = true): string
     {
-        #return $this->family_name.(!empty($this->first_name)?", $this->first_name":'').($this->isPublisher ? ' [Hrsg.] ' : '') . ($withCount ? " ({$this->countUsage()})" : '');
         return $this->family_name.(!empty($this->first_name)?", $this->first_name":'') . ($withCount ? " ({$this->countUsage()})" : '');
     }
 
     public function countUsage(): int
     {
-        $entities = SourcesEntityModel::findBy(["authors LIKE 'a:%:\"$this->id\"%'"],[]);
+        $id = $this->id;
+        $len= strlen((string)$id);
+
+        $entities = SourcesEntityModel::findBy(["authors LIKE '%\"author\";s:$len:\"$id\"%'"],[]);
 
         return !is_null($entities) ? $entities->count() : 0;
     }

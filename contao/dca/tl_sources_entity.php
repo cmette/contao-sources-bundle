@@ -3,6 +3,7 @@
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesLibraryModel;
+use Cmette\ContaoSourcesBundle\Utils\DcaUtils;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
@@ -55,7 +56,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 
 	// Palettes
 	'palettes' =>  [
-		'__selector__'  =>  ['type','addSeries','addDigitalCopies','addImage'],
+		'__selector__'  =>  ['type','addSeries','addCatalogs','addDigitalCopies','addImage'],
         'default' =>
             '{type_legend},type;' .
             '{author_legend},authors_hint,authors,etal;' .
@@ -63,7 +64,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year,firstyear;' .
             '{data_legend},signature,signature_alt;' .
-            '{catalogs_legend},catalogs;' .
+            '{catalogs_legend},addCatalogs;' .
             '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
@@ -76,7 +77,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year;' .
             '{data_legend},signature,signature_alt;' .
-            '{catalogs_legend},catalogs;' .
+            '{catalogs_legend},addCatalogs;' .
             '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
@@ -89,7 +90,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year,firstyear;' .
             '{data_legend},signature,signature_alt;' .
-            '{catalogs_legend},catalogs;' .
+            '{catalogs_legend},addCatalogs;' .
             '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
@@ -100,8 +101,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	// Subpalettes
 	'subpalettes' =>  [
         'addSeries'         => 'series,volume_title,volume,issue',
+        'addCatalogs'       => 'catalogs',
         'addDigitalCopies'  => 'digitalcopies',
-        'addImage'          => 'singleSRC,fullsize,size,floating,overwriteMeta',
+        'addImage'          => 'singleSRC,fullsize,size,floating,overwriteMetaFromSource',
     ],
 
 	// Fields
@@ -109,18 +111,10 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * without legend
          **********************************************************************/
+
         'id'        => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
         'tstamp'    => ['sql' => "int(10) unsigned NOT NULL default 0",],
-        'published' => [
-            'toggle'    => true,
-            'filter'    => true,
-            'flag'      => DataContainer::SORT_INITIAL_LETTER_DESC,
-            'inputType' => 'checkbox',
-            'eval'      => ['doNotCopy'=>true],
-            'sql'       => ['type' => 'boolean', 'default' => false],
-        ],
-        # requires special bundle oneup/contao-backend-sortable-list-views
-        #'sorting'=> ['sql' => "int(10) unsigned NOT NULL default 0",],
+        'published' => DcaUtils::buildPublishedField(),
 
         /**********************************************************************
          * type_legend
@@ -419,6 +413,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * catalogs_legend
          **********************************************************************/
+        # switch catalogs
+        'addCatalogs'   => DcaUtils::bildAddField(),
         # list of links to catalogs
         'catalogs' => [
             'inputType' => 'rowWizard',
@@ -494,15 +490,10 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * dataprovider_legend
          **********************************************************************/
-        'addDigitalCopies' => [
-            'inputType' => 'checkbox',
-            'eval'      => ['submitOnChange'=>true],
-            'sql'       => [
-                'type' => 'boolean',
-                'default' => false
-            ]
-        ],
-        # Liste der Digitalisate
+        # switch digitalcopies
+        'addDigitalCopies' => DcaUtils::bildAddField(),
+
+        # list of digitalcopies / Digitalisate
         'digitalcopies' => [
             'inputType' => 'rowWizard',
             'fields' => [
@@ -620,7 +611,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
         'overwriteMetaFromSource' => [
             'inputType' => 'checkbox',
             'eval'      => [
-                'submitOnChange' => true,
+                'submitOnChange' => false,
                 'tl_class' => 'w50 clr'
             ],
             'sql'   => [
