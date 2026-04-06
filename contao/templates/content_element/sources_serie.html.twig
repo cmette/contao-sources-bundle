@@ -11,7 +11,7 @@
     #}
     {%- if(serie) -%}
         <span class="serie">
-            <span class="title{{ (serie.published) ?' published':' unpublished' }}">(= {{- serie.title -}}{{- source.volume ? ', Bd. '~source.volume -}}{{- source.issue ? ', '~source.issue -}})</span>
+            <span class="title{{ (serie.published) ?' published':' unpublished' }}">(= {{- serie.title -}}{{- source.volume ? ', Bd. '~source.volume -}}{{- source.issue ? ', Heft '~source.issue -}}{{- source.volume_title ? ', '~source.volume_title -}})</span>
             {%- if(publisher)       -%}<span class="publisher{{- (publisher.published) ?' published':' unpublished' -}}">,&nbsp;{{- publisher.name -}}, </span>{%- endif -%}
             {%- if(source.edition)  -%}<sup class="edition">{{- source.edition -}}</sup>{%- endif -%}
             {%- if(source.year)     -%}<span class="year">{{- source.year -}}</span>{%- endif -%}

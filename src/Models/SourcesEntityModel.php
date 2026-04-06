@@ -60,9 +60,11 @@ class SourcesEntityModel extends Model
     ];
 
     /**
+     * returns an array of data from the authors rowWizard
+     *
      * @return array
      */
-    public function getAuthors(): array
+    public function getAuthorsAsArray(): array
     {
         // Achtung! $this->>authors enthält keine reinen Autoren, es ist ein serialisiertes Array mit Autoren und anderen Daten,
         // so wie sie im entsprechenden rowWizard im DCA codiert wurden
@@ -95,6 +97,60 @@ class SourcesEntityModel extends Model
 
         return $arrAuthors;
     }
+    /**
+     * returns a collection of SourcesAuthorModels
+     *
+     * @return Collection|null
+     */
+    public function getAuthorsAsCollection(): Collection|null
+    {
+        // get only authors by special destructuring
+        $arrAuthorIds = array_map(fn($v) => $v['author'], StringUtil::deserialize($this->authors, true));
+
+        return SourcesAuthorModel::findMultipleByIds($arrAuthorIds);
+    }
+
+    /**
+     * @param bool $inlineQuote if true, generate authors for inline quote,
+     *                          if false, generate authors for bibliography
+     * @param int $count        number of max authors -> APA=2
+     *
+     * @return \StdClass
+     */
+    public function getAuthorsAsAPAString(bool $inlineQuote = true, int $count = 2): \StdClass
+    {
+        $arrAuthors = [];
+        $strAuthors = '';
+
+        $authorsCollection = $this->getAuthorsAsCollection();
+
+        if($authorsCollection)
+            foreach ($authorsCollection as $author)
+                $arrAuthors[] = "$author->family_name" .
+                    (!$inlineQuote ? (!empty($author->first_name) ? ", {$author->first_name[0]}." : '') : '');
+
+        if(count($authorsCollection) > $count) {
+            $last       = $arrAuthors[count($arrAuthors) -1];
+            $arrAuthors = array_slice($arrAuthors, 0, count($arrAuthors) -1);
+            $strAuthors = ($inlineQuote ? "{$arrAuthors[0]} et al." : implode(', ',$arrAuthors) . " & $last");
+        } elseif (count($authorsCollection) == $count) {
+            $arrAuthors = array_slice($arrAuthors, 0, 2);
+            $strAuthors = implode(' & ',$arrAuthors);
+        } else {
+            $strAuthors = implode('',$arrAuthors);
+        }
+
+        $withTitle = !empty($this->title) ? ", $this->title" : '';
+        $year = !empty($this->year) ? ", $this->year" : '';
+
+        $result = new \StdClass();
+        $result->authors = $strAuthors.$year;
+        $result->title   = $strAuthors.$withTitle.$year;
+
+        return $result;
+    }
+
+
 
     /**
      * provides the series inside twig templates
@@ -134,6 +190,8 @@ class SourcesEntityModel extends Model
      */
     public function getCatalogs(): array|null
     {
+        if(!$this->addCatalogs) return null;
+
         // Achtung! $this->>catalogs enthält keine reinen Bibliotheken, es ist ein serialisiertes Array mit Bibliotheken
         // und anderen Daten, so wie sie im entsprechenden rowWizard im DCA codiert wurden
         $arrCatalogs = [];

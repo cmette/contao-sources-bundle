@@ -38,10 +38,13 @@ class ContentElementListener
                 case 'sources_entity':
                     if(!is_null($source = SourcesEntityModel::findById($row['sources_entity'])))
                     {
+                        $type = " [{$GLOBALS['TL_LANG']['tl_sources_entity']['type_options'][$source->type][0]}]";
+
                         $image = Image::getHtml('/bundles/contaosources/img/visible-red.svg', 'Achtung! Diese Quelle ist am Frontend nicht sichtbar, weil sie auch unter &raquo;Quellen&laquo; noch depubliziert ist.', ' title=""');
                         $depublished = " $image";
                         $addition = (bool)$source->published ? '':$depublished;
-                        $arrGridLabel[0] = $label . $addition;
+
+                        $arrGridLabel[0] = "{$label}{$type}{$addition}";
                     }
                     break;
                 default:
@@ -84,7 +87,7 @@ class ContentElementListener
                 $options[$source->id] = "{$authors}{$title}";
             }
 
-        #asort($options);
+        asort($options);
 
         return $options;
     }

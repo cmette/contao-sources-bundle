@@ -42,7 +42,6 @@ class SourceInsertTag
                 $result = "<span style='color:red;'>keine Quelle mit ID $sourceId</span>";
             } else {
                 // source available
-
                 $subcommand = $insertTag->getParameters()->get(1);
 
                 switch ($subcommand) {

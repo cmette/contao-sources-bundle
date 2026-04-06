@@ -10,7 +10,7 @@
 
 *[class^="arn-"]::before {
   background-color: #fff0f0;
-  border: 0px solid #808080;
+  border: 0 solid #808080;
   border-radius: 4px;
   padding: 0 4px;
   margin-right: 4px;
@@ -31,6 +31,7 @@
 .tl_file_list {
   .source-entity {
     display: flex;
+    gap: 0.5rem;
     //border: 1px solid red;
 
     .initiale {
@@ -41,6 +42,7 @@
 
     .data {
       display: flex;
+      gap: 0.5rem;
       justify-content: space-between;
       align-items: stretch;
       align-content: stretch;

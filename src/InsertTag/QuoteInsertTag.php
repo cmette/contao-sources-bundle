@@ -21,58 +21,58 @@ use Contao\CoreBundle\InsertTag\OutputType;
 use Contao\CoreBundle\InsertTag\ResolvedInsertTag;
 use Contao\StringUtil;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 #[AsInsertTag('quote')]
 class QuoteInsertTag
 {
+    use InsertTagHelperTrait;
+
+    /**
+     * The HelperTrait requires a constructor
+     * @param UrlGeneratorInterface $urlGenerator
+     */
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator) {}
+
     public function __invoke(ResolvedInsertTag $insertTag): InsertTagResult
     {
+        global $objPage;
+
         if (null === $insertTag->getParameters()->get(0)) {
             throw new InvalidInsertTagException('Missing parameters for insert tag.');
         }
 
         $sourceId = $insertTag->getParameters()->get(0);
 
-        if (\is_int((int) $sourceId)) {
-            $source = SourcesEntityModel::findById($sourceId);
+        $linktext   = "Quelle?";
+        $title      = "Die Quelle mit der ID:$sourceId konnte nicht gefunden werden!";
 
-            if (null === $source) {
-                $result = "<span style='color:red;'>keine Quelle mit ID:$sourceId</span>";
-            } else {
-                // get all authors
-                $arrAuthorIds = StringUtil::deserialize($source->authors, true);
-
-                $authors = SourcesAuthorModel::findMultipleByIds($arrAuthorIds);
-
-                if (null !== $authors) {
-                    // authors available -> build authors list
-                    $arrFamilyNames = $authors->fetchEach('family_name');
+        if (\is_int((int) $sourceId))
+        {
+            if ($source = SourcesEntityModel::findById($sourceId))
+            {
+                if ($authorsCollection = $source->getAuthorsAsCollection())
+                {
                     // test for page parameter 'pXX'
                     $pageParameter = $insertTag->getParameters()->get(1);
-
-                    if (
-                        (null !== $pageParameter)
-                       && ('p' === $pageParameter[0])
-                        && (\strlen($pageParameter) > 1)
-                    ) {
-                        // page number given
-                        $pages = ', S. '.substr($pageParameter, 1);
-                    } else {
-                        // no page number -> mistake?
-                        $pages = '';
-                    }
+                    $pageCondiition = (null !== $pageParameter) && ('p' === $pageParameter[0]) && (\strlen($pageParameter) > 1);
+                    // page number given?
+                    $pages = $pageCondiition ? ', S. '.substr($pageParameter, 1) : '';
                     // build the replacement
-                    $result = ''.implode('/', $arrFamilyNames).$pages;
-                    // register the occurrence
-                    $source->registerOccurrence($insertTag, $pages);
+                    $a = $source->getAuthorsAsAPAString();
+                    $linktext   = $a->authors.$pages;
+                    $title      = $a->title.$pages;;
                 } else {
                     // no authors available
-                    $result = "<span style='color:red;'>keine Autoren für Quelle mit ID:$sourceId</span>";
                 }
+            } else {
+                // source not found mybe deleted?
             }
         } else {
-            $result = "<span style='color:red;'>keine Quelle mit ID:$sourceId für Zitat | muss eine Ganzzahl sein!</span>";
+            // sourceId is not a number
+            $title = "Die ID der Quelle [ID:$sourceId] muss eine Ganzzahl sein!";
         }
 
-        return new InsertTagResult("[$result]", OutputType::text);
+        return new InsertTagResult($this->link($source, $linktext, $title), OutputType::text);
     }
 }

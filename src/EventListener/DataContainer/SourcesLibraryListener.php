@@ -50,11 +50,12 @@ class SourcesLibraryListener
      *
      * @return array
      */
-    ##[AsCallback(table: self::STR_TABLE, target: 'list.label.label')]
+    #[AsCallback(table: self::STR_TABLE, target: 'list.label.label')]
     public function ListLabelLabelCallback(array $row, string $label, DataContainer $dc, array $labels): array|string
     {
-        $author = SourcesAuthorModel::findById($row['id']);
-        return is_null($author) ? '?' : $author->getUniqueAuthor();
+        $library = SourcesLibraryModel::findById($row['id']);
+
+        return is_null($library) ? $label : $label . ' (' . $library->countUsage() . ')';
     }
 
 

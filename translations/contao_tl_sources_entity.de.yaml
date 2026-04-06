@@ -93,6 +93,9 @@ tl_sources_entity:
     - Geben Sie hier das Jahr der Erstauflage ein.
 
   catalogs_legend: Die Quelle in einschlägigen Katalogen
+  addCatalogs:
+    - Einen oder mehrere Katalogverweise hinzufügen
+    - Erfassen Sie hier Verweise auf einschlägige Bibliothekskataloge.
   catalogs:
     - Katalog
     - Erfassen Sie hier Verweise auf einschlägige Bibliothekskataloge.

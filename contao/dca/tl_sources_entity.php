@@ -12,7 +12,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 
 $strTable = 'tl_sources_entity';
 
-System::loadLanguageFile($strTable);
+#System::loadLanguageFile($strTable);
 
 $GLOBALS['TL_DCA'][$strTable] = [
 	'config' =>  [
@@ -47,11 +47,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'showColumns' => false,
 			'format' => '%s %s',
 		],
-		'operations' =>  [
-            'edit',
-            '!toggle',
-            '!delete',
-        ],
+        'operations' =>  ['edit','!toggle','!delete',],
 	],
 
 	// Palettes
@@ -124,8 +120,6 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'flag'      => DataContainer::SORT_ASC,
             'sorting'   => true,
             'filter'    => true,
-            #'foreignKey'=> 'tl_sources_type.type_sgl',
-            #'relation'      => ['type'=>'belongsTo', 'load'=>'lazy'],
             'options'   => SourcesEntityModel::SOURCE_TYPES,
             'reference' => &$GLOBALS['TL_LANG'][$strTable]['type_options'],
             'eval'      => [
@@ -144,20 +138,20 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * author_legend
          **********************************************************************/
-        # Liste der Digitalisate
+        # ein experimentelles Hinweisfeld
         'authors_hint' => [
             'eval' => [
                 'tl_class' => 'w50',
                 'hideHead' => true
             ],
         ],
+        # list of authors
         'authors' => [
             'inputType' => 'rowWizard',
             'fields' => [
                 'author' => [
                     'label'     => &$GLOBALS['TL_LANG'][$strTable]['authors_fields']['author'],
                     'inputType' => 'select',
-                    #'foreignKey' => "tl_sources_author.family_name",
                     'options'   => SourcesAuthorModel::getAllUniqueAuthors(false),
                     'relation'  => [
                         'type'  => 'hasMany',
@@ -502,6 +496,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
                     'inputType' => 'select',
                     'options'   => SourcesLibraryModel::getLibrariesOptions(false, true),
                     'eval'          => [
+                        'includeBlankOption' => true,
                         'mandatory' => true,
                         'tl_class'  => 'w25'
                     ],

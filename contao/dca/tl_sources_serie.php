@@ -42,11 +42,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'showColumns' => false,
 			#'format' => '%s',
 		],
-		'operations' =>  [
-            'edit',
-            '!toggle',
-            '!delete',
-        ],
+        'operations' =>  ['edit','!toggle','!delete',],
 	],
 
 	// Palettes

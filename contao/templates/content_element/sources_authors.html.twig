@@ -1,6 +1,6 @@
 {% trans_default_domain "tl_sources_entity" %}
 {# rendert alle AutorInnen als Liste #}
-{% set authors = source.getAuthors() %}
+{% set authors = source.getAuthorsAsArray() %}
 
 <span class="arn-author">
 {% for id,author in authors|slice(0,2) %}

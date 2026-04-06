@@ -1,5 +1,6 @@
 <?php
 
+use Cmette\ContaoSourcesBundle\Utils\DcaUtils;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
@@ -44,11 +45,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'showColumns' => false,
 			#'format' => '%s, %s',
 		],
-		'operations' =>  [
-            'edit',
-            '!toggle',
-            '!delete',
-        ],
+        'operations' =>  ['edit','!toggle','!delete',],
 	],
 
 	// Palettes
@@ -69,18 +66,11 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * without legend
          **********************************************************************/
+
         'id'        => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
         'tstamp'    => ['sql' => "int(10) unsigned NOT NULL default 0",],
-        'published' => [
-            'toggle'    => true,
-            'filter'    => true,
-            'flag'      => DataContainer::SORT_INITIAL_LETTER_DESC,
-            'inputType' => 'checkbox',
-            'eval'      => ['doNotCopy'=>true],
-            'sql'       => ['type' => 'boolean', 'default' => false],
-        ],
-        # requires special bundle oneup/contao-backend-sortable-list-views
-        #'sorting'=> ['sql' => "int(10) unsigned NOT NULL default 0",],
+        'published' => DcaUtils::buildPublishedField(),
+
         /**********************************************************************
          * type_legend
          **********************************************************************/
