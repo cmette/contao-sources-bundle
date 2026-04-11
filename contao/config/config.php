@@ -6,6 +6,7 @@ use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesLibraryModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesPublisherModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesSerieModel;
+use Cmette\ContaoSourcesBundle\Models\SourcesSettingModel;
 use Contao\ArrayUtil;
 use Contao\System;
 
@@ -49,6 +50,11 @@ $moduleSources = [
             #'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
             #'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
         ],
+        'sources_setting' => [
+            'tables'        => ['tl_sources_setting'],
+            #'stylesheet'    => ["$assetsDir/scss/sources.css|static"],
+            #'javascript'    => ["$assetsDir/js/resumable/resumable.js", "$assetsDir/js/SupervisorResumableWidget.js.twig"],
+        ],
     ],
 ];
 
@@ -73,6 +79,7 @@ $GLOBALS['TL_MODELS']['tl_sources_author']      = SourcesAuthorModel::class;
 $GLOBALS['TL_MODELS']['tl_sources_serie']       = SourcesSerieModel::class;
 $GLOBALS['TL_MODELS']['tl_sources_publisher']   = SourcesPublisherModel::class;
 $GLOBALS['TL_MODELS']['tl_sources_library']     = SourcesLibraryModel::class;
+$GLOBALS['TL_MODELS']['tl_sources_setting']     = SourcesSettingModel::class;
 
 // Style sheet
 $GLOBALS['TL_CSS'][] = "$assetsDir/scss/sources.css";

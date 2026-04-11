@@ -1,5 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the Contao Sources Bundle.
+ *
+ * (c) Christian Mette
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace Cmette\ContaoSourcesBundle\Utils;
 
 use Contao\DataContainer;
@@ -9,14 +19,15 @@ class DcaUtils
     public static function buildPublishedField(): array
     {
         return [
-            'flag'      => DataContainer::SORT_INITIAL_LETTER_DESC,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_DESC,
             'inputType' => 'checkbox',
-            'eval'      => [
-                'doNotCopy' => true
+            'toggle'    => true,
+            'eval' => [
+                'doNotCopy' => true,
             ],
-            'sql'   => [
+            'sql' => [
                 'type' => 'boolean',
-                'default' => false
+                'default' => false,
             ],
         ];
     }
@@ -25,13 +36,13 @@ class DcaUtils
     {
         return [
             'inputType' => 'checkbox',
-            'eval'      => [
-                'submitOnChange' => true
+            'eval' => [
+                'submitOnChange' => true,
             ],
-            'sql'       => [
+            'sql' => [
                 'type' => 'boolean',
-                'default' => false
-            ]
+                'default' => false,
+            ],
         ];
     }
 }

@@ -22,15 +22,21 @@ use Contao\Model\Collection;
  * @property int $id
  * @property int $tstamp
  *
- * @method static SourcesSerieModel|null                                     findById($id, array $opt=array())
- * @method static Collection|array<SourcesSerieModel>|SourcesSerieModel|null findByPid($val, array $opt = [])
+ * @method static SourcesSettingModel|null                                      findById($id, array $opt=array())
+ * @method static Collection|array<SourcesSettingModel>|SourcesSettingModel|null findByPid($val, array $opt = [])
  */
-class SourcesSerieModel extends Model
+class SourcesSettingModel extends Model
 {
+    public const MODES = [
+        'tagged',   // Display source code in the tagged format
+        'apa',      // Display source code in the APA format
+    ];
+
     /**
      * Table name.
      *
      * @var string
      */
-    protected static $strTable = 'tl_sources_serie';
+    protected static $strTable = 'tl_sources_setting';
+
 }

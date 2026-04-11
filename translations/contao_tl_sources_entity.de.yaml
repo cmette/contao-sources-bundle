@@ -78,7 +78,7 @@ tl_sources_entity:
     - Heft-Nr. / Ausgabe
     - Geben Sie hier die Heft-Nummer oder die Nummer der Ausgabe ein.
 
-  publisher_legend: Herausgeber
+  publisher_legend: Ort und Verlag
   publisher:
     - "Ort und Verlag"
     - Wählen Sie hier den Verlag. Erfassen Sie fehlende Verlage unter Verlage.

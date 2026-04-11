@@ -28,10 +28,11 @@ use Contao\Model\Collection;
 class SourcesAuthorModel extends Model
 {
     public const ROLES = [
-        'isPublisher',      # ist HerausgeberIn
-        'isCoAuthor',       # ist MitautorIn
-        'isContributor',    # ist MitarbeiterIn
+        'isPublisher', // ist HerausgeberIn
+        'isCoAuthor', // ist MitautorIn
+        'isContributor', // ist MitarbeiterIn
     ];
+
     /**
      * Table name.
      *
@@ -45,10 +46,11 @@ class SourcesAuthorModel extends Model
 
         $authors = self::findAll();
 
-        if($authors !== null)
+        if (null !== $authors) {
             foreach ($authors as $author) {
                 $options[$author->id] = $author->getUniqueAuthor($withCount);
             }
+        }
 
         natcasesort($options);
 
@@ -57,16 +59,16 @@ class SourcesAuthorModel extends Model
 
     public function getUniqueAuthor(bool $withCount = true): string
     {
-        return $this->family_name.(!empty($this->first_name)?", $this->first_name":'') . ($withCount ? " ({$this->countUsage()})" : '');
+        return $this->family_name.(!empty($this->first_name) ? ", $this->first_name" : '').($withCount ? " ({$this->countUsage()})" : '');
     }
 
     public function countUsage(): int
     {
         $id = $this->id;
-        $len= strlen((string)$id);
+        $len = \strlen((string) $id);
 
-        $entities = SourcesEntityModel::findBy(["authors LIKE '%\"author\";s:$len:\"$id\"%'"],[]);
+        $entities = SourcesEntityModel::findBy(["authors LIKE '%\"author\";s:$len:\"$id\"%'"], []);
 
-        return !is_null($entities) ? $entities->count() : 0;
+        return null !== $entities ? $entities->count() : 0;
     }
 }

@@ -1,0 +1,12 @@
+{% trans_default_domain "tl_sources_entity" %}
+{#
+    rendert Titel und Untertitel, entfernt dabei versehentliche
+    Punkte am Ende des Titels und setzt sie einheitlich neu
+#}
+
+{% block titles_component %}
+    {%- set titles_attributes = attrs().addClass(settings.mode).addClass('titles') -%}
+    {%- set t = source.title -%}
+    {%- set s = source.subtitle -%}
+    <span{{ titles_attributes }}>{{- t|last == '.' ? t[:t|length-1] : t -}}.{{- s ? (s|last == '.' ? " #{s[:s|length-1]}" : " #{s}")~'.' : '' -}}</span>
+{% endblock %}

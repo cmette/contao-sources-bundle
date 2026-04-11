@@ -1,14 +1,14 @@
 <?php
 
-$GLOBALS['TL_DCA']['tl_content']['palettes']['sources_entity'] = '
-    {type_legend},type,headline,title;
-    {source_legend},sources_entity;
-    {image_legend},addImage;
-    {template_legend:hide},customTpl;
-    {protected_legend:hide},protected;
-    {expert_legend:hide},cssID;
-    {invisible_legend:hide},invisible,start,stop;
-';
+$GLOBALS['TL_DCA']['tl_content']['palettes']['sources_entity'] =
+    '{type_legend},type,headline,title;' .
+    '{source_legend},sources_entity;' .
+    # '{image_legend},addImage;' .
+    '{template_legend:hide},customTpl;' .
+    '{protected_legend:hide},protected;' .
+    '{expert_legend:hide},cssID;' .
+    '{invisible_legend:hide},invisible,start,stop;'
+;
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['sources_entity'] =
 [

@@ -1,0 +1,8 @@
+tl_settings:
+  sources_legend: Quellen-Verwaltung
+  mode:
+    - Modi
+    - Kommentar
+  mode_options:
+    - Tagged
+    - APA

@@ -12,7 +12,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 
 $strTable = 'tl_sources_entity';
 
-#System::loadLanguageFile($strTable);
+System::loadLanguageFile($strTable);
 
 $GLOBALS['TL_DCA'][$strTable] = [
 	'config' =>  [
@@ -47,7 +47,12 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'showColumns' => false,
 			'format' => '%s %s',
 		],
-        'operations' =>  ['edit','!toggle','!delete',],
+        'operations' =>  [
+            'edit',
+            'copy',
+            '!toggle',
+            '!delete',
+        ],
 	],
 
 	// Palettes
@@ -563,7 +568,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'filesOnly' => true,
                 'fieldType' =>'radio',
                 'mandatory' => true,
-                'tl_class'  => 'clr'
+                'tl_class'  => 'w50'
             ],
             'sql'   => "binary(16) NULL"
         ],
@@ -578,22 +583,22 @@ $GLOBALS['TL_DCA'][$strTable] = [
             ],
         ],
         'size' => [
-            'label'     => &$GLOBALS['TL_LANG']['MSC']['imgSize'],
+            'exclude' => true,
             'inputType' => 'imageSize',
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
-            'eval'      => [
-                'rgxp'  => 'natural',
+            'eval' => [
+                'rgxp' => 'natural',
                 'includeBlankOption' => true,
                 'nospace' => true,
-                'helpwizard' => true,
-                'tl_class' => 'w50 clr'
+                'tl_class' => 'w50',
             ],
-            'sql'   => [
-                'type'  => 'string',
-                'length'=> 255,
-                'default'=>'',
-                'platformOptions' => ['collation' => 'ascii_bin']
-            ]
+            'options_callback' => ['contao.listener.image_size_options', '__invoke'],
+            'sql' => [
+                'type' => 'string',
+                'length' => 128,
+                'default' => '',
+                'platformOptions' => ['collation' => 'ascii_bin'],
+            ],
         ],
         'floating' => [
             'inputType' => 'radioTable',

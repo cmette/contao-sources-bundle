@@ -1,28 +1,45 @@
 <?php
 
+declare(strict_types=1);
+
+/*
+ * This file is part of the Contao Sources Bundle.
+ *
+ * (c) Christian Mette
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace Cmette\ContaoSourcesBundle\Controller\ContentElement;
 
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
+use Cmette\ContaoSourcesBundle\Models\SourcesSettingModel;
+use Contao\Config;
 use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Twig\FragmentTemplate;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AsContentElement(type: 'sources_entity',category: 'sources')]
+#[AsContentElement(type: 'sources_entity', category: 'sources')]
 class SourcesEntityController extends AbstractContentElementController
 {
-    public function __construct(private readonly Studio $studio) {}
+    // this code comes from:
+    // vendor/contao/core-bundle/src/Controller/ContentElement/TextController.php
+
+    public function __construct(private readonly Studio $studio)
+    {
+    }
+
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        $source = SourcesEntityModel::findById($model->sources_entity);
+        $source     = SourcesEntityModel::findById($model->sources_entity);
+        $settings   = SourcesSettingModel::findOneBy("published = '1'", [1]);
 
         $template->set('source',    $source);
-
-        $template->set('text', $source->text ?: '');
+        $template->set('settings',  $settings);
 
         $figure = !$source->addImage ? null : $this->studio
             ->createFigureBuilder()
@@ -41,8 +58,7 @@ class SourcesEntityController extends AbstractContentElementController
             return $template->getResponse();
         }
 
-        $response = (bool)$source->published ? $template->getResponse() : new Response();
 
-        return $response;
+        return (bool) $source->published ? $template->getResponse() : new Response();
     }
 }

@@ -1,0 +1,21 @@
+{#
+    rendert die Kataloge mit den zugehörigen Angaben
+#}
+{% trans_default_domain "tl_sources_entity" %}
+
+{%- block catalogs_component -%}
+    {%- set catalogs_attributes = attrs()
+        .addClass(settings.mode)
+        .addClass('catalogs')
+    -%}
+    {%- if(catalogs) -%}
+        {%- for id,catalog in catalogs -%}
+            <span{{- catalogs_attributes -}}>
+                <span class="tagged dataprovider">{{- catalog.provider.name -}} {{- catalog.provider.abbreviation ? " (#{catalog.provider.abbreviation})" -}}</span>
+                {%- if(catalog.signature) -%}<span class="arn-signature">{{- catalog.signature ? ", #{catalog.signature}" -}}</span>{%- endif -%}
+                {%- if(catalog.date) -%}<span class="arn-takenon">{{- catalog.date ? ", #{catalog.date}" -}}</span>{%- endif -%}
+                {%- if(catalog.url) -%}<span>, <a href="{{- catalog.url -}}">Link zum Katalog</a></span>{%- endif -%}
+            </span>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endblock -%}

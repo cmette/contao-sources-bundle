@@ -22,7 +22,7 @@ use Contao\Model\Collection;
  * @property int $id
  * @property int $tstamp
  *
- * @method static SourcesPublisherModel|null                                    findById($id, array $opt=array())
+ * @method static SourcesPublisherModel|null                                         findById($id, array $opt=array())
  * @method static Collection|array<SourcesPublisherModel>|SourcesPublisherModel|null findByPid($val, array $opt = [])
  */
 class SourcesPublisherModel extends Model

@@ -1,11 +1,12 @@
 <?php
 
+use Cmette\ContaoSourcesBundle\Models\SourcesSettingModel;
 use Cmette\ContaoSourcesBundle\Utils\DcaUtils;
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Contao\System;
 
-$strTable = 'tl_sources_author';
+$strTable = 'tl_sources_setting';
 
 System::loadLanguageFile($strTable);
 
@@ -26,10 +27,10 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'mode'                  => DataContainer::SORT_ASC,
             'flag'                  => 1,
             'disableGrouping'       => false,
-			'fields'                => ['family_name','first_name'],
-			'headerFields'          => ['family_name','first_name'],
+			'fields'                => ['name'],
+			'headerFields'          => ['name'],
 			'panelLayout'           => 'filter;sort,search,limit',
-            'defaultSearchField'    => 'type_sgl',
+            'defaultSearchField'    => 'name',
             #'renderAsGrid'  => true,
 			#'limitHeight'   => 160
 
@@ -37,12 +38,12 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'sortableListView' => true,
 		],
 		'label' =>  [
-			'fields' =>  ['family_name','first_name'],
+			'fields' =>  ['name'],
             // If true Contao will generate a table header with column names (e.g. back end member list)
             // If the DCA uses showColumns then the return value of the list.label.label-Callback
             // must be an array of strings. Otherwise just the label as a string.
             'showColumns' => false,
-			#'format' => '%s, %s',
+			#'format' => '%s',
 		],
         'operations' =>  ['edit','!toggle','!delete',],
 	],
@@ -51,7 +52,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{name_legend},family_name,first_name,isPublisher;' .
+            '{name_legend},name,mode;' .
             '',
 	],
 
@@ -68,20 +69,32 @@ $GLOBALS['TL_DCA'][$strTable] = [
 
         'id'        => ['sql' => "int(10) unsigned NOT NULL auto_increment"],
         'tstamp'    => ['sql' => "int(10) unsigned NOT NULL default 0",],
-        'published' => DcaUtils::buildPublishedField(),
+        'published' => [
+            'flag' => DataContainer::SORT_INITIAL_LETTER_DESC,
+            'inputType' => 'checkbox',
+            'toggle'    => true,
+            'eval' => [
+                'unique'    => true,
+                'doNotCopy' => true,
+            ],
+            'sql' => [
+                'type' => 'boolean',
+                'default' => false,
+            ],
+        ],
 
         /**********************************************************************
-         * type_legend
+         * name_legend
          **********************************************************************/
-        'family_name' => [
+        'name' => [
             'inputType' => 'text',
             'search'    => true,
             'filter'    => true,
             'sorting'   => true,
             'eval'          => [
                 'mandatory' => true,
-                'unique'    => true,
-                'tl_class'  =>'w25'
+                'unique'    => false,
+                'tl_class'  =>'w50'
             ],
             'sql'       => [
                 'type'      => 'string',
@@ -90,14 +103,15 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'default'   => '',
             ]
         ],
-        'first_name' => [
-            'inputType' => 'text',
+        'mode' => [
+            'inputType' => 'radio',
+            'options' => SourcesSettingModel::MODES,
             'search'    => true,
             'filter'    => true,
             'sorting'   => true,
             'eval'          => [
                 'mandatory' => false,
-                'unique'    => true,
+                'unique'    => false,
                 'tl_class'  =>'w25'
             ],
             'sql'       => [
@@ -105,16 +119,6 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'length'    => 255,
                 'fixed'     => true,
                 'default'   => '',
-            ]
-        ],
-        'isPublisher' => [
-            'inputType' => 'checkbox',
-            'eval'      => [
-                'tl_class'=>'w25'
-            ],
-            'sql'       => [
-                'type' => 'boolean',
-                'default' => false
             ]
         ],
         /**********************************************************************

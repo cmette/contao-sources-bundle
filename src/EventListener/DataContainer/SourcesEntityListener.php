@@ -20,13 +20,12 @@ namespace Cmette\ContaoSourcesBundle\EventListener\DataContainer;
 
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
-
+use Cmette\ContaoSourcesBundle\Models\SourcesSettingModel;
 use Contao\Config;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\DataContainer;
 use Contao\FrontendTemplate;
-
 use Twig\Environment as TwigEnvironment;
 
 class SourcesEntityListener
@@ -38,18 +37,14 @@ class SourcesEntityListener
     public function __construct(
         private readonly Studio $imageStudio,
         private readonly TwigEnvironment $twig,
-    )
-    {
-
+    ) {
     }
 
     #[AsCallback(table: self::STR_TABLE, target: 'list.label.group')]
     public function ListLabelGroupCallback(string $group, string|null $mode, string $field, array $row, DataContainer $dc): string
     {
         // references the plural
-        $result = $GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][1];
-
-        return $result;
+        return $GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][1];
     }
 
     /**
@@ -61,21 +56,22 @@ class SourcesEntityListener
     #[AsCallback(table: self::STR_TABLE, target: 'list.label.label')]
     public function ListLabelLabelCallback(array $row, string $label, DataContainer $dc, array $labels): array|string
     {
-        $source = SourcesEntityModel::findById($row['id']);
+        $source     = SourcesEntityModel::findById($row['id']);
+        $settings   = SourcesSettingModel::findOneBy("published = '1'", [1]);
 
-        if($source) {
-            $source->_initiale    = ucfirst($GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][0][0]);
-            $source->_imageHtml   = $this->buildImage($source->singleSRC)->image;
+        if ($source) {
+            $source->_initiale = ucfirst($GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][0][0]);
+            $source->_imageHtml = $this->buildImage($source->singleSRC)->image;
             $html = $this->twig->render(
                 self::STR_BACKEND.'/sources_entity_list_label.html.twig',
-                ['source' => $source,]
+                ['source' => $source, 'settings' => $settings],
             );
         }
 
         return $html;
     }
 
-    ##[AsCallback(table: self::STR_TABLE, target: 'fields.authors_hint.input_field')]
+    // #[AsCallback(table: self::STR_TABLE, target: 'fields.authors_hint.input_field')]
     public function authorsHintInputFieldCallback(DataContainer $dc, string $extendedLabel): string
     {
         return "<div class='widget'><p class='tl_help tl_source_tip' data-contao--tooltips-target='tooltip'>{$GLOBALS['TL_LANG'][self::STR_TABLE]['authors_hint']}</p></div>";
@@ -88,9 +84,13 @@ class SourcesEntityListener
 
         $authors = SourcesAuthorModel::findAll();
 
-        if ($authors !== null) foreach ($authors as $author) $options[$author->id] = $author->getUniqueAuthor(false);
+        if (null !== $authors) {
+            foreach ($authors as $author) {
+                $options[$author->id] = $author->getUniqueAuthor(false);
+            }
+        }
 
-        #asort($options);
+        // asort($options);
 
         return $options;
     }
@@ -98,10 +98,8 @@ class SourcesEntityListener
     #[AsCallback(table: self::STR_TABLE, target: 'fields.singleSRC.load')]
     public function singleSRCOnLoad(mixed $currentValue, DataContainer $dc): mixed
     {
-        if ($dc->activeRecord)
-        {
-            switch ($dc->activeRecord->type)
-            {
+        if ($dc->activeRecord) {
+            switch ($dc->activeRecord->type) {
                 case 'text':
                 case 'hyperlink':
                 case 'image':
@@ -120,24 +118,27 @@ class SourcesEntityListener
                     break;
             }
         }
+
         return $currentValue;
     }
 
-    public function buildImage(?string $singleSrc, array $size = [160, 160, 'proportional']): \stdClass
+    public function buildImage(string|null $singleSrc, array $size = [160, 160, 'proportional']): \stdClass
     {
         $objResult = new \stdClass();
 
         if ($singleSrc) {
             // get a figure builder instance
-            $figureBuilder  = $this->imageStudio->createFigureBuilder();
+            $figureBuilder = $this->imageStudio->createFigureBuilder();
 
             try {
                 $figure = $figureBuilder->fromUUID($singleSrc)->setSize($size)->enableLightbox()->build();
-                // attention: this is our own template, see: contao/templates/backend/ResumableWidget/image.html5
+                // attention: this is our own template, see:
+                // contao/templates/backend/ResumableWidget/image.html5
                 $template = new FrontendTemplate('image');
                 // get the template data and change it
                 $templateData = $figure->getLegacyTemplateData();
-                // we add an image ID and use the uuid for it, this is necessary for the magnifier glass javascript
+                // we add an image ID and use the uuid for it, this is necessary for the
+                // magnifier glass javascript
                 $templateData['picture']['img']['id'] = $templateData['uuid'];
                 // set the data
                 $template->setData($templateData);
@@ -145,17 +146,16 @@ class SourcesEntityListener
                 $imageHtml = $template->parse();
             } catch (\Exception $e) {
                 $imageHtml = $e->getMessage();
-                $figure    = null;
+                $figure = null;
             }
         } else {
             $imageHtml = 'kein Scan';
-            $figure    = null;
+            $figure = null;
         }
 
-        $objResult->image  = $imageHtml;
+        $objResult->image = $imageHtml;
         $objResult->figure = $figure;
 
         return $objResult;
     }
-
 }

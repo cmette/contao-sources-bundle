@@ -8,23 +8,26 @@
   }
 }
 
-*[class^="arn-"]::before {
-  background-color: #fff0f0;
+*[class^="tagged"]::before,
+*[class*=" tagged"]::before {
+  background-color: #e6d2d2;
   border: 0 solid #808080;
   border-radius: 4px;
-  padding: 0 4px;
+  padding: 0 0;
   margin-right: 4px;
 }
 
-.arn-author::before         { content: "Autoren:"; }
-.arn-title::before          { content: "Titel:"; }
-.arn-title                  { font-weight: bold; }
-.arn-dataprovider::before   { content: "Datengeber:"; }
-.arn-signature::before      { content: "Signatur:"; }
-.arn-odai::before           { content: "OAI-Identifier:"; }
-.arn-takenon::before        { content: "abgerufen am:"; }
-.arn-digitalcopy::before    { content: "Digitalisat:"; }
-.arn-license::before        { content: "Lizenz:"; }
+.tagged.authors::before        { content: "Autoren:"; }
+.tagged.titles::before         { content: "Titel:"; }
+.tagged.titles                 { font-weight: bold; }
+.tagged.series::before         { content: "Reihe:"; }
+.tagged.catalogs::before       { content: "Katalog:"; }
+.tagged.dataprovider::before   { content: "Datengeber:"; }
+.tagged.signature::before      { content: "Signatur:"; }
+.tagged.odai::before           { content: "OAI-Identifier:"; }
+.tagged.takenon::before        { content: "abgerufen am:"; }
+.tagged.digitalcopy::before    { content: "Digitalisat:"; }
+.tagged.license::before        { content: "Lizenz:"; }
 
 /***********************************************************************************/
 

@@ -22,7 +22,7 @@ use Contao\Model\Collection;
  * @property int $id
  * @property int $tstamp
  *
- * @method static SourcesLibraryModel|null findById($id, array $opt=array())
+ * @method static SourcesLibraryModel|null                                       findById($id, array $opt=array())
  * @method static Collection|array<SourcesLibraryModel>|SourcesLibraryModel|null findByPid($val, array $opt = [])
  */
 class SourcesLibraryModel extends Model
@@ -35,21 +35,16 @@ class SourcesLibraryModel extends Model
     protected static $strTable = 'tl_sources_library';
 
     /**
-     * provides an array of libraries and data providers
-     * to use in select options
-     *
-     * @param bool $asCatalog
-     * @param bool $asProvider
-     * @return array
+     * provides an array of libraries and data providers to use in select options.
      */
     public static function getLibrariesOptions(bool $asCatalog = true, bool $asProvider = true): array
     {
         $options = [];
 
-        if($libraries = SourcesLibraryModel::findBy(["asCatalog = ? OR asProvider = ?"],[$asCatalog,$asProvider])) {
-         foreach ($libraries as $library) {
-             $options[$library->id] = "$library->name ($library->abbreviation)";
-         }
+        if ($libraries = self::findBy(['asCatalog = ? OR asProvider = ?'], [$asCatalog, $asProvider])) {
+            foreach ($libraries as $library) {
+                $options[$library->id] = "$library->name ($library->abbreviation)";
+            }
         }
 
         asort($options);
@@ -58,17 +53,15 @@ class SourcesLibraryModel extends Model
     }
 
     /**
-     * count all usages inside a rowWizard field
-     *
-     * @return int
+     * count all usages inside a rowWizard field.
      */
     public function countUsage(): int
     {
         $id = $this->id;
-        $len= strlen((string)$id);
+        $len = \strlen((string) $id);
 
-        $entities = SourcesEntityModel::findBy(["catalogs LIKE '%\"provider\";s:$len:\"$id\"%'"],[]);
+        $entities = SourcesEntityModel::findBy(["catalogs LIKE '%\"provider\";s:$len:\"$id\"%'"], []);
 
-        return !is_null($entities) ? $entities->count() : 0;
+        return null !== $entities ? $entities->count() : 0;
     }
 }

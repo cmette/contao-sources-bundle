@@ -1,0 +1,40 @@
+{% trans_default_domain "tl_sources_entity" %}
+{#
+    rendert Reihen mit den zugehörigen Angaben
+#}
+
+{%- block series_component -%}
+    {%- set series_attributes = attrs().addClass(settings.mode).addClass('series').addClass(source.type) -%}
+    {%- if source.type == 'monograph' %}
+        {#
+            nur wenn eine Reihenangabe vorhanden ist, werden auch alle anderen Daten,
+            wie Band und Heftnummer mit ausgegeben
+        #}
+        {%- if(serie) -%}
+            <span{{- series_attributes -}}><span class="title{{- (serie.published) ?' published':' unpublished' -}}">
+                    {{- settings.mode == 'apa' ? '(= ' : '' -}}
+                    {{- serie.title -}}
+                    {{- source.volume ? ', Bd. '~source.volume -}}
+                    {{- source.issue ? ', Heft '~source.issue -}}
+                    {{- source.volume_title ? ', '~source.volume_title -}})
+                </span>
+                {%- if(publisher) -%}<span class="publisher{{- (publisher.published) ?' published':' unpublished' -}}">,&nbsp;{{- publisher.name -}}, </span>{%- endif -%}
+                {%- if(source.edition) -%}<sup class="edition">{{- source.edition -}}</sup>{%- endif -%}
+                {%- if(source.year) -%}<span class="year">{{- source.year -}}</span>{%- endif -%}
+                {%- if(source.firstyear) -%}<span class="firstyear"> [{{- source.firstyear -}}]</span>{%- endif -%}
+            </span>
+        {%- endif -%}
+    {%- elseif source.type == 'map' -%}
+        {#
+            wie eine Karten-Serie gehandhabt wird, ist noch unklar
+            wenn Auflage oder Erscheinungsjahr oder Ersterscheinungsjahr gegeben sind, dann wird
+            vor dem Jahr ein Leerzeichen eingefügt
+        #}
+        {{- (source.edition or source.year or source.firstyear) ? " " -}}
+        {%- if(source.edition) -%}<sup class="edition">{{- source.edition -}}</sup>{%- endif -%}
+        {%- if(source.year) -%}<span class="year">{{- source.year -}}</span>{%- endif -%}
+        {%- if(source.firstyear) -%}<span class="firstyear"> [{{- source.firstyear -}}]</span>{%- endif -%}
+    {%- else -%}
+
+    {%- endif -%}
+{%- endblock -%}

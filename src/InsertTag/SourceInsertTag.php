@@ -50,9 +50,9 @@ class SourceInsertTag
                         $result = '';
 
                         foreach ($occurrences as $cteId => $occurrence) {
-                            $objPage = PageModel::findById($occurrence['pageId']);
-                            $pageUrl = System::getContainer()->get('contao.routing.content_url_generator')->generate($objPage, [], UrlGeneratorInterface::ABSOLUTE_URL);
-                            $result .= "<p></p><a href='$pageUrl'>$objPage->title $cteId {$occurrence['count']}mal</a></p>";
+                            #$objPage = PageModel::findById($occurrence['pageId']);
+                            #$pageUrl = System::getContainer()->get('contao.routing.content_url_generator')->generate($objPage, [], UrlGeneratorInterface::ABSOLUTE_URL);
+                            #$result .= "<p></p><a href='$pageUrl'>$objPage->title $cteId {$occurrence['count']}mal</a></p>";
                         }
                         break;
                     default:

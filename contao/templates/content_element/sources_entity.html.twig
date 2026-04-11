@@ -2,6 +2,12 @@
 {% use '@Contao/component/_figure.html.twig' %}
 {% use '@Contao/component/_rich_text.html.twig' %}
 
+{% use '@Contao/component/_authors.html.twig' %}
+{% use '@Contao/component/_titles.html.twig' %}
+{% use '@Contao/component/_series.html.twig' %}
+{% use '@Contao/component/_catalogs.html.twig' %}
+{% use '@Contao/component/_digitalcopies.html.twig' %}
+
 {% set content_layout_attributes = attrs()
     .addClass('media media--' ~ layout, layout and image)
     .mergeWith(content_layout_attributes|default)
@@ -28,11 +34,19 @@
     {% endif %}
 
     {% block text %}
-        {%- include '@Contao/content_element/sources_authors.html.twig' with { 'source': source } -%}
-        {%- include '@Contao/content_element/sources_titles.html.twig'  with { 'source': source } -%}
-        {%- include '@Contao/content_element/sources_serie.html.twig'   with { 'source': source } -%}
-        {%- include '@Contao/content_element/sources_catalog.html.twig' with { 'source': source } -%}
-        {%- include '@Contao/content_element/sources_digitalcopies.html.twig' with { 'source': source } -%}.
+        {% with { 'authors': source.getAuthorsAsArray(), 'settings': settings } %}
+            {{- block('authors_component') -}}
+        {% endwith %}
+        {{- block('titles_component') -}}
+        {%- with { 'publisher': source.getPublisher(), 'serie': source.getSerie() } -%}
+            {{- block('series_component') -}}
+        {% endwith %}
+        {%- with { 'catalogs': source.getCatalogs() } -%}
+            {{- block('catalogs_component') -}}
+        {% endwith %}
+        {%- with { 'digitalcopies': source.getDigitalcopies() } -%}
+            {{- block('digitalcopies_component') -}}
+        {% endwith %}.
     {% endblock %}
 
     {% if layout == 'below' %}

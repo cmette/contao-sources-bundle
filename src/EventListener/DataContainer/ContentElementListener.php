@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Cmette\ContaoSourcesBundle\EventListener\DataContainer;
 
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
@@ -13,36 +15,45 @@ use Contao\DataContainer;
 use Contao\Date;
 use Contao\Image;
 use Contao\MemberGroupModel;
+use Contao\Message;
 use Contao\StringUtil;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ContentElementListener
 {
+    public const STR_TABLE = 'tl_content';
+
     public function __construct(
         private readonly ContaoFramework $framework,
         private readonly TranslatorInterface $translator,
     ) {
     }
 
-    public const STR_TABLE = 'tl_content';
+    #[AsCallback(table: self::STR_TABLE, target: 'config.onload')]
+    public function configOnload(DataContainer|null $dc): void
+    {
+        #$result = SourcesEntityModel::syncQuotes($dc);
+
+        #Message::addInfo("$result->quotesCount Zitate erkannt, davon $result->additions synchronisiert, $result->deletions verwaiste Zitate berichtigt.");
+
+        #die();
+    }
 
     #[AsCallback(table: self::STR_TABLE, target: 'list.label.label', priority: 100)]
     public function ListLabelLabelCallback(array $row, string $label, DataContainer $dc, array $labels): array|string
     {
-        if ('tl_theme' !== $dc->parentTable)
-        {
+        if ('tl_theme' !== $dc->parentTable) {
             $arrGridLabel = $this->generateGridLabel($row);
             $contentType = $row['type'];
 
             switch ($contentType) {
                 case 'sources_entity':
-                    if(!is_null($source = SourcesEntityModel::findById($row['sources_entity'])))
-                    {
+                    if (null !== ($source = SourcesEntityModel::findById($row['sources_entity']))) {
                         $type = " [{$GLOBALS['TL_LANG']['tl_sources_entity']['type_options'][$source->type][0]}]";
 
                         $image = Image::getHtml('/bundles/contaosources/img/visible-red.svg', 'Achtung! Diese Quelle ist am Frontend nicht sichtbar, weil sie auch unter &raquo;Quellen&laquo; noch depubliziert ist.', ' title=""');
                         $depublished = " $image";
-                        $addition = (bool)$source->published ? '':$depublished;
+                        $addition = (bool) $source->published ? '' : $depublished;
 
                         $arrGridLabel[0] = "{$label}{$type}{$addition}";
                     }
@@ -56,45 +67,47 @@ class ContentElementListener
         return $this->generateContentTypeLabel($row);
     }
 
-    /**
-     * @param DataContainer $dc
-     * @return array
-     */
+    #[AsCallback(table: self::STR_TABLE, target: 'fields.text.save')]
+    public function fieldsTextSaveCallback(mixed $varValue, DataContainer $dc): mixed
+    {
+        $result = SourcesEntityModel::syncQuotes($varValue, $dc);
+
+        Message::addInfo("$result->quotesCount Zitate erkannt, davon $result->additions synchronisiert, $result->deletions verwaiste Zitate berichtigt.");
+
+        return $varValue;
+    }
+
     #[AsCallback(table: self::STR_TABLE, target: 'fields.sources_entity.options')]
     public function sourcesEntityOptions(DataContainer $dc): array
     {
-        $len     = 40;
+        $len = 80;
         $options = [];
         $authors = '';
 
-        $sources    = SourcesEntityModel::findAll();
+        $sources = SourcesEntityModel::findAll();
 
-        if ($sources !== null)
+        if (null !== $sources) {
             foreach ($sources as $source) {
-
-                $arrAuthors = $source->getAuthors();
+                $arrAuthors = $source->getAuthorsAsArray();
                 $a = [];
 
                 foreach ($arrAuthors as $author) {
-                    if($_author = SourcesAuthorModel::findById($author['id'])) {
+                    if ($_author = SourcesAuthorModel::findById($author['id'])) {
                         $a[] = $_author->getUniqueAuthor(false);
                     }
                 }
-                $authors = count($a) > 0 ? implode('; ', $a) . ': ' : '';
+                $authors = \count($a) > 0 ? implode('; ', $a).': ' : '';
 
-                $title      = strlen($source->title) > $len ? substr($source->title, 0, $len) . '...' : $source->title;
+                $title = \strlen($source->title) > $len ? substr($source->title, 0, $len).'...' : $source->title;
 
                 $options[$source->id] = "{$authors}{$title}";
             }
+        }
 
         asort($options);
 
         return $options;
     }
-
-
-
-
 
     private function generateGridLabel(array $row): array
     {

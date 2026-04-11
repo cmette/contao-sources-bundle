@@ -1,9 +1,0 @@
-{#
-    rendert Titel und Untertitel, entfernt dabei versehentliche
-    Punkte am Ende des Titels und setzt sie einheitlich neu
-#}
-{% trans_default_domain "tl_sources_entity" %}
-
-{% set t = source.title %}
-{% set s = source.subtitle %}
-<span class="arn-title">{{- t|last == '.' ? t[:t|length-1] : t -}}.{{- s ? (s|last == '.' ? " #{s[:s|length-1]}" : " #{s}")~'.' : '' -}}</span>

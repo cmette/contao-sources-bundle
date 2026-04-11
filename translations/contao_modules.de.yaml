@@ -18,3 +18,6 @@ MOD:
   sources_libraries:
     - Bibliotheken
     - Register der Bibliotheken und Archive
+  sources_setting:
+    - Konfigurationen
+    - Liste von Konfigurationen

@@ -18,9 +18,7 @@ declare(strict_types=1);
 
 namespace Cmette\ContaoSourcesBundle\EventListener\DataContainer;
 
-use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Cmette\ContaoSourcesBundle\Models\SourcesLibraryModel;
-use Contao\BackendUser;
 use Contao\Controller;
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
@@ -31,6 +29,7 @@ use Contao\StringUtil;
 class SourcesLibraryListener
 {
     private const STR_TABLE = 'tl_sources_library';
+
     public string $requestToken = '';
 
     public function __construct(private readonly ContaoCsrfTokenManager $tokenManager)
@@ -55,33 +54,26 @@ class SourcesLibraryListener
     {
         $library = SourcesLibraryModel::findById($row['id']);
 
-        return is_null($library) ? $label : $label . ' (' . $library->countUsage() . ')';
+        return null === $library ? $label : $label.' ('.$library->countUsage().')';
     }
 
-
     /**
-     * controls the delete button depending on the use of the givenname
-     *
-     * @param $href
-     * @param $label
-     * @param $title
-     * @param $icon
-     * @param $attributes
+     * controls the delete button depending on the use of the givenname.
      */
     #[AsCallback(table: self::STR_TABLE, target: 'list.operations.delete.button')]
     public function listDeleteButton(array $row, $href, $label, $title, $icon, $attributes): string
     {
         $library = SourcesLibraryModel::findById($row['id']);
 
-        if ($library->countUsage() !== 0) {
-            $url        = '';
-            $icon       = "delete--disabled.svg";
-            $label      = 'label';
-            $_title     = StringUtil::specialchars($label);
-            $entity     = 'singular';
-            $attributes = " class=\"delete\" data-action=\"contao--scroll-offset#store\" onclick=\"\"";
+        if (0 !== $library->countUsage()) {
+            $url = '';
+            $icon = 'delete--disabled.svg';
+            $label = 'label';
+            $_title = StringUtil::specialchars($label);
+            $entity = 'singular';
+            $attributes = ' class="delete" data-action="contao--scroll-offset#store" onclick=""';
         } else {
-            $url = Controller::addToUrl("$href&id={$row['id']}&rt=" . $this->requestToken);
+            $url = Controller::addToUrl("$href&id={$row['id']}&rt=".$this->requestToken);
             $_title = StringUtil::specialchars($title);
         }
 
@@ -89,5 +81,4 @@ class SourcesLibraryListener
 
         return "<a href='$url' title='$_title' $attributes>$image</a>";
     }
-
 }
