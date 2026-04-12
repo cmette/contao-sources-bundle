@@ -1,20 +1,23 @@
+{% trans_default_domain "tl_sources_entity" %}
 {#
     rendert die Kataloge mit den zugehörigen Angaben
 #}
-{% trans_default_domain "tl_sources_entity" %}
 
 {%- block catalogs_component -%}
-    {%- set catalogs_attributes = attrs()
-        .addClass(settings.mode)
-        .addClass('catalogs')
-    -%}
     {%- if(catalogs) -%}
+        {%- set catalogs_attributes = attrs().addClass(settings.mode).addClass('catalogs')-%}
+        <span{{- catalogs_attributes -}}>
         {%- for id,catalog in catalogs -%}
-            <span{{- catalogs_attributes -}}>
-                <span class="tagged dataprovider">{{- catalog.provider.name -}} {{- catalog.provider.abbreviation ? " (#{catalog.provider.abbreviation})" -}}</span>
-                {%- if(catalog.signature) -%}<span class="arn-signature">{{- catalog.signature ? ", #{catalog.signature}" -}}</span>{%- endif -%}
-                {%- if(catalog.date) -%}<span class="arn-takenon">{{- catalog.date ? ", #{catalog.date}" -}}</span>{%- endif -%}
-                {%- if(catalog.url) -%}<span>, <a href="{{- catalog.url -}}">Link zum Katalog</a></span>{%- endif -%}
+            {%- set catalog_attributes = attrs()
+                .addClass(settings.mode)
+                .addClass('catalog')
+                .addClass(catalog.provider.published and catalog.enabled?'published':'unpublished')
+            -%}
+            <span{{- catalog_attributes -}}>&nbsp;<span class="{{ settings.mode }} counter">{{- id + 1 -}}.</span>
+                <span>{{- catalog.provider.name -}} {{- catalog.provider.abbreviation ? " (#{catalog.provider.abbreviation})" -}}</span>
+                {%- if(catalog.signature) -%}&nbsp;<span class="{{ settings.mode }} signature">{{- catalog.signature ? "#{catalog.signature}" -}}</span>{%- endif -%}
+                {%- if(catalog.date) -%}&nbsp;<span class="{{ settings.mode }} takenon">{{- catalog.date ? "#{catalog.date}" -}}</span>{%- endif -%}
+                {%- if(catalog.url) -%}&nbsp;<span><a href="{{- catalog.url -}}">Link zum Katalog</a></span>{%- endif -%}
             </span>
         {%- endfor -%}
     {%- endif -%}

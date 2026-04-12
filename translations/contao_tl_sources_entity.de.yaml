@@ -37,7 +37,7 @@ tl_sources_entity:
   authors_hint: Die Autorinnen und Autoren sollte hier in der Reihenfolge wie im Einband angegeben erfasst werden.
   authors:
     - Autoren und Autorinnen
-    - Wählen Sie hier die AutorInnen aus dem Autoren-Register. Wenn die gesuchten Personen nicht vorhanden sind, ergänzen Sie sie im Register.
+    - Erfassen Sie hier die AutorInnen mit ihren Rollen. Wenn die gesuchten Personen nicht vorhanden sind, ergänzen Sie diese bitte im Register.
   authors_fields:
     author:
       - Autor/Autorin
@@ -88,6 +88,7 @@ tl_sources_entity:
   year:
     - Jahr zitierte Auflage
     - Geben Sie hier das Erscheinungsjahr für die zitierte Auflage ein.
+  without_year: o D. # gemäß APA 6
   firstyear:
     - Jahr Erstauflage
     - Geben Sie hier das Jahr der Erstauflage ein.

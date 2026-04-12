@@ -1,0 +1,16 @@
+{% trans_default_domain "tl_sources_entity" %}
+{#
+    rendert den Verlag
+    APA 6 sagt, der Verlag muss nicht genannt werden, wenn er
+    unbekannt oder in der Publikation nicht angegeben ist
+    Platzhalter, wie [Verlag unbekannt] sind nicht erlaubt
+#}
+
+{% block publisher_component %}
+    {%- if publisher -%}
+        {%- set publisher_attributes = attrs().addClass(settings.mode).addClass('publisher') -%}
+        <span{{- publisher_attributes -}}>
+            {{- publisher.name ? " #{publisher.name}" : "" -}}.
+        </span>
+    {% endif %}
+{% endblock %}

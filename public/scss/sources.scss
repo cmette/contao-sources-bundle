@@ -10,7 +10,7 @@
 
 *[class^="tagged"]::before,
 *[class*=" tagged"]::before {
-  background-color: #e6d2d2;
+  background-color: #ffebeb;
   border: 0 solid #808080;
   border-radius: 4px;
   padding: 0 0;
@@ -20,13 +20,19 @@
 .tagged.authors::before        { content: "Autoren:"; }
 .tagged.titles::before         { content: "Titel:"; }
 .tagged.titles                 { font-weight: bold; }
-.tagged.series::before         { content: "Reihe:"; }
-.tagged.catalogs::before       { content: "Katalog:"; }
+.tagged.series::before         { content: "In "; }
+
+.tagged.metadata::before       { content: "Metadaten"; background-color: #ecf4ff; }
+.tagged.catalogs::before       { content: "in Katalogen"; background-color: #ecf4ff; }
+.tagged.digitalcopies::before  { content: "Digitalisate"; background-color: #ecf4ff; }
+.tagged.counter                { background-color: #ecf4ff; padding: 0 4px; }
+
 .tagged.dataprovider::before   { content: "Datengeber:"; }
+
 .tagged.signature::before      { content: "Signatur:"; }
 .tagged.odai::before           { content: "OAI-Identifier:"; }
 .tagged.takenon::before        { content: "abgerufen am:"; }
-.tagged.digitalcopy::before    { content: "Digitalisat:"; }
+
 .tagged.license::before        { content: "Lizenz:"; }
 
 /***********************************************************************************/
@@ -76,7 +82,7 @@ form#tl_sources_entity {
 
   // tips ändern
   .tl_tip {
-    color: blue;
+    color: #2f9f00;
     margin-top: 0.5rem;
   }
 

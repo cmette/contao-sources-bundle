@@ -1,16 +1,25 @@
+{% trans_default_domain "tl_sources_entity" %}
 {#
     rendert die Digitalisate mit den zugehörigen Angaben
 #}
-{% trans_default_domain "tl_sources_entity" %}
 
 {%- block digitalcopies_component -%}
-    {%- if(digitalcopies) -%}
+    {%- if(digitalcopies) -%}&nbsp;
+        {%- set digitalcopies_attributes = attrs().addClass(settings.mode).addClass('digitalcopies')-%}
+        <span{{- digitalcopies_attributes -}}>
         {%- for id,digitalcopy in digitalcopies -%}
-            <span class="arn-digitalcopy{{ (digitalcopy.provider.published and digitalcopy.enabled) ? ' published':' unpublished' }}">
-                <span class="arn-dataprovider">{{- digitalcopy.provider.name -}} {{- digitalcopy.provider.abbreviation ? " (#{digitalcopy.provider.abbreviation})" -}}</span>
-                {%- if(digitalcopy.date) -%}<span class="arn-takenon">{{- digitalcopy.date ? ", #{digitalcopy.date}" -}}</span>{%- endif -%}
-                {%- if(digitalcopy.url) -%}<span>, <a href="{{- digitalcopy.url -}}">Link zum Digitalisat</a></span>{%- endif -%}
+            {%- set digitalcopy_attributes = attrs()
+                .addClass(settings.mode)
+                .addClass('digitalcopy')
+                .addClass(digitalcopy.provider.published and digitalcopy.enabled?'published':'unpublished')
+            -%}
+            <span{{- digitalcopy_attributes -}}>&nbsp;<span class="{{ settings.mode }} counter">{{- id + 1 -}}.</span>
+                {{- digitalcopy.provider.name -}}
+                {{- digitalcopy.provider.abbreviation ? " (#{digitalcopy.provider.abbreviation})" -}}
+                {%- if(digitalcopy.date) -%}&nbsp;<span class="{{ settings.mode }} takenon">{{- digitalcopy.date ? "#{digitalcopy.date}" -}}</span>{%- endif -%}
+                {%- if(digitalcopy.url) -%}&nbsp;<span><a href="{{- digitalcopy.url -}}">Link zum Digitalisat</a></span>{%- endif -%}
             </span>
         {%- endfor -%}
+        </span>
     {%- endif -%}
 {% endblock %}

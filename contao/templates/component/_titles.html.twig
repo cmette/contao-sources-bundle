@@ -1,12 +1,13 @@
 {% trans_default_domain "tl_sources_entity" %}
 {#
-    rendert Titel und Untertitel, entfernt dabei versehentliche
-    Punkte am Ende des Titels und setzt sie einheitlich neu
+    rendert Titel und Untertitel
 #}
 
 {% block titles_component %}
     {%- set titles_attributes = attrs().addClass(settings.mode).addClass('titles') -%}
-    {%- set t = source.title -%}
-    {%- set s = source.subtitle -%}
-    <span{{ titles_attributes }}>{{- t|last == '.' ? t[:t|length-1] : t -}}.{{- s ? (s|last == '.' ? " #{s[:s|length-1]}" : " #{s}")~'.' : '' -}}</span>
+    <span{{- titles_attributes -}}>
+        <span>{{- source.title -}}</span>
+        {%- if source.subtitle -%}<span class="subtitle">: {{- source.subtitle -}}</span>{%- endif -%}.
+    </span>
+    {%- if source.edition  -%}<span class="edition"> ({{- source.edition -}}. Aufl.)</span>{%- endif -%}
 {% endblock %}

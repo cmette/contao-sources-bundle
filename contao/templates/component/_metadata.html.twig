@@ -1,0 +1,21 @@
+{% trans_default_domain "tl_sources_entity" %}
+{% use '@Contao/component/_catalogs.html.twig' %}
+{% use '@Contao/component/_digitalcopies.html.twig' %}
+{#
+    rendert Metadaten
+    das sind in der Regel bibliographische Kataloge, Register, Archive
+    und Digitalisate
+#}
+
+{%- block metadata_component -%}
+    {%- set catalogs = source.getCatalogs() -%}
+    {%- set digitalcopies = source.getDigitalcopies() -%}
+    {%- if catalogs or digitalcopies -%}
+        {%- if settings.mode != 'tagged' -%}&nbsp;{%- else -%}<br />{%- endif -%}
+        {%- set metadata_attributes = attrs().addClass(settings.mode).addClass('metadata') -%}
+        <span{{- metadata_attributes -}}>
+        {%- with { 'catalogs': catalogs } -%}{{- block('catalogs_component') -}}{% endwith %}
+        {%- with { 'digitalcopies': digitalcopies } -%}{{- block('digitalcopies_component') -}}{% endwith %}
+        </span>
+    {%- endif -%}
+{%- endblock -%}

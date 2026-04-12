@@ -1,0 +1,11 @@
+{% trans_default_domain "tl_sources_entity" %}
+{#
+    rendert nur das Jahr
+#}
+
+{% block year_component %}
+    {%- set year_attributes = attrs().addClass(settings.mode).addClass('year') -%}
+    <span{{- year_attributes -}}>
+        {{- source.year ? " (#{source.year})." : ' ('~('tl_sources_entity.without_year')|trans([], 'contao_tl_sources_entity')~')' -}}
+    </span>
+{% endblock %}

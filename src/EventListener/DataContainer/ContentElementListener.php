@@ -92,7 +92,7 @@ class ContentElementListener
                 $a = [];
 
                 foreach ($arrAuthors as $author) {
-                    if ($_author = SourcesAuthorModel::findById($author['id'])) {
+                    if ($_author = SourcesAuthorModel::findById($author['id']??0)) {
                         $a[] = $_author->getUniqueAuthor(false);
                     }
                 }

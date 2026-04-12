@@ -138,7 +138,7 @@ class SourcesEntityModel extends Model
         }
 
         $withTitle = !empty($this->title) ? ", $this->title" : '';
-        $year = !empty($this->year) ? ", $this->year" : '';
+        $year = !empty($this->year) ? ", $this->year" : $GLOBALS['TL_LANG']['tl_sources_entity']['without_year'];
 
         $result = new \stdClass();
         $result->authors = $strAuthors.$year;
