@@ -41,13 +41,17 @@ class SourcesLibraryModel extends Model
     {
         $options = [];
 
-        if ($libraries = self::findBy(['asCatalog = ? OR asProvider = ?'], [$asCatalog, $asProvider])) {
-            foreach ($libraries as $library) {
-                $options[$library->id] = "$library->name ($library->abbreviation)";
+        try {
+            if ($libraries = self::findBy(['asCatalog = ? OR asProvider = ?'], [$asCatalog, $asProvider])) {
+                foreach ($libraries as $library) {
+                    $options[$library->id] = "$library->name ($library->abbreviation)";
+                }
             }
-        }
 
-        asort($options);
+            asort($options);
+        } catch (\Exception $e) {
+
+        }
 
         return $options;
     }

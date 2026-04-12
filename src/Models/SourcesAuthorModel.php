@@ -44,15 +44,19 @@ class SourcesAuthorModel extends Model
     {
         $options = [];
 
-        $authors = self::findAll();
+        try {
+            $authors = self::findAll();
 
-        if (null !== $authors) {
-            foreach ($authors as $author) {
-                $options[$author->id] = $author->getUniqueAuthor($withCount);
+            if (null !== $authors) {
+                foreach ($authors as $author) {
+                    $options[$author->id] = $author->getUniqueAuthor($withCount);
+                }
             }
-        }
 
-        natcasesort($options);
+            natcasesort($options);
+        } catch (\Exception $e) {
+
+        }
 
         return $options;
     }
