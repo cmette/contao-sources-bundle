@@ -21,18 +21,25 @@ namespace Cmette\ContaoSourcesBundle\EventListener\DataContainer;
 use Cmette\ContaoSourcesBundle\Models\SourcesAuthorModel;
 use Contao\Controller;
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
+use Contao\CoreBundle\DataContainer\DataContainerOperation;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Contao\Image;
+use Contao\Model;
 use Contao\StringUtil;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SourcesAuthorListener
 {
+    use SourcesListenerHelperTrait;
     private const STR_TABLE = 'tl_sources_author';
 
     public string $requestToken = '';
 
-    public function __construct(private readonly ContaoCsrfTokenManager $tokenManager)
+    public function __construct(
+        private readonly ContaoCsrfTokenManager $tokenManager,
+        #private readonly AuthorizationCheckerInterface $authorizationChecker,
+    )
     {
         $this->requestToken = htmlspecialchars($this->tokenManager->getDefaultTokenValue());
     }
@@ -58,27 +65,12 @@ class SourcesAuthorListener
     }
 
     /**
-     * controls the delete button depending on the use of the givenname.
+     * controls the delete button depending on the use of the author
      */
     #[AsCallback(table: self::STR_TABLE, target: 'list.operations.delete.button')]
-    public function listDeleteButton(array $row, $href, $label, $title, $icon, $attributes): string
+    #public function listDeleteButton(array $row, $href, $label, $title, $icon, $attributes): string
+    public function listDeleteButton(DataContainerOperation $operation): void
     {
-        $author = SourcesAuthorModel::findById($row['id']);
-
-        if (0 !== $author->countUsage()) {
-            $url = '';
-            $icon = 'delete--disabled.svg';
-            $label = 'label';
-            $_title = StringUtil::specialchars($label);
-            $entity = 'singular';
-            $attributes = ' class="delete" data-action="contao--scroll-offset#store" onclick=""';
-        } else {
-            $url = Controller::addToUrl("$href&id={$row['id']}&rt=".$this->requestToken);
-            $_title = StringUtil::specialchars($title);
-        }
-
-        $image = Image::getHtml($icon, $label);
-
-        return "<a href='$url' title='$_title' $attributes>$image</a>";
+        $this->handleDeleteButton($operation);
     }
 }

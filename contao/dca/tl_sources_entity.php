@@ -12,7 +12,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 
 $strTable = 'tl_sources_entity';
 
-System::loadLanguageFile($strTable);
+#System::loadLanguageFile($strTable);
 
 $GLOBALS['TL_DCA'][$strTable] = [
 	'config' =>  [
@@ -104,7 +104,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
         'addSeries'         => 'series,volume_title,volume,issue',
         'addCatalogs'       => 'catalogs',
         'addDigitalCopies'  => 'digitalcopies',
-        'addImage'          => 'singleSRC,fullsize,size,floating,overwriteMetaFromSource',
+        'addImage'          => 'singleSRC,size,floating,fullsize,overwriteMetaFromSource',
     ],
 
 	// Fields
@@ -568,19 +568,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'filesOnly' => true,
                 'fieldType' =>'radio',
                 'mandatory' => true,
-                'tl_class'  => 'w50'
+                'tl_class'  => 'w16'
             ],
             'sql'   => "binary(16) NULL"
-        ],
-        'fullsize' => [
-            'inputType'     => 'checkbox',
-            'eval'          => [
-                'tl_class'  => 'w50'
-            ],
-            'sql'   => [
-                'type'  => 'boolean',
-                'default' => false
-            ],
         ],
         'size' => [
             'exclude' => true,
@@ -590,7 +580,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'rgxp' => 'natural',
                 'includeBlankOption' => true,
                 'nospace' => true,
-                'tl_class' => 'w50',
+                'tl_class' => 'w50 clr',
             ],
             'options_callback' => ['contao.listener.image_size_options', '__invoke'],
             'sql' => [
@@ -603,7 +593,10 @@ $GLOBALS['TL_DCA'][$strTable] = [
         'floating' => [
             'inputType' => 'radioTable',
             'options'   => ['above', 'left', 'right', 'below'],
-            'eval'      => ['cols' => 4, 'tl_class' => 'w50'],
+            'eval'      => [
+                'cols' => 4,
+                'tl_class' => 'w50'
+            ],
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
             'sql'       => "varchar(32) COLLATE ascii_bin NOT NULL default 'above'"
         ],
@@ -612,12 +605,22 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'inputType' => 'checkbox',
             'eval'      => [
                 'submitOnChange' => false,
-                'tl_class' => 'w50 clr'
+                'tl_class' => 'w50'
             ],
             'sql'   => [
                 'type' => 'boolean',
                 'default' => false
             ]
+        ],
+        'fullsize' => [
+            'inputType'     => 'checkbox',
+            'eval'          => [
+                'tl_class'  => 'w50'
+            ],
+            'sql'   => [
+                'type'  => 'boolean',
+                'default' => false
+            ],
         ],
         /**********************************************************************
          * occurrences_legend

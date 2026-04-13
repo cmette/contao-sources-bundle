@@ -1,0 +1,18 @@
+tl_sources_library:
+  deletion_disabled: Löschen nicht möglich. Der Datensatz wird verwendet.
+
+  name_legend: Name und Kurzzeichen des Archivs / der Bibilothek
+  name:
+    - Name des Archivs / der Bibilothek
+    - Geben Sie hier den vollständigen Namen des Archives oder der Bibliothek ein.
+  abbreviation:
+    - Kurzzeichen
+    - Geben Sie hier das offizielle Kurzzeichen des Archives oder der Bibliothek ein.
+  status_legend: In welcher Liste soll der Eintrag erscheinen?
+  asCatalog:
+    - In der Liste der Kataloge
+    - Diese Institution erscheint in jeder Auswahl der Kataloge
+  asProvider:
+    - In der Liste der Datengeber
+    - Diese Institution erscheint in jeder Auswahl der Datengeber
+

@@ -115,7 +115,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
         'asCatalog' => [
             'inputType' => 'checkbox',
             'eval'      => [
-                'tl_class' => 'w16',
+                'tl_class' => 'w25',
                 #'submitOnChange'=>true
             ],
             'sql'       => [
@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
         'asProvider' => [
             'inputType' => 'checkbox',
             'eval'      => [
-                'tl_class' => 'w16',
+                'tl_class' => 'w25',
                 #'submitOnChange'=>true
             ],
             'sql'       => [

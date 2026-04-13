@@ -44,7 +44,7 @@ class SourcesEntityListener
     public function ListLabelGroupCallback(string $group, string|null $mode, string $field, array $row, DataContainer $dc): string
     {
         // references the plural
-        return $GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][1];
+        return empty($row['type']) ? '?' : $GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][1];
     }
 
     /**
@@ -60,7 +60,6 @@ class SourcesEntityListener
         $settings   = SourcesSettingModel::findOneBy("published = '1'", [1]);
 
         if ($source) {
-            $source->_initiale = ucfirst($GLOBALS['TL_LANG'][self::STR_TABLE]['type_options'][$row['type']][0][0]);
             $source->_imageHtml = $this->buildImage($source->singleSRC)->image;
             $html = $this->twig->render(
                 self::STR_BACKEND.'/sources_entity_list_label.html.twig',

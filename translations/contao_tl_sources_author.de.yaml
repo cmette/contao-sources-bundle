@@ -1,0 +1,14 @@
+tl_sources_author:
+  deletion_disabled: Löschen nicht möglich. Der Datensatz wird verwendet.
+
+  name_legend: Namen
+  family_name:
+    - Familienname
+    - Geben Sie hier den Familiennamen ein.
+  first_name:
+    - Vornamen
+    - Geben Sie hier die Vornamen ein.
+  isPublisher:
+    - Agiert als Herausgeber
+    - experimentell, kann gelöscht werden
+

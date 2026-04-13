@@ -132,3 +132,16 @@ tl_sources_entity:
     - Aktivieren Sie diese Funktion, um ein Bild für die Quelle anzuzeigen.
   singleSRC:
     - Datei auswählen
+    - Wählen Sie
+  fullsize:
+    - Großansicht aktivieren
+    - Großansicht des Bildes in einer Lightbox bzw. den Link in einem neuen Browserfenster öffnen.
+  size:
+    - Bildgrößen
+    - Hier können Sie die Abmessungen des Bildes und den Skalierungsmodus festlegen.
+  floating:
+    - Bildausrichtung
+    - Bitte legen Sie fest, wie das Bild ausgerichtet werden soll.
+  overwriteMetaFromSource:
+    - Metadaten der Quelle verwenden
+    - Wenn Sie diese Option aktivieren, so werden die Metadaten des Bildes aus der Quelle selbst erzeugt. Das ist genauer und spart die zusätzliche Datenerfassung am Bild, da die Angaben in der Quelle immer umfangreicher und genauer sind. Sie können die hier anzuzeigenden Daten in den Konfigurationseinstellungen auswählen.

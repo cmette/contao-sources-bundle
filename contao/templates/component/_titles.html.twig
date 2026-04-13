@@ -4,10 +4,10 @@
 #}
 
 {% block titles_component %}
-    {%- set titles_attributes = attrs().addClass(settings.mode).addClass('titles') -%}
+    {%- set titles_attributes = attrs().addClass(settings ? settings.mode : '').addClass('titles') -%}
     <span{{- titles_attributes -}}>
         <span>{{- source.title -}}</span>
-        {%- if source.subtitle -%}<span class="subtitle">: {{- source.subtitle -}}</span>{%- endif -%}.
+        {%- if source.subtitle -%}<span class="subtitle">&nbsp;:&nbsp;{{- source.subtitle -}}</span>{%- endif -%}.
     </span>
     {%- if source.edition  -%}<span class="edition"> ({{- source.edition -}}. Aufl.)</span>{%- endif -%}
 {% endblock %}
