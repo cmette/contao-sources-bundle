@@ -1,0 +1,155 @@
+/*
+ *  global
+ */
+#tl_navigation a.group-sources {
+  background: url("../img/book-open-text.svg") 3px 2px no-repeat;
+  background-size: 13px 13px;
+}
+
+*[class^=tagged]::before,
+*[class*=" tagged"]::before {
+  background-color: #ffebeb;
+  border: 0 solid #808080;
+  border-radius: 4px;
+  padding: 0 0;
+  margin-right: 4px;
+}
+
+.tagged.authors::before {
+  content: "Autoren:";
+}
+
+.tagged.titles::before {
+  content: "Titel:";
+}
+
+.tagged.titles {
+  font-weight: bold;
+}
+
+.tagged.series::before {
+  content: "In ";
+}
+
+.tagged.metadata::before {
+  content: "Metadaten";
+  background-color: #ecf4ff;
+}
+
+.tagged.catalogs::before {
+  content: "in Katalogen";
+  background-color: #ecf4ff;
+}
+
+.tagged.digitalcopies::before {
+  content: "Digitalisate";
+  background-color: #ecf4ff;
+}
+
+.tagged.counter {
+  background-color: #ecf4ff;
+  padding: 0 4px;
+}
+
+.tagged.dataprovider::before {
+  content: "Datengeber:";
+}
+
+.tagged.signature::before {
+  content: "Signatur:";
+}
+
+.tagged.odai::before {
+  content: "OAI-Identifier:";
+}
+
+.tagged.takenon::before {
+  content: "abgerufen am:";
+}
+
+.tagged.license::before {
+  content: "Lizenz:";
+}
+
+/***********************************************************************************/
+.tl_file_list .source-entity {
+  display: flex;
+  gap: 0.5rem;
+}
+.tl_file_list .source-entity .initiale {
+  font-size: 200%;
+  aspect-ratio: 1;
+  width: 2rem;
+}
+.tl_file_list .source-entity .data {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: stretch;
+  flex: 2 2 auto;
+}
+.tl_file_list .source-entity .data span.author {
+  font-weight: bold;
+}
+.tl_file_list .source-entity .data span.unpublished {
+  text-decoration: line-through;
+  color: red;
+}
+
+/*--------------------------------------------------------------------------
+  edit mode tl_sources_entity
+ --------------------------------------------------------------------------*/
+form#tl_sources_entity .tl_tip {
+  color: #2f9f00;
+  margin-top: 0.5rem;
+}
+form#tl_sources_entity table#ctrl_catalogs *[id^=ctrl_catalogs],
+form#tl_sources_entity table#ctrl_catalogs *[id^=ctrl_digitalcopies],
+form#tl_sources_entity table#ctrl_digitalcopies *[id^=ctrl_catalogs],
+form#tl_sources_entity table#ctrl_digitalcopies *[id^=ctrl_digitalcopies] {
+  border: none;
+  background-color: #F6F6F8;
+}
+form#tl_sources_entity table#ctrl_catalogs td:has(> [id$="[provider]"]),
+form#tl_sources_entity table#ctrl_digitalcopies td:has(> [id$="[provider]"]) {
+  width: 30%;
+}
+form#tl_sources_entity table#ctrl_catalogs td:has(> [id$="[provider]"]) select,
+form#tl_sources_entity table#ctrl_digitalcopies td:has(> [id$="[provider]"]) select {
+  background-color: #ecf4ff;
+}
+form#tl_sources_entity table#ctrl_catalogs td:has(> [id$="[signature]"]),
+form#tl_sources_entity table#ctrl_digitalcopies td:has(> [id$="[signature]"]) {
+  width: 16%;
+}
+form#tl_sources_entity table#ctrl_catalogs td:has(> [id$="[signature]"]) input,
+form#tl_sources_entity table#ctrl_digitalcopies td:has(> [id$="[signature]"]) input {
+  background-color: #ffecec;
+}
+form#tl_sources_entity table#ctrl_catalogs td:has(> [id$="[date]"]),
+form#tl_sources_entity table#ctrl_digitalcopies td:has(> [id$="[date]"]) {
+  width: 10%;
+}
+form#tl_sources_entity table#ctrl_catalogs td:has(> [id$="[date]"]) input,
+form#tl_sources_entity table#ctrl_digitalcopies td:has(> [id$="[date]"]) input {
+  background-color: #fffbec;
+}
+form#tl_sources_entity table#ctrl_digitalcopy *[id^=ctrl_digitalcopy] {
+  border: none;
+  background-color: #F6F6F8;
+}
+form#tl_sources_entity table#ctrl_digitalcopy td:has(> [id$="[provider]"]) {
+  width: 30%;
+}
+form#tl_sources_entity table#ctrl_digitalcopy td:has(> [id$="[provider]"]) select {
+  background-color: #ecf4ff;
+}
+form#tl_sources_entity table#ctrl_digitalcopy td:has(> [id$="[date]"]) {
+  width: 10%;
+}
+form#tl_sources_entity table#ctrl_digitalcopy td:has(> [id$="[date]"]) input {
+  background-color: #fffbec;
+}
+
+/*# sourceMappingURL=sources.css.map */
