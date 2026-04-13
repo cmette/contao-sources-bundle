@@ -38,27 +38,34 @@ class SourcesEntityController extends AbstractContentElementController
         $source     = SourcesEntityModel::findById($model->sources_entity);
         $settings   = SourcesSettingModel::findOneBy("published = '1'", [1]);
 
-        $template->set('source',    $source);
         $template->set('settings',  $settings);
+        $template->set('source',    $source);
 
-        $figure = !$source->addImage ? null : $this->studio
-            ->createFigureBuilder()
-            ->fromUuid($source->singleSRC ?: '')
-            ->setSize($source->size)
-            ->setOverwriteMetadata($source->getOverwriteMetadata())
-            ->enableLightbox($source->fullsize)
-            ->buildIfResourceExists()
-        ;
+        if($source) {
+            // source found
+
+            $figure = !$source->addImage ? null : $this->studio
+                ->createFigureBuilder()
+                ->fromUuid($source->singleSRC ?: '')
+                ->setSize($source->size)
+                ->setOverwriteMetadata($source->getOverwriteMetadata())
+                ->enableLightbox($source->fullsize)
+                ->buildIfResourceExists();
+
+            $template->set('layout', $source->floating);
+        } else {
+            // source not available
+            $figure = null;
+            $template->set('layout', 'above');
+        }
 
         $template->set('image', $figure);
-        $template->set('layout', $source->floating);
 
         // handle Backend Request
         if ($this->isBackendScope($request)) {
             return $template->getResponse();
         }
 
-
-        return (bool) $source->published ? $template->getResponse() : new Response();
+        return $source ? $template->getResponse() : new Response();
     }
 }

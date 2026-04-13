@@ -1,4 +1,5 @@
 tl_sources_entity:
+  source_not_found: Die referenzierte Quelle existiert nicht oder wurde gelöscht.
 
   type_legend: Art der Quelle
   type:

@@ -3,7 +3,6 @@
 $GLOBALS['TL_DCA']['tl_content']['palettes']['sources_entity'] =
     '{type_legend},type,headline,title;' .
     '{source_legend},sources_entity;' .
-    # '{image_legend},addImage;' .
     '{template_legend:hide},customTpl;' .
     '{protected_legend:hide},protected;' .
     '{expert_legend:hide},cssID;' .
@@ -16,12 +15,9 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sources_entity'] =
     'search'    => true,
     'filter'    => true,
     'sorting' => true,
-    #'foreignKey' => 'tl_sources_entity.title',
-    #'relation'  => ['type'  => 'hasOne','load'  => 'lazy'],
     'eval'      => [
         'mandatory' => true,
         'includeBlankOption'=> false,
-        #'blankOptionLabel'  => 'kein/unbekannt',
         'tl_class' => 'w50',
         'multiple' => false,
         'chosen' => true
