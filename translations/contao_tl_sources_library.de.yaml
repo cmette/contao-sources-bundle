@@ -6,7 +6,7 @@ tl_sources_library:
     - Name des Archivs / der Bibilothek
     - Geben Sie hier den vollständigen Namen des Archives oder der Bibliothek ein.
   abbreviation:
-    - Kurzzeichen
+    - Kurzzeichen (ohne Klammern)
     - Geben Sie hier das offizielle Kurzzeichen des Archives oder der Bibliothek ein.
   status_legend: In welcher Liste soll der Eintrag erscheinen?
   asCatalog:

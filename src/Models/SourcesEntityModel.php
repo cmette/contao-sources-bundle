@@ -128,7 +128,7 @@ class SourcesEntityModel extends Model
             if (\count($authorsCollection) > $count) {
                 $last = $arrAuthors[\count($arrAuthors) - 1];
                 $arrAuthors = \array_slice($arrAuthors, 0, \count($arrAuthors) - 1);
-                $strAuthors = ($inlineQuote ? "{$arrAuthors[0]} et al." : implode(', ', $arrAuthors) . " & $last");
+                $strAuthors = ($inlineQuote ? "{$arrAuthors[0]} et al." : implode(', ', $arrAuthors) . " & $last"); // ToDo: et al. -> GLOBALS
             } elseif (\count($authorsCollection) === $count) {
                 $arrAuthors = \array_slice($arrAuthors, 0, 2);
                 $strAuthors = implode(' & ', $arrAuthors);

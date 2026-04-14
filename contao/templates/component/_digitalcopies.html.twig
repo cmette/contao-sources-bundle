@@ -17,7 +17,7 @@
                 {{- digitalcopy.provider.name -}}
                 {{- digitalcopy.provider.abbreviation ? " (#{digitalcopy.provider.abbreviation})" -}}
                 {%- if(digitalcopy.date) -%}&nbsp;<span class="{{ settings.mode }} takenon">{{- digitalcopy.date ? "#{digitalcopy.date}" -}}</span>{%- endif -%}
-                {%- if(digitalcopy.url) -%}&nbsp;<span><a href="{{- digitalcopy.url -}}">Link zum Digitalisat</a></span>{%- endif -%}
+                {%- if(digitalcopy.url) -%}&nbsp;<span><a href="{{- digitalcopy.url -}}" rel="noreferrer noopener" target="_blank">Link zum Digitalisat</a></span>{%- endif -%}
             </span>
         {%- endfor -%}
         </span>

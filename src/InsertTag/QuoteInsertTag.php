@@ -51,7 +51,7 @@ class QuoteInsertTag
                 $pageParameter = $insertTag->getParameters()->get(1);
                 $pageCondiition = (null !== $pageParameter) && ('p' === $pageParameter[0]) && (\strlen($pageParameter) > 1);
                 // page number given?
-                $pages = $pageCondiition ? ', S. '.substr($pageParameter, 1) : '';
+                $pages = $pageCondiition ? ', S.'.substr($pageParameter, 1) : '';
                 // build the replacement
                 $asAPAString = $source->getAuthorsAsAPAString();
                 $linktext = "$asAPAString->authors{$pages}";
