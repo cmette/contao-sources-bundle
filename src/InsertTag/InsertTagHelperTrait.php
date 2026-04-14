@@ -18,7 +18,7 @@ trait InsertTagHelperTrait
         $url = $this->urlGenerator->generate(PageRoute::PAGE_BASED_ROUTE_NAME, [RouteObjectInterface::CONTENT_OBJECT => $page]);
 
         return $source ?
-            "(<a href='$url#sources_entity-{$source->id}' title='$title' target='$target' rel='noreferrer noopener'>$text</a>)" :
+            "(<a href=\"$url#sources_entity-{$source->id}\" title=\"$title\" target=\"$target\" rel=\"noreferrer noopener\">$text</a>)" :
             "(<span title='$title'>$text)</span>";
     }
 }
