@@ -61,12 +61,12 @@ class SourcesEntityModel extends Model
     /**
      * returns an array of data from the authors rowWizard.
      */
-    public function getAuthorsAsArray(): array
+    public function getAuthors(bool $inlineQuote = true):Collection
     {
         // Achtung! $this->>authors enthält keine reinen Autoren, es ist ein
         // serialisiertes Array mit Autoren und anderen Daten, so wie sie im
         // entsprechenden rowWizard im DCA codiert wurden
-        $arrAuthors = [];
+        $authors = [];
 
         foreach (StringUtil::deserialize($this->authors, true) as $author) {
             // bei einem FrontendRequest werden nur publizierte Autoren berücksichtigt
@@ -74,28 +74,27 @@ class SourcesEntityModel extends Model
             // extract the author key
             $arrValues = [$author['author']];
             // find all authors
-            $modelAuthor = SourcesAuthorModel::findBy($arrColumns, $arrValues);
+            $modelAuthor = SourcesAuthorModel::findOneBy($arrColumns, $arrValues);
 
             if (null !== $modelAuthor) {
                 // author found
-                $row = $modelAuthor->row();
-                $row['role'] = $author['role'];
-                $row['enabled'] = (bool) $author['enable'];
+                $record = $modelAuthor;
+                // enrich with virtual properties
+                $record->_role    = $author['role'];
+                $record->_enabled = (bool) $author['enable'];
 
                 if ($this->isBackendRequest()) {
-                    $arrAuthors[] = $row;
+                    $authors[] = $record;
                 } else {
-                    if ($row['enabled']) {
-                        $arrAuthors[] = $row;
+                    if ($record->enabled) {
+                        $authors[] = $record;
                     }
                 }
             }
             // author deleted? do nothin at this time
         }
 
-        return count($arrAuthors) === 0 ? // ToDo: internationalization
-            [['family_name' => 'ohne Autor', 'first_name' => '', 'role' => '', 'published' => true, 'enabled' => true]] :
-            $arrAuthors;
+        return new Collection($authors, 'tl_sources_author');
     }
 
     /**
@@ -110,43 +109,75 @@ class SourcesEntityModel extends Model
     }
 
     /**
+     * collects all the authors' last and first names and concatenates them into a string,
+     * then adds the year of publication if available,
+     * distinguishing between inline citations and those for the bibliography
+     *
      * @param bool $inlineQuote if true, generate authors for inline quote,
      *                          if false, generate authors for bibliography
-     * @param int  $count       number of max authors -> APA=2
+     * @param int  $count       number of max authors -> APA6=2 / APA7=1+et al.
      */
-    public function getAuthorsAsAPAString(bool $inlineQuote = true, int $count = 2): \stdClass
+    public function getAuthorsAsAPAString(bool $inlineQuote = true): \stdClass
     {
         $arrAuthors = [];
-        $strAuthors = 'ohne Autor';
+        $strAuthors = $GLOBALS['TL_LANG']['tl_sources_entity']['without_authors'];
 
         $authorsCollection = $this->getAuthorsAsCollection();
 
         if ($authorsCollection)
         {
-            $arrAuthors = array_map(fn($author) => $author['family_name'] . (!$inlineQuote ? (!empty($author['first_name']) ? ", {$author['first_name'][0]}." : '') : ''), $authorsCollection->fetchAll());
+            /* @var SourcesAuthorModel $author */
+            foreach ($authorsCollection as $author) $arrAuthors[] = $author->getAuthorsAsString(false);
 
-            if (\count($authorsCollection) > $count) {
-                $last = $arrAuthors[\count($arrAuthors) - 1];
-                $arrAuthors = \array_slice($arrAuthors, 0, \count($arrAuthors) - 1);
-                $strAuthors = ($inlineQuote ? "{$arrAuthors[0]} et al." : implode(', ', $arrAuthors) . " & $last"); // ToDo: et al. -> GLOBALS
-            } elseif (\count($authorsCollection) === $count) {
-                $arrAuthors = \array_slice($arrAuthors, 0, 2);
-                $strAuthors = implode(' & ', $arrAuthors);
+            if($inlineQuote) {
+                // inline since APA 7 show only one author + et al.
+                $first = \array_slice($arrAuthors, 0, 1);
+                $strAuthors = implode('', $first);
             } else {
-                $strAuthors = implode('', $arrAuthors);
+                // bibliography since APA 7 show 20 authors
+                $first20 = count($arrAuthors) > 20 ?
+                    \array_slice($arrAuthors, 0, 19) :
+                    \array_slice($arrAuthors, 0, count($arrAuthors) - 1);
+                $strAuthors = implode(', ', $first20) . ' & ' . $arrAuthors[count($arrAuthors)-1];
             }
         }
 
         $withTitle = !empty($this->title) ? ", $this->title" : '';
         $year = !empty($this->year) ?
-            $inlineQuote ?
-                ", $this->year" :
-                " ($this->year)" :
-            $GLOBALS['TL_LANG']['tl_sources_entity']['without_year'];
+            ($inlineQuote ? ", $this->year" : " ($this->year)") :
+            ($inlineQuote ? ", {$GLOBALS['TL_LANG']['tl_sources_entity']['without_year']}" : " ({$GLOBALS['TL_LANG']['tl_sources_entity']['without_year']})");
 
         $result = new \stdClass();
         $result->authors = $strAuthors.$year;
         $result->title = $strAuthors.$withTitle.$year;
+
+        return $result;
+    }
+
+    /**
+     * builds a plain text string with the author name and year for a APA 7 inline quote
+     *
+     * @param bool $inlineQuote
+     * @return string
+     */
+    public function getAuthorsAsString(bool $inlineQuote = true): string
+    {
+        $result  = $GLOBALS['TL_LANG']['tl_sources_entity']['without_authors'];
+        $authors = $this->getAuthorsAsCollection();
+        $lang    = $GLOBALS['TL_LANG']['tl_sources_entity'];
+
+        if($authors) {
+            if($inlineQuote) {
+                $a = $authors[0];
+                $family_name = $a->family_name;
+                $etal        = (count($authors) > 1 ? " {$lang['etal'][2]}" : '');
+                $year        = (!empty($this->year) ? ", {$this->year}" : ", {$lang['without_year']}");
+
+                $result = $family_name . $etal . $year;
+            } else {
+                $result = 'Autoren für Bibliographie. Noch nicht definiert.';
+            }
+        }
 
         return $result;
     }

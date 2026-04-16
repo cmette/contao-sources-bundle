@@ -36,7 +36,7 @@
 
     {% block text %}
         {% if source %}
-            {% with { 'authors': source.getAuthorsAsArray(), 'settings': settings } %}
+            {%- with { 'authors': source.getAuthors() } -%}
                 {{- block('authors_component') -}}
             {% endwith %}
             {{- block('year_component') -}}

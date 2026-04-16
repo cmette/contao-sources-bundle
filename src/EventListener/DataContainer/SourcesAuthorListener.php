@@ -61,7 +61,7 @@ class SourcesAuthorListener
     {
         $author = SourcesAuthorModel::findById($row['id']);
 
-        return null === $author ? '?' : $author->getUniqueAuthor();
+        return null === $author ? '?' : $author->getAuthorsAsString();
     }
 
     /**

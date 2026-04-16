@@ -4,13 +4,16 @@
 {%- block authors_component -%}
     {%- set authors_attributes = attrs().addClass(settings ? settings.mode : '').addClass('authors') -%}
     <span{{- authors_attributes -}}>
-    {%- for id,author in authors|slice(0,2) -%}
-        <span class="{{- (author.published and author.enabled) ?'published':'unpublished' -}}">
-            {{- author.family_name -}}
-            {{- author.first_name ? ", #{author.first_name}" -}}
-            {{- (author.role)?' '~('tl_sources_entity.authors_fields.role_options.' ~ author.role)|trans([], 'contao_tl_sources_entity') -}}
-            {{- ((id|last < authors|length-1)?' & ' : (settings and settings.mode == 'apa' ? ':' : ' ')) -}}
-        </span>
-    {%- endfor %}{{ (authors|length>2)?' et al.' -}}
+    {%- if authors|length > 0 -%}
+        {%- for id,author in authors -%}
+            {%- set first_names = author.first_name ? ', '~author.getFirstNames() -%}
+            <span class="{{- (author.published and author._enabled) ?'published':'unpublished' -}}">
+                {{- author.family_name -}}{{- first_names -}}
+                {%- if id+2 == authors|length -%}{{- ' & '-}}{%- elseif id+2 < authors|length -%}{{- ',' -}}{%- else -%}{%- endif -%}
+            </span>
+    {% endfor %}
+    {%- else -%}
+        <span>keine </span>
+    {%- endif -%}
     </span>
 {%- endblock -%}

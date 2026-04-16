@@ -9,7 +9,7 @@
     <div class="initiale"><img src='bundles/contaosources/img/{{ source.type }}.svg' alt="{{ source.type }}"></div>
     <div class="data">
         <div>
-            {% with { 'authors': source.getAuthorsAsArray(), 'settings': settings } %}
+            {%- with { 'authors': source.getAuthors() } -%}
                 {{- block('authors_component') -}}
             {% endwith %}
             {{- block('year_component') -}}

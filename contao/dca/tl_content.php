@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sources_entity'] =
     'eval'      => [
         'mandatory' => true,
         'includeBlankOption'=> false,
-        'tl_class' => 'w50',
+        'tl_class' => '',
         'multiple' => false,
         'chosen' => true
     ],

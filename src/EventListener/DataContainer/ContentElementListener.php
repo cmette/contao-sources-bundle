@@ -55,7 +55,7 @@ class ContentElementListener
                         $depublished = " $image";
                         $addition = (bool) $source->published ? '' : $depublished;
 
-                        $arrGridLabel[0] = "{$label}{$type}{$addition}";
+                        $arrGridLabel[0] = "{$label}<span class='tl_gray'>{$type}</span>{$addition}";
                     }
                     break;
                 default:
@@ -77,10 +77,14 @@ class ContentElementListener
         return $varValue;
     }
 
+    /**
+     * @param DataContainer $dc
+     * @return array
+     */
     #[AsCallback(table: self::STR_TABLE, target: 'fields.sources_entity.options')]
     public function sourcesEntityOptions(DataContainer $dc): array
     {
-        $len = 80;
+        $len = 120;
         $options = [];
         $authors = '';
 
@@ -88,17 +92,19 @@ class ContentElementListener
 
         if (null !== $sources) {
             foreach ($sources as $source) {
-                $arrAuthors = $source->getAuthorsAsArray();
+                $collAuthors = $source->getAuthors();
                 $a = [];
 
-                foreach ($arrAuthors as $author) {
-                    if ($_author = SourcesAuthorModel::findById($author['id']??0)) {
-                        $a[] = $_author->getUniqueAuthor(false);
-                    }
+                /* @var SourcesAuthorModel $author */
+                foreach ($collAuthors as $author) {
+                    $a[] = $author->getAuthorsAsString(false);
                 }
+
                 $authors = \count($a) > 0 ? implode('; ', $a).': ' : '';
 
-                $title = \strlen($source->title) > $len ? substr($source->title, 0, $len).'...' : $source->title;
+                $t = $source->title . (empty($source->subtitle) ? '' : ": $source->subtitle");
+
+                $title = \strlen($t) > $len ? substr($t, 0, $len).'...' : $t;
 
                 $options[$source->id] = "{$authors}{$title}";
             }

@@ -85,7 +85,7 @@ class SourcesEntityListener
 
         if (null !== $authors) {
             foreach ($authors as $author) {
-                $options[$author->id] = $author->getUniqueAuthor(false);
+                $options[$author->id] = $author->getAuthorsAsString(false);
             }
         }
 

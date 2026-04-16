@@ -17,7 +17,7 @@
                 <span>{{- catalog.provider.name -}} {{- catalog.provider.abbreviation ? " (#{catalog.provider.abbreviation})" -}}</span>
                 {%- if(catalog.signature) -%}&nbsp;<span class="{{ settings.mode }} signature">{{- catalog.signature ? "#{catalog.signature}" -}}</span>{%- endif -%}
                 {%- if(catalog.date) -%}&nbsp;<span class="{{ settings.mode }} takenon">{{- catalog.date ? "#{catalog.date}" -}}</span>{%- endif -%}
-                {%- if(catalog.url) -%}&nbsp;<span><a href="{{- catalog.url -}}">Link zum Katalog</a></span>{%- endif -%}
+                {%- if(catalog.url) -%}&nbsp;<span><a href="{{- catalog.url -}}" rel="noreferrer noopener" target="_blank">Link zum Katalog</a></span>{%- endif -%}
             </span>
         {%- endfor -%}
     {%- endif -%}

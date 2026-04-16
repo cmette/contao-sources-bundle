@@ -4,8 +4,10 @@
 #}
 
 {% block year_component %}
+    {%- if source.getAuthors()|length > 0 -%}
     {%- set year_attributes = attrs().addClass(settings ? settings.mode : '').addClass('year') -%}
     <span{{- year_attributes -}}>
         {{- source.year ? " (#{source.year})." : ' ('~('tl_sources_entity.without_year')|trans([], 'contao_tl_sources_entity')~')' -}}
     </span>
+    {% endif %}
 {% endblock %}

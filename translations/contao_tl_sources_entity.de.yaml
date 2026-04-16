@@ -36,6 +36,7 @@ tl_sources_entity:
 
   author_legend: AutorInnen und HerausgeberInnen
   authors_hint: Die Autorinnen und Autoren sollte hier in der Reihenfolge wie im Einband angegeben erfasst werden.
+  without_authors: ohne Autor
   authors:
     - Autoren und Autorinnen
     - Erfassen Sie hier die AutorInnen mit ihren Rollen. Wenn die gesuchten Personen nicht vorhanden sind, ergänzen Sie diese bitte im Register.
@@ -53,6 +54,7 @@ tl_sources_entity:
   etal:
     - et al. verwenden
     - Bei mehr als 2 AutorInnen wird nur der/die erste AutorIn genannt und et al. ergänzt.
+    - et al.
 
   title_legend: Titel der Publikation
   title:

@@ -53,9 +53,7 @@ class QuoteInsertTag
                 // page number given?
                 $pages = $pageCondiition ? ', S.'.substr($pageParameter, 1) : '';
                 // build the replacement
-                $asAPAString = $source->getAuthorsAsAPAString();
-                $linktext = "$asAPAString->authors{$pages}";
-                $title = $asAPAString->title.$pages;
+                $linktext = $source->getAuthorsAsString().$pages;
             }
             // source not found mybe deleted?
         } else {
@@ -63,6 +61,6 @@ class QuoteInsertTag
             $title = "Die ID der Quelle [ID:$sourceId] muss eine Ganzzahl sein!";
         }
 
-        return new InsertTagResult($this->link($source, htmlspecialchars($linktext), $title), OutputType::html);
+        return new InsertTagResult($this->link($source, htmlspecialchars($linktext), $linktext), OutputType::html);
     }
 }

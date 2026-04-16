@@ -14,6 +14,7 @@ namespace Cmette\ContaoSourcesBundle\Models;
 
 use Contao\Model;
 use Contao\Model\Collection;
+use phpDocumentor\Reflection\Types\True_;
 
 /**
  * Reads and writes source entities. This refers to abstract sources such as
@@ -44,12 +45,13 @@ class SourcesAuthorModel extends Model
     {
         $options = [];
 
+        // "try" is required here because of the calls from the DCA
         try {
             $authors = self::findAll();
 
             if (null !== $authors) {
                 foreach ($authors as $author) {
-                    $options[$author->id] = $author->getUniqueAuthor($withCount);
+                    $options[$author->id] = $author->getAuthorsAsString($withCount);
                 }
             }
 
@@ -61,9 +63,29 @@ class SourcesAuthorModel extends Model
         return $options;
     }
 
-    public function getUniqueAuthor(bool $withCount = true): string
+    /**
+     * @param bool $withCount
+     * @return string
+     */
+    public function getAuthorsAsString(bool $withCount = true): string
     {
-        return $this->family_name.(!empty($this->first_name) ? ", $this->first_name" : '').($withCount ? " ({$this->countUsage()})" : '');
+        $first_names = $this->getFirstNames();
+
+        return $this->family_name.(!empty($this->first_name) ? ", $first_names" : '').($withCount ? " ({$this->countUsage()})" : '');
+    }
+
+    public function getFirstNames(): string
+    {
+        $matches = [];
+        // extract all intials
+        $m = preg_match_all("/((?<=^)|(\s)|(-))\p{L}/", $this->first_name??'', $matches);
+        // compress and cleanup matches
+        $u = array_map(
+            function($initials) { return trim($initials); },
+            array_filter($matches[0],function($initials) { if(!empty(trim($initials))) return true; else return false;})
+        );
+        // correct special hyphen
+        return str_replace(',-', '-', implode('.,', $u??[])).'.';
     }
 
     public function countUsage(): int
