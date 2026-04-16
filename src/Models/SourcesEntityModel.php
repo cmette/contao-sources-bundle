@@ -83,17 +83,10 @@ class SourcesEntityModel extends Model
                 $record->_role    = $author['role'];
                 $record->_enabled = (bool) $author['enable'];
 
-                if ($this->isBackendRequest()) {
-                    $authors[] = $record;
-                } else {
-                    if ($record->enabled) {
-                        $authors[] = $record;
-                    }
-                }
+                $authors[] = $record;
             }
             // author deleted? do nothin at this time
         }
-
         return new Collection($authors, 'tl_sources_author');
     }
 
