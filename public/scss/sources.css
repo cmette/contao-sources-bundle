@@ -15,19 +15,23 @@
   margin-right: 4px;
 }
 
+/*
+  global tagging for APA Entities
+*/
 .tagged.authors::before {
   content: "Autoren:";
 }
-
 .tagged.titles::before {
   content: "Titel:";
 }
-
-.tagged.titles {
+.tagged.titles .title {
   font-weight: bold;
 }
-
-.tagged.series::before {
+.tagged.titles .subtitle {
+  font-weight: bold;
+  color: #0066ff;
+}
+.tagged.series ::before {
   content: "In ";
 }
 
@@ -80,6 +84,7 @@
   font-size: 200%;
   aspect-ratio: 1;
   width: 2rem;
+  flex: 0;
 }
 .tl_file_list .source-entity .data {
   display: flex;
@@ -93,7 +98,6 @@
   font-weight: bold;
 }
 .tl_file_list .source-entity .data span.unpublished {
-  text-decoration: line-through;
   color: red;
 }
 

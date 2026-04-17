@@ -17,6 +17,7 @@ use Contao\Image;
 use Contao\MemberGroupModel;
 use Contao\Message;
 use Contao\StringUtil;
+use Contao\System;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ContentElementListener
@@ -27,6 +28,7 @@ class ContentElementListener
         private readonly ContaoFramework $framework,
         private readonly TranslatorInterface $translator,
     ) {
+        System::loadLanguageFile('tl_sources_entity');
     }
 
     #[AsCallback(table: self::STR_TABLE, target: 'config.onload')]

@@ -17,10 +17,36 @@
   margin-right: 4px;
 }
 
-.tagged.authors::before        { content: "Autoren:"; }
-.tagged.titles::before         { content: "Titel:"; }
-.tagged.titles                 { font-weight: bold; }
-.tagged.series::before         { content: "In "; }
+/*
+  global tagging for APA Entities
+*/
+
+.tagged
+{
+  // Authors
+  &.authors {
+    &::before { content: "Autoren:"; }
+  }
+  // Title and Subtitle
+  &.titles {
+    &::before {
+      content: "Titel:";
+    }
+
+    .title {
+      font-weight: bold;
+    }
+
+    .subtitle {
+      font-weight: bold;
+      color: #0066ff;
+    }
+  }
+  // Series
+  &.series {
+    ::before { content: "In "; }
+  }
+}
 
 .tagged.metadata::before       { content: "Metadaten"; background-color: #ecf4ff; }
 .tagged.catalogs::before       { content: "in Katalogen"; background-color: #ecf4ff; }
@@ -47,6 +73,7 @@
       font-size: 200%;
       aspect-ratio: 1;
       width: 2rem;
+      flex: 0;
     }
 
     .data {
@@ -66,10 +93,10 @@
           font-weight: bold;
         }
 
-         &.unpublished {
-           text-decoration: line-through;
-           color: red;
-         }
+        &.unpublished {
+          //text-decoration: line-through;
+          color: red;
+        }
       }
     }
   }

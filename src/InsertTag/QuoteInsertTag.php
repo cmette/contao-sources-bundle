@@ -51,16 +51,21 @@ class QuoteInsertTag
                 $pageParameter = $insertTag->getParameters()->get(1);
                 $pageCondiition = (null !== $pageParameter) && ('p' === $pageParameter[0]) && (\strlen($pageParameter) > 1);
                 // page number given?
-                $pages = $pageCondiition ? ', S.'.substr($pageParameter, 1) : '';
+                $pages      = $pageCondiition ? ', S.'.substr($pageParameter, 1) : '';
                 // build the replacement
-                $linktext = $source->getAuthorsAsString().$pages;
+                $authors    = $source->getAuthorsAsString();
+                // check empty link
+                if(!empty($authors)) $linktext = $authors.$pages; else $source = null;
+                //
+                $title = $linktext;
+            } else {
+                // source not found mybe deleted?
             }
-            // source not found mybe deleted?
         } else {
             // sourceId is not a number
             $title = "Die ID der Quelle [ID:$sourceId] muss eine Ganzzahl sein!";
         }
 
-        return new InsertTagResult($this->link($source, htmlspecialchars($linktext), $linktext), OutputType::html);
+        return new InsertTagResult($this->link($source, htmlspecialchars($linktext), $title), OutputType::html);
     }
 }

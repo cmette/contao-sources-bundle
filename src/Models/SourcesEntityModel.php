@@ -78,12 +78,12 @@ class SourcesEntityModel extends Model
 
             if (null !== $modelAuthor) {
                 // author found
-                $record = $modelAuthor;
+                #$record = $modelAuthor;
                 // enrich with virtual properties
-                $record->_role    = $author['role'];
-                $record->_enabled = (bool) $author['enable'];
+                $modelAuthor->_role    = $author['role'];
+                $modelAuthor->_enabled = (bool) $author['enable'];
 
-                $authors[] = $record;
+                $authors[] = $modelAuthor;
             }
             // author deleted? do nothin at this time
         }
@@ -97,7 +97,7 @@ class SourcesEntityModel extends Model
     {
         // get only authors by special destructuring
         $arrAuthorIds = array_map(static fn ($v) => $v['author'], StringUtil::deserialize($this->authors, true));
-
+dump();
         return SourcesAuthorModel::findMultipleByIds($arrAuthorIds);
     }
 
@@ -155,22 +155,34 @@ class SourcesEntityModel extends Model
      */
     public function getAuthorsAsString(bool $inlineQuote = true): string
     {
-        $result  = $GLOBALS['TL_LANG']['tl_sources_entity']['without_authors'];
+        $lang = $GLOBALS['TL_LANG']['tl_sources_entity'];
         $authors = $this->getAuthorsAsCollection();
-        $lang    = $GLOBALS['TL_LANG']['tl_sources_entity'];
+        $lang = $GLOBALS['TL_LANG']['tl_sources_entity'];
+        $year = (!empty($this->year) ? ", {$this->year}" : ", {$lang['without_year']}");
 
-        if($authors) {
+        if($this->isFrontendRequest()) {
+            // authors for frontend
             if($inlineQuote) {
-                $a = $authors[0];
-                $family_name = $a->family_name;
-                $etal        = (count($authors) > 1 ? " {$lang['etal'][2]}" : '');
-                $year        = (!empty($this->year) ? ", {$this->year}" : ", {$lang['without_year']}");
-
-                $result = $family_name . $etal . $year;
+                // for inline quote we only need the first author since APA 7
+                if($authors) {
+                    $a = $authors[0];
+                    $family_name = $a->family_name;
+                    $etal = (count($authors) > 1 ? " {$lang['etal'][2]}" : '');
+                } else {
+                    $family_name = empty($this->year) ? '' : $lang['without_authors'];
+                    $etal = '';
+                    $year = empty($this->year) ? '' : ", {$this->year}";
+                }
             } else {
-                $result = 'Autoren für Bibliographie. Noch nicht definiert.';
+                // for bibliography or source listing
+                // ToDo:
             }
+        } else {
+            //
+            // ToDo:
         }
+
+        $result = $family_name . $etal . $year;
 
         return $result;
     }

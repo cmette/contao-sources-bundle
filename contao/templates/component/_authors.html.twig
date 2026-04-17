@@ -13,7 +13,7 @@
             </span>
     {% endfor %}
     {%- else -%}
-        <span>keine </span>
+        <span>{{- ('tl_sources_entity.without_authors')|trans([], 'contao_tl_sources_entity') -}}&nbsp;</span>
     {%- endif -%}
     </span>
 {%- endblock -%}
