@@ -23,7 +23,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	],
 	'list' => [
 		'sorting' =>  [
-            'mode'                  => DataContainer::MODE_SORTED,
+            'mode'                  => DataContainer::SORT_ASC,
 			'fields'                => ['title'],
 			'headerFields'          => ['title'],
 			'panelLayout'           => 'filter;sort,search,limit',
@@ -49,7 +49,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{type_legend},title;' .
+            '{title_legend},title;' .
             '',
 	],
 

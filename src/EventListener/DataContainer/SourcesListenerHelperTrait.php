@@ -7,6 +7,24 @@ use Contao\Model;
 
 trait SourcesListenerHelperTrait
 {
+    /**
+     * @param array $row
+     * @param string $label
+     * @return array|string
+     */
+    public function buildLabelWithCounter(array $row, string $label): array|string
+    {
+        $model = Model::getClassFromTable(self::STR_TABLE)::findById($row['id']);
+
+        return ($model && (int)($count = $model->countUsage() > 0)) ?
+            "<span class='used'>$label ($count)</span>" :
+            "<span class='unused'>$label</span>";
+    }
+
+    /**
+     * @param DataContainerOperation $operation
+     * @return void
+     */
     public function handleDeleteButton(DataContainerOperation $operation): void
     {
         $class = Model::getClassFromTable(self::STR_TABLE);

@@ -64,6 +64,10 @@
 /***********************************************************************************/
 
 .tl_file_list {
+
+  .unused { color: dodgerblue; }
+  .used   { color: darkred; }
+
   .source-entity {
     display: flex;
     gap: 0.5rem;

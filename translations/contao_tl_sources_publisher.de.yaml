@@ -1,0 +1,7 @@
+tl_sources_publisher:
+  deletion_disabled: Löschen nicht möglich. Der Datensatz wird verwendet.
+
+  name_legend: Angaben zum Verlag
+  name:
+    - Ort und Verlag
+    - "Zurzeit müssen Sie den Verlag zusammen mit den Orten hier eingeben. Folgen Sie dem Schema: Ort1; Ort2 : Verlag."

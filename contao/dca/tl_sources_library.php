@@ -24,7 +24,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	],
 	'list' => [
 		'sorting' =>  [
-            'mode'                  => DataContainer::MODE_SORTED,
+            'mode'                  => DataContainer::SORT_ASC,
 			'fields'                => ['name'],
 			'headerFields'          => ['name'],
 			'panelLayout'           => 'filter;sort,search,limit',

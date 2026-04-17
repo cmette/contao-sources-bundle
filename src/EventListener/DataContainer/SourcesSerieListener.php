@@ -19,19 +19,19 @@ declare(strict_types=1);
 namespace Cmette\ContaoSourcesBundle\EventListener\DataContainer;
 
 use Cmette\ContaoSourcesBundle\Models\SourcesLibraryModel;
+use Cmette\ContaoSourcesBundle\Models\SourcesSerieModel;
 use Contao\Controller;
 use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\DataContainer\DataContainerOperation;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Contao\Image;
-use Contao\Model;
 use Contao\StringUtil;
 
-class SourcesLibraryListener
+class SourcesSerieListener
 {
     use SourcesListenerHelperTrait;
-    private const STR_TABLE = 'tl_sources_library';
+    private const STR_TABLE = 'tl_sources_serie';
 
     public string $requestToken = '';
 
@@ -43,7 +43,7 @@ class SourcesLibraryListener
     #[AsCallback(table: self::STR_TABLE, target: 'list.label.group')]
     public function ListLabelGroupCallback(string $group, string|null $mode, string $field, array $row, DataContainer $dc): string
     {
-        return $row['name'][0];
+        return $row['title'][0];
     }
 
     /**

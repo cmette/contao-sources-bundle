@@ -59,9 +59,10 @@ class SourcesAuthorListener
     #[AsCallback(table: self::STR_TABLE, target: 'list.label.label')]
     public function ListLabelLabelCallback(array $row, string $label, DataContainer $dc, array $labels): array|string
     {
-        $author = SourcesAuthorModel::findById($row['id']);
+        $family_name = $row['family_name'];
+        $first_name  = empty($row['first_name']) ? '' : ", {$row['first_name']}";
 
-        return null === $author ? '?' : $author->getAuthorsAsString();
+        return $this->buildLabelWithCounter($row, "{$family_name}{$first_name}");
     }
 
     /**

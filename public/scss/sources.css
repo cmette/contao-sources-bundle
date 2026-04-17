@@ -76,6 +76,12 @@
 }
 
 /***********************************************************************************/
+.tl_file_list .unused {
+  color: dodgerblue;
+}
+.tl_file_list .used {
+  color: darkred;
+}
 .tl_file_list .source-entity {
   display: flex;
   gap: 0.5rem;

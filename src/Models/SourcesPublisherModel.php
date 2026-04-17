@@ -33,4 +33,11 @@ class SourcesPublisherModel extends Model
      * @var string
      */
     protected static $strTable = 'tl_sources_publisher';
+
+    public function countUsage(): int
+    {
+        $entities = SourcesEntityModel::findBy(["publisher = ?"], [$this->id]);
+
+        return null !== $entities ? $entities->count() : 0;
+    }
 }

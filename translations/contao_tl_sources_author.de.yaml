@@ -4,11 +4,11 @@ tl_sources_author:
   name_legend: Namen
   family_name:
     - Familienname
-    - Geben Sie hier den Familiennamen ein.
+    - Geben Sie hier den Familiennamen ein. Soll ein spezieller Künstlername verwendet werden, so tragen Sie diesen nur hier ein und lassen das Feld Vornamen leer. z.B. Lady Gaga
   first_name:
     - Vornamen
-    - Geben Sie hier die Vornamen ein.
+    - Geben Sie hier die voll ausgeschriebenen Vornamen ein. z.B. Marie Johanna-Theresa oder Karl August.
   isPublisher:
-    - Agiert als Herausgeber
+    - agiert als Herausgeber
     - experimentell, kann gelöscht werden
 

@@ -53,7 +53,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{type_legend},name;' .
+            '{name_legend},name;' .
             '',
 	],
 

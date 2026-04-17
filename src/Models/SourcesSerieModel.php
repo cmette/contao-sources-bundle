@@ -33,4 +33,11 @@ class SourcesSerieModel extends Model
      * @var string
      */
     protected static $strTable = 'tl_sources_serie';
+
+    public function countUsage(): int
+    {
+        $entities = SourcesEntityModel::findBy(["series = ?"], [$this->id]);
+
+        return null !== $entities ? $entities->count() : 0;
+    }
 }
