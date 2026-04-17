@@ -97,7 +97,7 @@ class SourcesEntityModel extends Model
     {
         // get only authors by special destructuring
         $arrAuthorIds = array_map(static fn ($v) => $v['author'], StringUtil::deserialize($this->authors, true));
-dump();
+
         return SourcesAuthorModel::findMultipleByIds($arrAuthorIds);
     }
 

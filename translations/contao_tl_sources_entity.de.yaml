@@ -59,7 +59,7 @@ tl_sources_entity:
   title_legend: Titel der Publikation
   title:
     - Titel der Publikation
-    - Geben Sie hier den Titel der Publikation ein.
+    - Geben Sie hier den Titel der Publikation - ohne abschließenden Punkt - ein.
   subtitle:
     - Untertitel (optional)
     - Geben Sie hier einen Untertitel ein.
