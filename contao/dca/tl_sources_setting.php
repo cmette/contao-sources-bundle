@@ -52,7 +52,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{name_legend},name,mode;' .
+            '{name_legend},name,mode,sourcesPage;' .
             '',
 	],
 
@@ -120,6 +120,24 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'fixed'     => true,
                 'default'   => '',
             ]
+        ],
+        # die Seite, auf die alle Zitate verweisen
+        'sourcesPage' => [
+            'exclude' => true,
+            'inputType' => 'pageTree',
+            'foreignKey' => 'tl_page.title',
+            'eval' => [
+                'fieldType'  => 'radio',
+            ],
+            'sql' => [
+                'type' => 'integer',
+                'unsigned' => true,
+                'default' => 0,
+            ],
+            'relation' => [
+                'type' => 'hasOne',
+                'load' => 'lazy',
+            ],
         ],
         /**********************************************************************
          * **_legend

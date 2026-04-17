@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Cmette\ContaoSourcesBundle\InsertTag;
 
 use Cmette\ContaoSourcesBundle\Models\SourcesEntityModel;
+use Cmette\ContaoSourcesBundle\Models\SourcesSettingModel;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsInsertTag;
 use Contao\CoreBundle\InsertTag\Exception\InvalidInsertTagException;
 use Contao\CoreBundle\InsertTag\InsertTagResult;
@@ -25,11 +26,14 @@ class QuoteInsertTag
 {
     use InsertTagHelperTrait;
 
+    public ?SourcesSettingModel $settings = null;
+
     /**
-     * The HelperTrait requires a constructor.
+     * using the HelperTrait requires a constructor.
      */
     public function __construct(private readonly UrlGeneratorInterface $urlGenerator)
     {
+        $this->settings = SourcesSettingModel::findOneBy("published = '1'", [1]);
     }
 
     public function __invoke(ResolvedInsertTag $insertTag): InsertTagResult
