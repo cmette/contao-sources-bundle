@@ -76,20 +76,15 @@ class SourcesEntityListener
         return "<div class='widget'><p class='tl_help tl_source_tip' data-contao--tooltips-target='tooltip'>{$GLOBALS['TL_LANG'][self::STR_TABLE]['authors_hint']}</p></div>";
     }
 
-    #[AsCallback(table: self::STR_TABLE, target: 'fields.authors1.options')]
-    public function typeIdOptions(DataContainer $dc): array
+    #[AsCallback(table: self::STR_TABLE, target: 'fields.type.options')]
+    public function typeOptionsCallback(DataContainer $dc): array
     {
+        $options = SourcesEntityModel::SOURCE_TYPES;
         $options = [];
 
-        $authors = SourcesAuthorModel::findAll();
+        foreach (SourcesEntityModel::SOURCE_TYPES as $type) $options[$type] = $type;
 
-        if (null !== $authors) {
-            foreach ($authors as $author) {
-                $options[$author->id] = $author->getAuthorsAsString(false);
-            }
-        }
-
-        // asort($options);
+        ksort($options);
 
         return $options;
     }

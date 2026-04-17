@@ -35,7 +35,7 @@ class SourcesEntityController extends AbstractContentElementController
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
     {
-        $source     = SourcesEntityModel::findById($model->sources_entity);
+        $source     = SourcesEntityModel::findOneBy(['id = ?',"published = '1'"],[$model->sources_entity]);
         $settings   = SourcesSettingModel::findOneBy("published = '1'", [1]);
 
         $template->set('settings',  $settings);

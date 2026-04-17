@@ -47,12 +47,13 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'showColumns' => false,
 			'format' => '%s %s',
 		],
-        'operations' =>  [
-            'edit',
-            'copy',
-            '!toggle',
-            '!delete',
-        ],
+        #'operations' =>  [
+        #    'edit',
+        #    'copy',
+        #    'new',
+        #    '!toggle',
+        #    '!delete',
+        #],
 	],
 
 	// Palettes
@@ -125,7 +126,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'flag'      => DataContainer::SORT_ASC,
             'sorting'   => true,
             'filter'    => true,
-            'options'   => SourcesEntityModel::SOURCE_TYPES,
+            #'options'   => SourcesEntityModel::SOURCE_TYPES,
             'reference' => &$GLOBALS['TL_LANG'][$strTable]['type_options'],
             'eval'      => [
                 'helpwizard'    =>true,
