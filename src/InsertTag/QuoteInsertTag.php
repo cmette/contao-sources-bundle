@@ -66,7 +66,6 @@ class QuoteInsertTag
                         default:
                             $pages = '';
                     }
-                    $pages = '';
                 } else {
                     $pages = '';
                 }
