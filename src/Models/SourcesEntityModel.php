@@ -16,6 +16,7 @@ use Contao\DataContainer;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
+use Contao\System;
 use Symfony\Component\VarDumper\Caster\ScalarStub;
 use Symfony\Component\VarDumper\VarDumper;
 
@@ -57,6 +58,13 @@ class SourcesEntityModel extends Model
      * @var string
      */
     protected static $strTable = 'tl_sources_entity';
+
+    public function __construct($objResult = null)
+    {
+        parent::__construct($objResult);
+
+        System::loadLanguageFile('tl_sources_entity');
+    }
 
     /**
      * returns an array of data from the authors rowWizard.
@@ -112,6 +120,7 @@ class SourcesEntityModel extends Model
      */
     public function getAuthorsAsAPAString(bool $inlineQuote = true): \stdClass
     {
+        $lang       = $GLOBALS['TL_LANG']['tl_sources_entity'];
         $arrAuthors = [];
         $strAuthors = $GLOBALS['TL_LANG']['tl_sources_entity']['without_authors'];
 
@@ -138,7 +147,7 @@ class SourcesEntityModel extends Model
         $withTitle = !empty($this->title) ? ", $this->title" : '';
         $year = !empty($this->year) ?
             ($inlineQuote ? ", $this->year" : " ($this->year)") :
-            ($inlineQuote ? ", {$GLOBALS['TL_LANG']['tl_sources_entity']['without_year']}" : " ({$GLOBALS['TL_LANG']['tl_sources_entity']['without_year']})");
+            ($inlineQuote ? ", {$lang['without_year']}" : " ({$lang['without_year']})");
 
         $result = new \stdClass();
         $result->authors = $strAuthors.$year;
