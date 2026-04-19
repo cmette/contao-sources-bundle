@@ -32,10 +32,13 @@ class DcaUtils
         ];
     }
 
-    public static function bildAddField(): array
+    public static function buildAddField(): array
     {
         return [
             'inputType' => 'checkbox',
+            'search'    => false,
+            'filter'    => true,
+            'sorting'   => true,
             'eval' => [
                 'submitOnChange' => true,
             ],

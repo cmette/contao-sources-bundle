@@ -18,7 +18,7 @@ tl_sources_entity:
     essay:
       - Aufsatz
       - Aufsätze
-    periodicals:
+    periodical:
       - Zeitschrift
       - Zeitschriften
     onlinesource:
@@ -58,19 +58,25 @@ tl_sources_entity:
 
   title_legend: Titel der Publikation
   title:
-    - Titel der Publikation
+    - Titel
     - Geben Sie hier den Titel der Publikation - ohne abschließenden Punkt - ein.
   subtitle:
     - Untertitel (optional)
     - Geben Sie hier einen Untertitel ein.
+  addTitleAlias:
+    - Titelalias hinzufügen
+    - Ein Titelalias ist dann sinnvoll, wenn der Jaupttitel zu lang ist oder keine Verfasser vorhanden sind.
+  titleAlias:
+    - Titel-Alias
+    - Geben Sie hier einen eigenen Kurztitel ein. Er wird in den Zitaten an Stelle der Verfasser angezeigt.
 
   series_legend: Angaben zur Reihe oder einem Periodikum
   addSeries:
     - Reihe
     - Aktivieren Sie diese Option, wenn der Titel in einer Reihe erschienen ist.
   series:
-    - "Reihe"
-    - Wählen Sie hier das Periodikum aus. Erfassen Sie fehlende Periodika unter Periodika
+    - Reihe
+    - Wählen Sie hier die Reihe / das Periodikum aus. Erfassen Sie fehlende Periodika unter Periodika
   volume_title:
     - Bandtitel (optional)
     - Geben Sie hier den Titel des Bandes oder der Ausgabe ein. Die Angabe ist optional.
@@ -83,22 +89,22 @@ tl_sources_entity:
 
   publisher_legend: Ort und Verlag
   publisher:
-    - "Ort und Verlag"
+    - Ort und Verlag
     - Wählen Sie hier den Verlag. Erfassen Sie fehlende Verlage unter Verlage.
   edition:
-    - zitierte Auflage
+    - Zitierte Auflage
     - Geben Sie hier die Auflage ein, aus der Sie zitiert haben.
   year:
-    - Jahr zitierte Auflage
+    - Erscheinungsjahr der zitierten Auflage
     - Geben Sie hier das Erscheinungsjahr für die zitierte Auflage ein.
   without_year: o D. # gemäß APA 6
   firstyear:
-    - Jahr Erstauflage
-    - Geben Sie hier das Jahr der Erstauflage ein.
+    - Erscheinungsjahr der Erstauflage
+    - Geben Sie hier das Erscheinungsjahr der Erstauflage ein.
 
   catalogs_legend: Die Quelle in einschlägigen Katalogen
   addCatalogs:
-    - Einen oder mehrere Katalogverweise hinzufügen
+    - Katalogverweise vorhanden
     - Erfassen Sie hier Verweise auf einschlägige Bibliothekskataloge.
   catalogs:
     - Katalog
@@ -115,7 +121,7 @@ tl_sources_entity:
 
   digitalcopies_legend: Die Quelle als Digitalisat
   addDigitalCopies:
-    - Ein oder mehrere Digitalisate hinzufügen
+    - Digitalisate vorhanden
     - Aktivieren Sie diese Funktion, um ein oder mehrere Verweise auf Digitalisate zu erfassen. Das Digitalisat selbst wird hier nicht gespeichert.
   digitalcopies:
     - Digitalisate
@@ -145,5 +151,5 @@ tl_sources_entity:
     - Bildausrichtung
     - Bitte legen Sie fest, wie das Bild ausgerichtet werden soll.
   overwriteMetaFromSource:
-    - Metadaten der Quelle verwenden
+    - Metadaten aus der Quelle generieren
     - Wenn Sie diese Option aktivieren, so werden die Metadaten des Bildes aus der Quelle selbst erzeugt. Das ist genauer und spart die zusätzliche Datenerfassung am Bild, da die Angaben in der Quelle immer umfangreicher und genauer sind. Sie können die hier anzuzeigenden Daten in den Konfigurationseinstellungen auswählen.

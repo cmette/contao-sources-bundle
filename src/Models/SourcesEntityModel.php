@@ -38,15 +38,15 @@ class SourcesEntityModel extends Model
      * vordefinierte Quellentypen.
      */
     public const SOURCE_TYPES = [
-        'monograph', // Monographie
-        'anthology', // Sammelband
-        'series', // Reihe
-        'essay', // Aufsatz
-        'periodicals', // Periodikum
+        'monograph',    // Monographie
+        'anthology',    // Sammelband
+        'series',       // Reihe
+        'essay',        // Aufsatz
+        'periodical',   // Periodikum
         'onlinesource', // URL, URN, DOI etc
-        'map', // Landkarte, Riss, Skizze
-        'handwriting', // Handschrift
-        'photography', // Fotografie
+        'map',          // Landkarte, Riss, Skizze
+        'handwriting',  // Handschrift
+        'photography',  // Fotografie
     ];
 
     private const dbg = false;
@@ -169,7 +169,8 @@ class SourcesEntityModel extends Model
                     $family_name = $a->family_name;
                     $etal = (count($authors) > 1 ? " {$lang['etal'][2]}" : '');
                 } else {
-                    $family_name = empty($this->year) ? '' : $lang['without_authors'];
+                    #$family_name = empty($this->year) ? '' : $lang['without_authors'];
+                    $family_name = $this->addTitleAlias ? $this->titleAlias : $lang['without_authors'];
                     $etal = '';
                     $year = empty($this->year) ? '' : ", {$this->year}";
                 }

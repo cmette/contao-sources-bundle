@@ -58,27 +58,36 @@ $GLOBALS['TL_DCA'][$strTable] = [
 
 	// Palettes
 	'palettes' =>  [
-		'__selector__'  =>  ['type','addSeries','addCatalogs','addDigitalCopies','addImage'],
+		'__selector__'  =>  ['type','addTitleAlias','addSeries','addCatalogs','addDigitalCopies','addImage'],
         'default' =>
             '{type_legend},type;' .
-            '{author_legend},authors_hint,authors,etal;' .
-            '{title_legend},title,subtitle;' .
+            '{author_legend},authors_hint,authors,addTitleAlias;' .
+            '{title_legend},title,subtitle,titleAlias;' .
             '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year,firstyear;' .
-            '{data_legend},signature,signature_alt;' .
             '{catalogs_legend},addCatalogs;' .
             '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
             #'{occurrences_legend},occurrences;' .
             ''
         ,
-        'series' =>
+        'essay' =>
             '{type_legend},type;' .
-            '{author_legend},authors_hint,authors,etal;' .
+            '{author_legend},authors_hint,authors,addTitleAlias;' .
             '{title_legend},title,subtitle;' .
             '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year;' .
-            '{data_legend},signature,signature_alt;' .
+            '{catalogs_legend},addCatalogs;' .
+            '{digitalcopies_legend},addDigitalCopies;' .
+            '{image_legend},addImage;' .
+            #'{occurrences_legend},occurrences;' .
+            ''
+        ,
+        'handwriting' =>
+            '{type_legend},type;' .
+            '{author_legend},authors_hint,authors;' .
+            '{title_legend},title,subtitle,addTitleAlias;' .
+            '{publisher_legend},publisher,edition,year;' .
             '{catalogs_legend},addCatalogs;' .
             '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
@@ -87,11 +96,22 @@ $GLOBALS['TL_DCA'][$strTable] = [
         ,
         'map' =>
             '{type_legend},type;' .
-            '{author_legend},authors_hint,authors,etal;' .
+            '{author_legend},authors_hint,authors,addTitleAlias;' .
             '{title_legend},title,subtitle;' .
             '{series_legend},addSeries;' .
             '{publisher_legend},publisher,edition,year,firstyear;' .
-            '{data_legend},signature,signature_alt;' .
+            '{catalogs_legend},addCatalogs;' .
+            '{digitalcopies_legend},addDigitalCopies;' .
+            '{image_legend},addImage;' .
+            #'{occurrences_legend},occurrences;' .
+            ''
+        ,
+        'series' =>
+            '{type_legend},type;' .
+            '{author_legend},authors_hint,authors,addTitleAlias;' .
+            '{title_legend},title,subtitle;' .
+            '{series_legend},addSeries;' .
+            '{publisher_legend},publisher,edition,year;' .
             '{catalogs_legend},addCatalogs;' .
             '{digitalcopies_legend},addDigitalCopies;' .
             '{image_legend},addImage;' .
@@ -102,7 +122,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 
 	// Subpalettes
 	'subpalettes' =>  [
-        'addSeries'         => 'series,volume_title,volume,issue',
+        'addTitleAlias'     => 'titleAlias',
+        'addSeries'         => 'series,volume_title,volume,issue,pages',
         'addCatalogs'       => 'catalogs',
         'addDigitalCopies'  => 'digitalcopies',
         'addImage'          => 'singleSRC,size,floating,fullsize,overwriteMetaFromSource',
@@ -201,23 +222,31 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'notnull' => false
             ],
         ],
-        # et.al. bei mehr als drei Autoren verwenden
-        'etal' => [
-            'inputType' => 'checkbox',
-            'eval'      => [
-                'tl_class' => 'w16',
-                #'submitOnChange'=>true
+        # bei fehlenden Autoren einen Kurztitel an Stelle des Autors verwenden
+        'addTitleAlias' => DcaUtils::buildAddField(),
+        # ein Ersatztitel, wenn der Haupttitel zu lang ist
+        'titleAlias' => [
+            'inputType'     => 'text',
+            'eval'          => [
+                'tl_class'  =>'w50'
             ],
             'sql'       => [
-                'type' => 'boolean',
-                'default' => true
+                'type'      => 'text',
+                'length'    => 255,
+                'fixed'     => true,
+                'default'   => '',
             ]
         ],
         /**********************************************************************
          * title_legend
          **********************************************************************/
+
+        # der Haupttitel
         'title' => [
             'inputType'     => 'text',
+            'search'    => true,
+            'filter'    => false,
+            'sorting'   => true,
             'eval'          => [
                 'mandatory' => true,
                 'unique'    => false,
@@ -230,6 +259,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'default'   => '',
             ]
         ],
+        # ein Untertitel
         'subtitle' => [
             'inputType'     => 'text',
             'eval'          => [
@@ -245,20 +275,15 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * periodika_legend
          **********************************************************************/
+
         # Reihenangaben hinzufügen
-        'addSeries' => [
-            'inputType' => 'checkbox',
-            'eval'      => ['submitOnChange' => true],
-            'sql'       => [
-                'type' => 'boolean',
-                'default' => false
-            ]
-        ],
+        'addSeries' => DcaUtils::buildAddField(),
+
         # allg. Periodikum aus dem Reihen-Register
         'series' => [
             'inputType' => 'select',
             'search'    => true,
-            'filter'    => true,
+            'filter'    => false,
             'sorting'   => true,
             'foreignKey' => 'tl_sources_serie.title',
             'relation'  => [
@@ -270,7 +295,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'mandatory' => true,
                 'includeBlankOption'=> false,
                 #'blankOptionLabel'  => 'kein/unbekannt',
-                'tl_class' => 'w33',
+                'tl_class' => 'w25',
                 'multiple' => false,
                 'chosen' => true
             ],
@@ -283,11 +308,14 @@ $GLOBALS['TL_DCA'][$strTable] = [
         ],
         # Band-Titel, z.b. bei Lexika die Angabe "M bis P" oder "Maulbeere bis Pankow"
         'volume_title' => [
-            'inputType'     => 'text',
-            'eval'          => [
+            'inputType' => 'text',
+            'search'    => true,
+            'filter'    => false,
+            'sorting'   => true,
+            'eval'      => [
                 'mandatory' => false,
                 'unique'    => false,
-                'tl_class'  =>'w33'
+                'tl_class'  =>'w25'
             ],
             'sql'       => [
                 'type'      => 'text',
@@ -298,8 +326,11 @@ $GLOBALS['TL_DCA'][$strTable] = [
         ],
         # Band
         'volume' => [
-            'inputType'     => 'text',
-            'eval'          => [
+            'inputType' => 'text',
+            'search'    => true,
+            'filter'    => true,
+            'sorting'   => true,
+            'eval'      => [
                 'mandatory' => false,
                 'unique'    => false,
                 'tl_class'  =>'w16'
@@ -326,6 +357,21 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'default'   => '',
             ]
         ],
+        # Seiten - nur bei Aufsätzen
+        'pages' => [
+            'inputType'     => 'text',
+            'eval'          => [
+                'mandatory' => false,
+                'unique'    => false,
+                'tl_class'  =>'w16'
+            ],
+            'sql'       => [
+                'type'      => 'text',
+                'length'    => 50,
+                'fixed'     => true,
+                'default'   => '',
+            ]
+        ],
         /**********************************************************************
          * publisher_legend
          **********************************************************************/
@@ -335,10 +381,10 @@ $GLOBALS['TL_DCA'][$strTable] = [
         ],
         # Verlag
         'publisher' => [
+            'inputType' => 'select',
             'search'    => true,
             'filter'    => true,
-            'sorting' => true,
-            'inputType' => 'select',
+            'sorting'   => true,
             'foreignKey' => 'tl_sources_publisher.name',
             'relation'  => [
                 'type'  => 'hasMany',
@@ -413,11 +459,16 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * catalogs_legend
          **********************************************************************/
+
         # switch catalogs
-        'addCatalogs'   => DcaUtils::bildAddField(),
+        'addCatalogs'   => DcaUtils::buildAddField(),
+
         # list of links to catalogs
         'catalogs' => [
             'inputType' => 'rowWizard',
+            'search'    => true,
+            'filter'    => false,
+            'sorting'   => true,
             'fields' => [
                 'provider' => [
                     'label'     => &$GLOBALS['TL_LANG'][$strTable]['catalog_fields']['provider'],
@@ -490,13 +541,17 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * dataprovider_legend
          **********************************************************************/
+
         # switch digitalcopies
-        'addDigitalCopies' => DcaUtils::bildAddField(),
+        'addDigitalCopies' => DcaUtils::buildAddField(),
 
         # list of digitalcopies / Digitalisate
         'digitalcopies' => [
             'inputType' => 'rowWizard',
-            'fields' => [
+            'search'    => true,
+            'filter'    => false,
+            'sorting'   => true,
+            'fields'    => [
                 'provider' => [
                     'label'     => &$GLOBALS['TL_LANG'][$strTable]['digitalcopies_fields']['provider'],
                     'inputType' => 'select',
@@ -553,16 +608,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
         /**********************************************************************
          * image_legend
          **********************************************************************/
-        'addImage' => [
-            'inputType' => 'checkbox',
-            'eval'      => [
-                'submitOnChange' => true
-            ],
-            'sql'       => [
-                'type' => 'boolean',
-                'default' => false
-            ]
-        ],
+        // hat ein Bild
+        'addImage' => DCAUtils::buildAddField(),
+
         'singleSRC' => [
             'inputType' => 'fileTree',
             'eval'      => [
@@ -604,6 +652,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
         # überschreibt die Metadaten mit den Daten der Quelle ToDo: noch nicht implementiert
         'overwriteMetaFromSource' => [
             'inputType' => 'checkbox',
+            'search'    => false,
+            'filter'    => true,
+            'sorting'   => false,
             'eval'      => [
                 'submitOnChange' => false,
                 'tl_class' => 'w50'

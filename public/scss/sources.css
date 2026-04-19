@@ -76,6 +76,9 @@
 }
 
 /***********************************************************************************/
+.tl_file_list {
+  background-color: unset;
+}
 .tl_file_list .unused {
   color: dodgerblue;
 }

@@ -53,11 +53,25 @@ class QuoteInsertTag
             if ($source = SourcesEntityModel::findById($sourceId)) {
                 // test for page parameter 'pXX'
                 $pageParameter = $insertTag->getParameters()->get(1);
-                $pageCondiition = (null !== $pageParameter) && ('p' === $pageParameter[0]) && (\strlen($pageParameter) > 1);
-                // page number given?
-                $pages      = $pageCondiition ? ', S.'.substr($pageParameter, 1) : '';
+                $pageCondiition = (null !== $pageParameter) && ('p' === $pageParameter[0] || 'f' === $pageParameter[0]) && (\strlen($pageParameter) > 1);
+                // page number or folio given?
+                if($pageCondiition) {
+                    switch ($pageParameter[0]) {
+                        case 'p':
+                            $pages =  ', S.'.substr($pageParameter, 1);
+                            break;
+                        case 'f':
+                            $pages =  ', folio '.substr($pageParameter, 1);
+                            break;
+                        default:
+                            $pages = '';
+                    }
+                    $pages = '';
+                } else {
+                    $pages = '';
+                }
                 // build the replacement
-                $authors    = $source->getAuthorsAsString();
+                $authors = $source->getAuthorsAsString();
                 // check empty link
                 if(!empty($authors)) $linktext = $authors.$pages; else $source = null;
                 //

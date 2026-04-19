@@ -63,7 +63,13 @@
 
 /***********************************************************************************/
 
+// Test zum formatieren ganzer Tabellenzeilen mit Elementen mit Status 'used'
+tr.hover-row:has(span.used) {
+  //background-color: rgb(255 206 216) !important;
+}
+
 .tl_file_list {
+  background-color: unset;
 
   .unused { color: dodgerblue; }
   .used   { color: darkred; }
