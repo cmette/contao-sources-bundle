@@ -22,6 +22,7 @@ use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment as TwigEnvironment;
 
 #[AsContentElement(type: 'sources_entity', category: 'sources')]
 class SourcesEntityController extends AbstractContentElementController
@@ -29,7 +30,9 @@ class SourcesEntityController extends AbstractContentElementController
     // this code comes from:
     // vendor/contao/core-bundle/src/Controller/ContentElement/TextController.php
 
-    public function __construct(private readonly Studio $studio)
+    public function __construct(
+        private readonly Studio $studio,
+    )
     {
     }
 
@@ -48,7 +51,7 @@ class SourcesEntityController extends AbstractContentElementController
                 ->createFigureBuilder()
                 ->fromUuid($source->singleSRC ?: '')
                 ->setSize($source->size)
-                ->setOverwriteMetadata($source->getOverwriteMetadata())
+                ->setOverwriteMetadata($source->getOverwriteMetaFromSource())
                 ->enableLightbox($source->fullsize)
                 ->buildIfResourceExists();
 

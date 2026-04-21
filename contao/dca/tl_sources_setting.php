@@ -53,6 +53,10 @@ $GLOBALS['TL_DCA'][$strTable] = [
 		'__selector__'  =>  [],
 		'default'       =>
             '{name_legend},name,mode,sourcesPage;' .
+            '{bibliography_legend},sourcesPage;' .
+            '{authors_legend};' .
+            '{titles_legend};' .
+            '{series_legend};' .
             '',
 	],
 

@@ -12,13 +12,18 @@ declare(strict_types=1);
 
 namespace Cmette\ContaoSourcesBundle\Models;
 
+use Contao\CoreBundle\File\Metadata;
 use Contao\DataContainer;
+use Contao\FilesModel;
 use Contao\Model;
 use Contao\Model\Collection;
 use Contao\StringUtil;
 use Contao\System;
+use Contao\Validator;
+use Symfony\Bridge\Twig\Validator\Constraints\Twig;
 use Symfony\Component\VarDumper\Caster\ScalarStub;
 use Symfony\Component\VarDumper\VarDumper;
+use Twig\Environment as TwigEnvironment;
 
 /**
  * Reads and writes source entities. This refers to abstract sources such as
@@ -58,12 +63,12 @@ class SourcesEntityModel extends Model
      * @var string
      */
     protected static $strTable = 'tl_sources_entity';
-
     public function __construct($objResult = null)
     {
         parent::__construct($objResult);
 
         System::loadLanguageFile('tl_sources_entity');
+
     }
 
     /**
@@ -428,6 +433,73 @@ class SourcesEntityModel extends Model
         return $result;
     }
 
+    /**
+     * Titel
+     * Alternativer Text
+     * Link
+     * Bildunterschrift
+     * Lizenz-URL
+     *
+     * @return Metadata|null
+     */
+    public function getOverwriteMetaFromSource(): Metadata|null
+    {
+
+        // Ignore if "overwriteMeta" is not set
+        if (!$this->overwriteMetaFromSource)
+        {
+            return null;
+        }
+
+        $data = $this->row();
+        $settings = SourcesSettingModel::findOneBy("published = '1'", [1]); // ToDo: $settings === null?
+        $twig = System::getContainer()->get('twig');
+
+        // Normalize keys
+        if (\array_key_exists('title', $data))
+        {
+            #$data[Metadata::VALUE_TITLE] = $data['title'];
+            $data[Metadata::VALUE_TITLE] = $twig->render(
+                '@Contao_ContaoSourcesBundle/backend/sources_entity_list_label.html.twig',
+                ['source' => $this, 'settings' => $settings],
+            );
+        }
+
+        if (isset($data['imageUrl']))
+        {
+            $url = $data['imageUrl'];
+
+            if (Validator::isRelativeUrl($url))
+            {
+                $url = System::getContainer()->get('contao.assets.files_context')->getStaticUrl() . $url;
+            }
+
+            $data[Metadata::VALUE_URL] = $url;
+        }
+
+        unset($data['imageTitle'], $data['imageUrl']);
+
+        foreach ($data as $key => $value)
+        {
+            if ($value === '' || $value === null)
+            {
+                unset($data[$key]);
+            }
+        }
+
+        // Make sure we resolve insert tags pointing to files
+        if (isset($data[Metadata::VALUE_URL]))
+        {
+            $data[Metadata::VALUE_URL] = System::getContainer()->get('contao.insert_tag.parser')->replaceInline($data[Metadata::VALUE_URL] ?? '');
+        }
+
+        // Strip superfluous fields by intersecting with tl_files.meta.eval.metaFields
+        return new Metadata(array_intersect_key($data, array_flip(FilesModel::getMetaFields())));
+    }
+
+
+
+
     private static function debug(mixed ...$vars): mixed
     {
         if(!self::dbg) return null;
@@ -453,4 +525,6 @@ class SourcesEntityModel extends Model
 
         return $vars[$k];
     }
+
+
 }

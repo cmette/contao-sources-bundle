@@ -8,7 +8,12 @@
 
 {% block publisher_component %}
     {%- if publisher -%}
-        {%- set publisher_attributes = attrs().addClass(settings.mode).addClass('publisher') -%}
+        {%-
+            set publisher_attributes = attrs()
+                .addClass(settings.mode)
+                .addClass('publisher')
+                .addClass(publisher.published?' published':' unpublished')
+        -%}
         <span{{- publisher_attributes -}}>
             {{- publisher.name ? " #{publisher.name}" : "" -}}.
         </span>
