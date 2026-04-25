@@ -24,20 +24,20 @@ Eine typische Vorgehensweise könnte wie folgt aussehen:
 > [!CAUTION]
 > Wenn Sie Quellen im Text (inline) zitieren möchten, so müssen Sie zuerst eine extra Seite anlegen, auf der Sie später Ihr Quellenverzeichnis pflegen wollen. Auf dieser Seite müssen Sie die Quellen mit dem Inhaltselement **&raquo;Quelle&laquo;** referenzieren. In der Konfiguration müssen Sie also diese Seite als Ihr **&raquo;Quellenverzeichnis&laquo;** auswählen, damit das System &raquo;weiss&laquo;, wohin der Link in einem Inline-Zitat zeigen soll. Klickt man auf ein Inline-Zitat, so gelangt man zur zugehörigen Quelle im Verzeichnis.  
 
-#### Zitieren
+#### Quellenangaben nach Zitaten
 APA kennt zwei grundsätzliche Elemente:
 
-**a.) das Inline-Zitat** (hier quote genannt) und  
-**b.) den Eintrag im Literatur- bzw. Quellenverzeichnis** (hier source genannt).  
+**a.) die Inline-Quellenangabe** (hier quote genannt) und  
+**b.) die Quellenangabe im Literatur- bzw. Quellenverzeichnis** (hier source genannt).  
 
 Diese beiden Elemente sind mit Hilfe von InertTags realisiert. Später sollen noch weitere InsertTags hinzukommen.  
 
-7. Wenn Sie sich in einem Text oder in einem Feld, welches InsertTags zulässt (mir ist zurzeit keine Dokumentation bekannt, die alle derartigen Felder auflistet), befinden, so können Sie die Quellen hier inline zitieren. Verwenden Sie dazu das InsertTag `{{quote::*}}`.
+7. Wenn Sie sich in einem Text oder in einem Feld, welches InsertTags zulässt (mir ist zurzeit keine Dokumentation bekannt, die alle derartigen Felder auflistet), befinden, so können Sie Ihre Quellen hier inline referenzieren. Verwenden Sie dazu das InsertTag `{{quote::*}}`.
 > [!IMPORTANT]
 > Genaugenommen unterstützt APA verschiedene Inline-Quellenangaben. Hier ist zurzeit nur die direkte Quellenangabe mit nachgestellter Klammer implementiert. Indirekte Zitate mit den zugehörigen Quellenangaben sind noch nicht implementiert.  
 
 > [!NOTE]
-> **`{{quote::*}}`** erzeugt am Ort des Auftretens einen Link in Form eines APA-Inline-Zitats und hat folgende Syntax:   
+> **`{{quote::*}}`** erzeugt am Ort des Auftretens einen Link in Form einer APA-Inline-Quellenangabe und hat folgende Syntax:   
 > 
 > **`{{quote::sourceID::[p|f]Text}}`** wobei
 > 
@@ -46,25 +46,25 @@ Diese beiden Elemente sind mit Hilfe von InertTags realisiert. Später sollen no
 > **`Text`** kann ein beliebiger Text sein, sollte aber als Angabe der zitierten Seiten verwendet werden.  
 > **Sonderfälle:**  
 > a.) Wird **sourceID** nicht angegeben, so wird das Tag verworfen und die Textstelle bleibt einfach leer.  
-> b.) Wird **sourceID** angegeben, jedoch kann die Quelle nicht gefunden werden (Tippfehler, Quelle gelöscht etc.), dann wird **(Quelle?)** ausgegeben.  
-> c.) Wird weder **p** noch **f** angegeben, so wird nur das inline-Zitat gemäß APA ausgegeben.  
-> d.) Wird die Quelle gefunden, enthält jedoch keine Autoren, so wird "ohne Autor" ausgegeben und zum Eintrag im Quellenregister verlinkt. Bei Handschriften kann hier ein Titel-Alias verwendet werden.
+> b.) Wird **sourceID** angegeben, doch kann die Quelle nicht gefunden werden (Tippfehler, Quelle gelöscht etc.), dann wird **(Quelle?)** ausgegeben.  
+> c.) Wird weder **p** noch **f** angegeben, so wird nur die Quelle gemäß APA ausgegeben.  
+> d.) Wird die Quelle gefunden, enthält jedoch keine Autoren, so wird "ohne Autor" ausgegeben und zum Eintrag im Quellenregister verlinkt. Bei Handschriften kann hier ein Titel-Alias verwendet werden. Der Titel-Alias wird anstelle von "ohne Autor" ausgegeben.
 
 #### Beispiele:
-**Ein einfaches Inline-Zitat sieht so aus:**  
+**Eine einfache Inline-Quellenangabe sieht so aus:**  
 <kbd>![quote-example-001.png](docs/quote-example-001.png)</kbd>  
 Die Quelle enthält mehrere Autoren, daher wird **et al.** hinzugefügt. Ab APA 7 wird nur noch der erste Autor / die erste Autorin genannt. Alle anderen AutorInnen fallen unter et al. Die vollständige Liste der AutorInnen wird erst im verlinkten Quellenregister genannt. Wurde eine Jahresangabe zur Erstausgabe in der Quelle erfasst, so folgt diese. Hier wurde keine Seite angegeben, da es sich um eine Landkarte handelt.
 
 **Im Quellenregister erscheint die Quelle dann so:**
 <kbd>![source-example-001.png](docs/source-example-001.png)</kbd>
 
-**Ein Inline-Zitat mit Seitenangabe sieht so aus:**    
+**Eine Inline-Quellenangabe mit Seitenzahl sieht so aus:**    
 <kbd>![quote-example-002.png](docs/quote-example-002.png)</kbd>  
 Selbstredend. Es wird die Seitenzahl angehängt.
 
 **Im Quellenregister erscheint die Quelle dann so:**
 <kbd>![source-example-002.png](docs/source-example-002.png)</kbd>
-Wie man hier sehen kann, weicht der Modus `tagged` (siehe Konfiguration) etwas vom reinen APA-Style ab. Der Beweggrund, dies so zu formatieren, lag vorerst darin begründet, dass die Website, für die dieses System entwickelt wird, nicht nur von Expertinnen und Historikern besucht wird und daher ein reiner APA Quellen-Eintrag nicht besonders &raquo;besucherfreundlich&laquo; ist. Zu diesem Zweck wurden die einzelnen Felder mit farbigen Tags erweitert. Das lässt sich zukünftig noch alles einzeln konfigurieren.
+Wie man hier sehen kann, weicht der Modus `tagged` (siehe Konfiguration) etwas vom reinen APA-Style ab. Der Beweggrund, dies so zu formatieren, lag vorerst darin begründet, dass die Website, für die dieses System entwickelt wird, nicht nur von Expertinnen und Historikern besucht wird und daher ein reiner APA Quellen-Eintrag nicht besonders &raquo;übersichtlich&laquo; ist. Zu diesem Zweck wurden die einzelnen Felder mit farbigen Tags erweitert. Das lässt sich zukünftig noch alles einzeln konfigurieren.
 
 ### 1. Backend
 Anhand des vom Modul am Backend neu hinzugefügten Menüs **&raquo;Quellenregister&laquo;** sollen die bisher implementierten Funktionen kurz erklärt werden.  
