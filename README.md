@@ -47,15 +47,26 @@ Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.
 > c.) Wird weder **p** noch **f** angegeben, so wird nur das inline-Zitat gemäß APA ausgegeben.  
 > d.) Wird die Quelle gefunden, enthält jedoch keine Autoren, so wird "ohne Autor" ausgegeben und zum Eintrag im Quellenregister verlinkt. Bei Handschriften kann hier ein Titel-Alias verwendet werden.
 
-#### Beispiele
-Ein einfaches Inline-Zitat sieht so aus.  
-<kbd>![quote-example001.png](docs/quote-example001.png)</kbd>  
-Die Quelle enthält mehrere Autoren, daher wird et al. hinzugefügt. Ab APA 7 wird nur noch der erste Autor / die erste Autorin genannt. Alle anderen AutorInnen fallen unter et al. Die vollständige Liste der AutorInnen wird erst im Quellenregister genannt.
+#### Beispiele:
+**Ein einfaches Inline-Zitat sieht so aus:**  
+<kbd>![quote-example-001.png](docs/quote-example-001.png)</kbd>  
+Die Quelle enthält mehrere Autoren, daher wird et al. hinzugefügt. Ab APA 7 wird nur noch der erste Autor / die erste Autorin genannt. Alle anderen AutorInnen fallen unter et al. Die vollständige Liste der AutorInnen wird erst im verlinkten Quellenregister genannt. Wurde eine Jahresangabe zur Erstausgabe in der Quelle erfasst, so folgt diese. Hier wurde keine Seite angegeben, da es sich um eine Landkarte handelt.
+
+**Im Quellenregister erscheint die Quelle dann so:**
+<kbd>![source-example-001.png](docs/source-example-001.png)</kbd>
+
+**Ein Inline-Zitat mit Seitenangabe sieht so aus:**    
+<kbd>![quote-example-002.png](docs/quote-example-002.png)</kbd>  
+Selbstredend. Es wird die Seitenzahl angehängt.
+
+**Im Quellenregister erscheint die Quelle dann so:**
+<kbd>![source-example-002.png](docs/source-example-002.png)</kbd>
+Wie man hier sehen kann, weicht der Modus `tagged` (siehe Konfiguration) etwas vom reinen APA-Style ab. Der Beweggrund, dies so zu formatieren, lag vorerst darin begründet, dass die Website, für die dieses System entwickelt wird, nicht nur von Expertinnen und Historikern besucht wird und daher ein reiner APA Quellen-Eintrag nicht besonders &raquo;besucherfreundlich&laquo; ist. Zu diesem Zweck wurden die einzelnen Felder mit farbigen Tags erweitert. Das lässt sich zukünftig noch alles einzeln konfigurieren.
 
 ### 1. Backend
 Anhand des vom Modul am Backend neu hinzugefügten Menüs **&raquo;Quellenregister&laquo;** sollen die bisher implementierten Funktionen kurz erklärt werden.  
 
-![img.png](docs/img.png)
+![backend-menu.png](docs/backend-menu.png)
 
 ### 1.1. Quellen   
 Der Menüpunkt **&raquo;Quellen&laquo;** ermöglicht die eigentliche Verwaltung der Quellen. Dort finden Sie eine Auflistung aller von Ihnen erfassten Quellen. 
