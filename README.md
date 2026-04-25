@@ -1,11 +1,11 @@
 # contao-sources-bundle
 
 ### Quellen verwalten unter Contao (ab 5+)
-Dieses Bundle bietet eine einfache Verwaltung von Quellen für das CMS Contao. Der Begriff "Quellen" wird hier in einem relativ **weiten Sinne** verwendet und bezieht sich vor allem **literarische Quellen, Drucke, Karten, Pläne und Risse, aber auch Fotos, Websites** und andere Entitäten, auf die in Contao zitiert werden.
+Dieses Bundle bietet eine einfache Verwaltung von Quellen für das CMS Contao. Der Begriff **&raquo;Quellen&laquo;** wird hier in einem relativ **weiten Sinne** verwendet und bezieht sich vor allem **literarische Quellen, Drucke, Karten, Pläne und Risse, aber auch Fotos, Websites** und andere Entitäten, auf die in Contao zitiert werden.
 
 Dabei orientiert sich die aktuelle Version ganz grob an APA 7, was in weiten Bereichen der wissenschaftlichen Publikationen als eine Art quasi-Standard betrachtet wird. Jedoch sind nicht alle Regeln von APA 7 hier bereits implementiert. 
 
-Zurzeit befindet sich das Bundle noch in einem sehr experimentellen Statium.
+**Zurzeit befindet sich das Bundle noch in einem experimentellen Stadium!**
 
 ## Folgende Funktionen sind implementiert
 ### 0. Konzept (Schnelleinstieg - leider alles noch experimentell)
