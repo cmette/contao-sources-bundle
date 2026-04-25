@@ -48,8 +48,9 @@ Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.
 > d.) Wird die Quelle gefunden, enthält jedoch keine Autoren, so wird "ohne Autor" ausgegeben und zum Eintrag im Quellenregister verlinkt. Bei Handschriften kann hier ein Titel-Alias verwendet werden.
 
 #### Beispiele
-
-
+Ein einfaches Inline-Zitat sieht so aus.  
+<kbd>![quote-example001.png](docs/quote-example001.png)</kbd>  
+Die Quelle enthält mehrere Autoren, daher wird et al. hinzugefügt. Ab APA 7 wird nur noch der erste Autor / die erste Autorin genannt. Alle anderen AutorInnen fallen unter et al. Die vollständige Liste der AutorInnen wird erst im Quellenregister genannt.
 
 ### 1. Backend
 Anhand des vom Modul am Backend neu hinzugefügten Menüs **&raquo;Quellenregister&laquo;** sollen die bisher implementierten Funktionen kurz erklärt werden.  
