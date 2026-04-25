@@ -38,7 +38,7 @@ Diese beiden Elemente sind mit Hilfe von InertTags realisiert. Später sollen no
 > 
 > **`{{quote::sourceID::[p|f]Text}}`** wobei
 > 
-> **`sourceID`** für die ID Ihrer Quelle steht. Bitte schauen Sie in der Auflistung der Quellen und entnehmen Sie dort die ID der Quelle,   
+> **`sourceID`** für die ID Ihrer Quelle steht. Bitte schauen Sie in die Auflistung Ihrer Quellen und entnehmen Sie dort die ID der zu zitierenden Quelle (ein autosuggester ist vorgesehen, aber noch nicht implementiert),   
 > **`p`** oder **`f`** können folgen, müssen aber nicht. p wird in ", S. " umgewandelt und f in ", folio " (alles noch experimentell, wird noch erweitert...).
 > **`Text`** kann ein beliebiger Text sein, sollte aber als Angabe der zitierten Seiten verwendet werden.  
 > **Sonderfälle:**  
@@ -50,7 +50,7 @@ Diese beiden Elemente sind mit Hilfe von InertTags realisiert. Später sollen no
 #### Beispiele:
 **Ein einfaches Inline-Zitat sieht so aus:**  
 <kbd>![quote-example-001.png](docs/quote-example-001.png)</kbd>  
-Die Quelle enthält mehrere Autoren, daher wird et al. hinzugefügt. Ab APA 7 wird nur noch der erste Autor / die erste Autorin genannt. Alle anderen AutorInnen fallen unter et al. Die vollständige Liste der AutorInnen wird erst im verlinkten Quellenregister genannt. Wurde eine Jahresangabe zur Erstausgabe in der Quelle erfasst, so folgt diese. Hier wurde keine Seite angegeben, da es sich um eine Landkarte handelt.
+Die Quelle enthält mehrere Autoren, daher wird **et al.** hinzugefügt. Ab APA 7 wird nur noch der erste Autor / die erste Autorin genannt. Alle anderen AutorInnen fallen unter et al. Die vollständige Liste der AutorInnen wird erst im verlinkten Quellenregister genannt. Wurde eine Jahresangabe zur Erstausgabe in der Quelle erfasst, so folgt diese. Hier wurde keine Seite angegeben, da es sich um eine Landkarte handelt.
 
 **Im Quellenregister erscheint die Quelle dann so:**
 <kbd>![source-example-001.png](docs/source-example-001.png)</kbd>
@@ -86,7 +86,7 @@ Hier können Sie verschiedene Konfigurationen für das Quellenregister anlegen.
 > Bitte legen Sie zuerst eine Konfiguration an und wählen Sie den Modus `tagged`. Dieser Modus ist (leider) auch erst einmal experimentell und stellt eine leichter lesbare Form eines APA-konformen Literaturzitates dar.
 
 ## 2. Frontend
-
+Wird bald fortgesetzt...
 
 
 
