@@ -52,7 +52,8 @@ $GLOBALS['TL_DCA'][$strTable] = [
 	'palettes' =>  [
 		'__selector__'  =>  [],
 		'default'       =>
-            '{name_legend},name,mode,sourcesPage;' .
+            '{name_legend},name;' .
+            '{mode_legend},mode;' .
             '{bibliography_legend},sourcesPage;' .
             '{authors_legend};' .
             '{titles_legend};' .
@@ -107,6 +108,9 @@ $GLOBALS['TL_DCA'][$strTable] = [
                 'default'   => '',
             ]
         ],
+        /**********************************************************************
+         * mode_legend
+         **********************************************************************/
         'mode' => [
             'inputType' => 'radio',
             'options' => SourcesSettingModel::MODES,

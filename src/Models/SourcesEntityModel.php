@@ -91,7 +91,6 @@ class SourcesEntityModel extends Model
 
             if (null !== $modelAuthor) {
                 // author found
-                #$record = $modelAuthor;
                 // enrich with virtual properties
                 $modelAuthor->_role    = $author['role'];
                 $modelAuthor->_enabled = (bool) $author['enable'];
@@ -398,7 +397,7 @@ class SourcesEntityModel extends Model
             self::debug("Verwaiste Einträge für CTE {$content['id']} werden in den Quellen gesucht.");
             self::debug("  suche nach occurrences LIKE '%i:{$content['id']};%'");
 
-            // Gegenprobe, ist dieses CTE  noch in anderen Quellen registriert?
+            // Gegenprobe: ist dieses CTE noch in anderen Quellen registriert?
             if ($entities = self::findBy(["occurrences LIKE '%i:{$content['id']};%'"], [])) {
                 self::debug($entities);
                 $sourceIds3 = $entities->fetchEach('id');
@@ -458,9 +457,8 @@ class SourcesEntityModel extends Model
         // Normalize keys
         if (\array_key_exists('title', $data))
         {
-            #$data[Metadata::VALUE_TITLE] = $data['title'];
             $data[Metadata::VALUE_TITLE] = $twig->render(
-                '@Contao_ContaoSourcesBundle/backend/sources_entity_list_label.html.twig',
+                '@Contao_ContaoSourcesBundle/backend/sources_entity_metadata.html.twig',
                 ['source' => $this, 'settings' => $settings],
             );
         }

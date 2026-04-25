@@ -6,9 +6,6 @@
 {% use '@Contao/component/_metadata.html.twig' %}
 
 <div class="source-entity">
-    {%- if source._imageHtml|default -%}
-    <div class="initiale"><img src='bundles/contaosources/img/{{ source.type }}.svg' alt="{{ source.type }}"></div>
-    {%- endif -%}
     <div class="data">
         <div>
             {%- if source -%}
@@ -28,8 +25,5 @@
                 <div>{{- 'tl_sources_entity.source_not_found'|trans([], 'contao_tl_sources_entity') -}}</div>
             {%- endif -%}
         </div>
-        {%- if source._imageHtml|default -%}
-        <div>{{ source._imageHtml|raw }}</div>
-        {%- endif -%}
     </div>
 </div>

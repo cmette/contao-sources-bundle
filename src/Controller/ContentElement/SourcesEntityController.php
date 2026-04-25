@@ -46,13 +46,13 @@ class SourcesEntityController extends AbstractContentElementController
 
         if($source) {
             // source found
-
             $figure = !$source->addImage ? null : $this->studio
                 ->createFigureBuilder()
                 ->fromUuid($source->singleSRC ?: '')
                 ->setSize($source->size)
                 ->setOverwriteMetadata($source->getOverwriteMetaFromSource())
                 ->enableLightbox($source->fullsize)
+                //->setLinkAttribute('title', 'neuer Titel')
                 ->buildIfResourceExists();
 
             $template->set('layout', $source->floating);
