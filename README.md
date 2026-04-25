@@ -22,17 +22,20 @@ Eine typische Vorgehensweise könnte wie folgt aussehen:
 > Das System ist zurzeit noch so ausgelegt, dass Sie auf verschiedenen Ebenen alle unabhängigen Daten (Autor/Reihe/Verlag/Bibliothek) publizieren und wieder depublizieren können. Das führt dazu, dass beispielsweise AutorInnen oder Reihen am Frontend bisweilen nicht sichtbar sind, da sie, wie manche Contao Content-Elemente, im Grundzustand unpubliziert sind. Bitte prüfen Sie in diesen Fällen die Sichtbarkeit noch einmal. Am Backend werden unpublizierte Bestandteile **rot markiert**.
 
 > [!CAUTION]
-> Wenn Sie Quellen im Text (inline) zitieren möchten, so müssen Sie zuerst eine extra Seite anlegen, auf der sie später Ihr Quellenregister pflegen wollen. Auf dieser Seite müssen Sie die Quellen mit dem Inhaltselement **&raquo;Quelle&laquo;** referenzieren. In der Konfiguration müssen Sie also diese Seite als Ihr **&raquo;Quellenregister&laquo;** auswählen, damit das System &raquo;weiss&laquo;, wohin der Link in einem Inline-Zitat zeigen soll. Klickt man auf ein Inline-Zitat, so gelangt man zur zugehörigen Quelle im Register.   
+> Wenn Sie Quellen im Text (inline) zitieren möchten, so müssen Sie zuerst eine extra Seite anlegen, auf der Sie später Ihr Quellenverzeichnis pflegen wollen. Auf dieser Seite müssen Sie die Quellen mit dem Inhaltselement **&raquo;Quelle&laquo;** referenzieren. In der Konfiguration müssen Sie also diese Seite als Ihr **&raquo;Quellenverzeichnis&laquo;** auswählen, damit das System &raquo;weiss&laquo;, wohin der Link in einem Inline-Zitat zeigen soll. Klickt man auf ein Inline-Zitat, so gelangt man zur zugehörigen Quelle im Verzeichnis.  
 
 #### Zitieren
 APA kennt zwei grundsätzliche Elemente:
 
-**a.) das Inline-Zitat** hier (quote) und  
-**b.) den Eintrag im Literatur- bzw. Quellenverzeichnis** hier (source).  
+**a.) das Inline-Zitat** (hier quote genannt) und  
+**b.) den Eintrag im Literatur- bzw. Quellenverzeichnis** (hier source genannt).  
 
 Diese beiden Elemente sind mit Hilfe von InertTags realisiert. Später sollen noch weitere InsertTags hinzukommen.  
 
 7. Wenn Sie sich in einem Text oder in einem Feld, welches InsertTags zulässt (mir ist zurzeit keine Dokumentation bekannt, die alle derartigen Felder auflistet), befinden, so können Sie die Quellen hier inline zitieren. Verwenden Sie dazu das InsertTag `{{quote::*}}`.
+> [!IMPORTANT]
+> Genaugenommen unterstützt APA verschiedene Inline-Quellenangaben. Hier ist zurzeit nur die direkte Quellenangabe mit nachgestellter Klammer implementiert. Indirekte Zitate mit den zugehörigen Quellenangaben sind noch nicht implementiert.  
+
 > [!NOTE]
 > **`{{quote::*}}`** erzeugt am Ort des Auftretens einen Link in Form eines APA-Inline-Zitats und hat folgende Syntax:   
 > 
