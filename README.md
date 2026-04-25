@@ -1,7 +1,7 @@
 # contao-sources-bundle
 
-### Quellen verwalten unter Contao (ab 5+)
-Dieses Bundle bietet eine einfache Verwaltung von Quellen für das CMS Contao. Der Begriff **&raquo;Quellen&laquo;** wird hier in einem relativ **weiten Sinne** verwendet und bezieht sich vor allem **literarische Quellen, Drucke, Karten, Pläne und Risse, aber auch Fotos, Websites** und andere Entitäten, auf die in Contao zitiert werden.
+### (Literatur)-Quellen verwalten für Contao (ab 5+)
+Dieses Bundle bietet eine einfache Verwaltung von Quellen für das CMS Contao. Der Begriff **&raquo;Quellen&laquo;** wird hier in einem relativ **weiten Sinne** verwendet und bezieht sich vor allem **literarische Quellen, Drucke, Karten, Pläne und Risse, aber auch Fotos, Websites** und andere &raquo;Archivalien&laquo;, die in Contao zitiert werden sollen.
 
 Dabei orientiert sich die aktuelle Version ganz grob an APA 7, was in weiten Bereichen der wissenschaftlichen Publikationen als eine Art quasi-Standard betrachtet wird. Jedoch sind nicht alle Regeln von APA 7 hier bereits implementiert. 
 
@@ -16,13 +16,13 @@ Eine typische Vorgehensweise könnte wie folgt aussehen:
 3. Sie erfassen also als Nächstes die zur Quelle gehörigen **Autoren** und **Autorinnen** und tragen diese in der Quelle nach.
 4. Sie bemerken, dass es sich um einen **Reihentitel** handelt. Sie erfassen nun die zugehörige **Reihe oder Zeitschrift** und tragen diese in der Quelle nach.
 5. Sie bemerken, dass der **Verlag** noch nicht erfasst wurde. Sie erfassen den **Verlag** und tragen ihn in der Quelle nach.
-6. Dasselbe Konzept verfolgen Sie bei dem **Bibliotheken (Archiven und Datengebern)**.
-#### Sie haben nun eine Quelle erfasst. Jetzt können Sie diese im System zitieren.
+6. Dasselbe Konzept verfolgen Sie bei den **Bibliotheken (Archiven und Datengebern)**.
+#### Wenn Sie diese Schritte ausgeführt haben, so haben Sie eine Quelle erfasst. Jetzt können Sie die Quelle überall (wo InsertTags möglich sind) im System zitieren.
 > [!CAUTION]
-> Das System ist zurzeit noch so ausgelegt, dass Sie auf verschiedenen Ebenen alle unabhängigen Daten (Autor/Reihe/Verlag/Bibliothek) publizieren und wieder depublizieren können. Das führt dazu, dass beispielsweise AutorInnen oder Reihen am Frontend bisweilen nicht sichtbar sind. Bitte prüfen Sie in diesen Fällen die Sichtbarkeit noch einmal.
+> Das System ist zurzeit noch so ausgelegt, dass Sie auf verschiedenen Ebenen alle unabhängigen Daten (Autor/Reihe/Verlag/Bibliothek) publizieren und wieder depublizieren können. Das führt dazu, dass beispielsweise AutorInnen oder Reihen am Frontend bisweilen nicht sichtbar sind, da sie, wie manche Contao Content-Elemente, im Grundzustand unpubliziert sind. Bitte prüfen Sie in diesen Fällen die Sichtbarkeit noch einmal. Am Backend werden unpublizierte Bestandteile **rot markiert**.
 
 > [!CAUTION]
-> Wenn Sie Quellen im Text (inline) zitieren möchten, so müssen Sie zuerst eine extra Seite anlegen, auf der sie später Ihr Quellenregister anzeigen wollen. Auf dieser Seite müssen Sie die Quellen mit dem Inhaltselement **&raquo;Quelle&laquo;** referenzieren. In der Konfiguration müssen Sie diese Seite als Quellenregister auswählen, damit das System &raquo;weiss&laquo;, wohin der Link in einem Inline-Zitat zeigen soll. Klickt man auf ein Inline-Zitat, so gelangt man zur zugehörigen Quelle.   
+> Wenn Sie Quellen im Text (inline) zitieren möchten, so müssen Sie zuerst eine extra Seite anlegen, auf der sie später Ihr Quellenregister pflegen wollen. Auf dieser Seite müssen Sie die Quellen mit dem Inhaltselement **&raquo;Quelle&laquo;** referenzieren. In der Konfiguration müssen Sie also diese Seite als Ihr **&raquo;Quellenregister&laquo;** auswählen, damit das System &raquo;weiss&laquo;, wohin der Link in einem Inline-Zitat zeigen soll. Klickt man auf ein Inline-Zitat, so gelangt man zur zugehörigen Quelle im Register.   
 
 #### Zitieren
 APA kennt zwei grundsätzliche Elemente:
@@ -30,9 +30,9 @@ APA kennt zwei grundsätzliche Elemente:
 **a.) das Inline-Zitat** hier (quote) und  
 **b.) den Eintrag im Literatur- bzw. Quellenverzeichnis** hier (source).  
 
-Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.  
+Diese beiden Elemente sind mit Hilfe von InertTags realisiert. Später sollen noch weitere InsertTags hinzukommen.  
 
-7. Wenn Sie sich in einem Text oder in einem Feld, welches InsertTags verarbeitet, befinden, so können Sie die Quellen hier inline zitieren. Verwenden Sie dazu das InsertTag `{{quote::*}}`.
+7. Wenn Sie sich in einem Text oder in einem Feld, welches InsertTags zulässt (mir ist zurzeit keine Dokumentation bekannt, die alle derartigen Felder auflistet), befinden, so können Sie die Quellen hier inline zitieren. Verwenden Sie dazu das InsertTag `{{quote::*}}`.
 > [!NOTE]
 > **`{{quote::*}}`** erzeugt am Ort des Auftretens einen Link in Form eines APA-Inline-Zitats und hat folgende Syntax:   
 > 
@@ -73,11 +73,11 @@ Der Menüpunkt **&raquo;Quellen&laquo;** ermöglicht die eigentliche Verwaltung 
 > [!NOTE] 
 > Bei den Quellen handelt es sich um abhängige Daten (abhängige Tabelle). Die hier eingefügten Daten sind teilweise von den nachfolgend genannten Daten abhängig. Das bedeutet, dass Sie (genau genommen) zuerst die unabhängigen Daten (AutorIn, Reihe, Verlag und Bibliothek) erfassen müssen, bevor Sie die eigentliche Quelle vollständig erfassen können. 
 ### 1.2. AutorInnen
-Hier können Sie Angaben zu AutorInnen erfasst werden. Diese beschränken sich aktuell auf den Namen und die zugehörigen Vornamen. Die Vornamen werden gemäß der APA-Regeln angepasst und formatiert.
+Hier können Sie Angaben zu AutorInnen erfasst werden. Diese beschränken sich aktuell auf den Namen und die zugehörigen Vornamen. Die Vornamen werden gemäß der APA-Regeln vom System noch einmal angepasst und formatiert. Tragen Sie daher ganze Vornamen ein. Es werden auch Bindestrich-Vornahmen und deren (seltene) Kombinationen automatisch verarbeitet. z.B. Weidemann, Hans-Peter Ulrich Karl.
 ### 1.3. Periodika
 Unter **&raquo;Periodika&laquo;** können Sie Namen von Reihen und Zeitschriften erfassen. Die Umsetzung ist zurzeit noch minimal. Weitere Daten werden noch nicht erfasst.
 ### 1.4. Verlage
-**&raquo;Verlage&laquo;** können aktuell ebenfalls nur in einer minimalen Form `Ort1; Ort2; ... OrtN : Verlagsname` erfasst werden.
+**&raquo;Verlage&laquo;** können aktuell ebenfalls nur in der minimalen Form `Ort1; Ort2; ... OrtN: Verlagsname` erfasst werden. z.B.: Köln; Weimar; Wien: Böhlau.
 ### 1.5. Bibliotheken
 Hier können Sie Namen von Bibliotheken, Archiven oder abstrakten Datengebern erfassen. Ebenfalls können Sie das zugehörige offizielle Kurzzeichen sowie eine Zuordnung zu einer Kategorie angeben. Zurzeit gibt es zwei Kategorien: Der Eintrag kann als **&raquo;Katalog&laquo;** oder als **&raquo;Datengeber&laquo;** für Digitalisate (oder beides) verwendet werden.
 ### 1.6. Konfigurationen
@@ -86,7 +86,7 @@ Hier können Sie verschiedene Konfigurationen für das Quellenregister anlegen.
 > Bitte legen Sie zuerst eine Konfiguration an und wählen Sie den Modus `tagged`. Dieser Modus ist (leider) auch erst einmal experimentell und stellt eine leichter lesbare Form eines APA-konformen Literaturzitates dar.
 
 ## 2. Frontend
-Das Konzept
+
 
 
 
