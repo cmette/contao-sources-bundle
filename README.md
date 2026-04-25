@@ -38,9 +38,9 @@ Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.
 > 
 > **`{{quote::sourceID::[p|f]Text}}`** wobei
 > 
-> **sourceID** steht für die ID Ihrer Quelle. Bitte schauen Sie in der Auflistung der Quellen und entnehmen Sie dort die ID der Quelle,   
-> **p** oder **f** können folgen, müssen aber nicht. p wird in ", S. " umgewandelt und f in ", folio " (alles noch experimentell, wird noch erweitert...).
-> **Text** kann ein beliebiger Text sein, sollte aber als Angabe der zitierten Seiten verwendet werden.  
+> **`sourceID`** für die ID Ihrer Quelle steht. Bitte schauen Sie in der Auflistung der Quellen und entnehmen Sie dort die ID der Quelle,   
+> **`p`** oder **`f`** können folgen, müssen aber nicht. p wird in ", S. " umgewandelt und f in ", folio " (alles noch experimentell, wird noch erweitert...).
+> **`Text`** kann ein beliebiger Text sein, sollte aber als Angabe der zitierten Seiten verwendet werden.  
 > **Sonderfälle:**  
 > a.) Wird **sourceID** nicht angegeben, so wird das Tag verworfen und die Textstelle bleibt einfach leer.  
 > b.) Wird **sourceID** angegeben, jedoch kann die Quelle nicht gefunden werden (Tippfehler, Quelle gelöscht etc.), dann wird **(Quelle?)** ausgegeben.  
