@@ -4,6 +4,8 @@
 #}
 
 {%- block series_component -%}
+    {%- set serie = source.getSerie() -%}
+    {%- set publisher = source.getPublisher() -%}
     {%- if(serie) -%}&nbsp;
         {%- set series_attributes = attrs()
             .addClass(settings.mode)

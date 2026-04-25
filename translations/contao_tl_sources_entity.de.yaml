@@ -156,3 +156,5 @@ tl_sources_entity:
   overwriteMetaFromSource:
     - Metadaten aus der Quelle generieren
     - Wenn Sie diese Option aktivieren, so werden die Metadaten des Bildes aus der Quelle selbst erzeugt. Das ist genauer und spart die zusätzliche Datenerfassung am Bild, da die Angaben in der Quelle immer umfangreicher und genauer sind. Sie können die hier anzuzeigenden Daten in den Konfigurationseinstellungen auswählen.
+
+  without_occurrence: bisher nicht zitiert

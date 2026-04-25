@@ -1,0 +1,22 @@
+{% trans_default_domain "tl_sources_entity" %}
+{#
+    rendert alle Zitatstellen
+#}
+
+{%- block occurrences_component -%}
+    {%-
+        set occurrences_attributes = attrs()
+            .addClass(settings ? settings.mode : '')
+            .addClass('occurrences')
+    -%}
+    <div{{- occurrences_attributes -}}>
+    {%- set occurrences = source.getOccurrences() -%}
+    {%- if occurrences|length > 0 -%}
+        {%- for id,occurrence in occurrences -%}
+            <a href="{{- occurrence.url -}}" class="occurrence" title="{{- occurrence._title -}}">[{{- occurrence.title -}}]</a>
+    {%- endfor -%}
+    {%- else -%}
+        <span>{{- ('tl_sources_entity.without_occurrence')|trans([], 'contao_tl_sources_entity') -}}&nbsp;</span>
+    {%- endif -%}
+    </div>
+{%- endblock -%}

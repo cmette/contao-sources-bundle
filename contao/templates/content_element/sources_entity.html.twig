@@ -8,6 +8,7 @@
 {% use '@Contao/component/_series.html.twig' %}
 {% use '@Contao/component/_publisher.html.twig' %}
 {% use '@Contao/component/_metadata.html.twig' %}
+{% use '@Contao/component/_occurrences.html.twig' %}
 
 {% set content_layout_attributes = attrs()
     .addClass('media media--' ~ layout, layout and image)
@@ -38,18 +39,13 @@
 
     {% block text %}
         {% if source %}
-            {%- with { 'authors': source.getAuthors() } -%}
-                {{- block('authors_component') -}}
-            {% endwith %}
+            {{- block('authors_component') -}}
             {{- block('year_component') -}}
             {{- block('titles_component') -}}
-            {%- with { 'serie': source.getSerie(), 'publisher': source.getPublisher() } -%}
-                {{- block('series_component') -}}
-            {% endwith %}
-            {%- with { 'publisher': source.getPublisher() } -%}
-                {{- block('publisher_component') -}}
-            {% endwith %}
+            {{- block('series_component') -}}
+            {{- block('publisher_component') -}}
             {{- block('metadata_component') -}}
+            {{- block('occurrences_component') -}}
         {% else %}
             <div>{{- 'tl_sources_entity.source_not_found'|trans([], 'contao_tl_sources_entity') -}}</div>
         {% endif %}

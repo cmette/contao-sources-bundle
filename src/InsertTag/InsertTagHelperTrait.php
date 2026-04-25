@@ -14,7 +14,7 @@ trait InsertTagHelperTrait
     private function link(SourcesEntityModel|null $source, string $text, string $title = '', string $target = '_self'): string
     {
         // build a link
-        $page = PageModel::findById($this->settings->sourcesPage); // ToDo: das geht so nicht, hier die Seite mit den Quellen angeben
+        $page = PageModel::findById($this->settings->sourcesPage);
         $url = $this->urlGenerator->generate(PageRoute::PAGE_BASED_ROUTE_NAME, [RouteObjectInterface::CONTENT_OBJECT => $page]);
 
         return $source ?

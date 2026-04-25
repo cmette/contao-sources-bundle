@@ -34,20 +34,26 @@
 .tagged.series ::before {
   content: "In ";
 }
-
 .tagged.metadata::before {
   content: "Metadaten";
   background-color: #ecf4ff;
 }
-
 .tagged.catalogs::before {
   content: "in Katalogen";
   background-color: #ecf4ff;
 }
-
 .tagged.digitalcopies::before {
   content: "Digitalisate";
   background-color: #ecf4ff;
+}
+.tagged.occurrences::before {
+  content: "zitiert in:";
+  background-color: #eeffec;
+}
+.tagged.occurrences .occurrence {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .tagged.counter {

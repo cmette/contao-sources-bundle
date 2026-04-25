@@ -12,15 +12,20 @@ declare(strict_types=1);
 
 namespace Cmette\ContaoSourcesBundle\Models;
 
+use Contao\ArticleModel;
+use Contao\ContentModel;
 use Contao\CoreBundle\File\Metadata;
+use Contao\CoreBundle\Routing\Page\PageRoute;
 use Contao\DataContainer;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\Model\Collection;
+use Contao\PageModel;
 use Contao\StringUtil;
 use Contao\System;
 use Contao\Validator;
 use Symfony\Bridge\Twig\Validator\Constraints\Twig;
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Symfony\Component\VarDumper\Caster\ScalarStub;
 use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as TwigEnvironment;
@@ -68,7 +73,6 @@ class SourcesEntityModel extends Model
         parent::__construct($objResult);
 
         System::loadLanguageFile('tl_sources_entity');
-
     }
 
     /**
@@ -313,6 +317,42 @@ class SourcesEntityModel extends Model
 
         return $arrDigitalcopies;
     }
+
+    /**
+     *
+     * @return array|null
+     */
+    public function getOccurrences(): array|null
+    {
+        $urlGenerator = System::getContainer()->get('contao.routing.content_url_generator');
+
+        $arrOcc = StringUtil::deserialize($this->occurrences, true);
+        $arrOccurences = [];
+
+        if(count($arrOcc) > 0) {
+            foreach ($arrOcc as $occ) {
+                /* @var ContentModel $objContent */
+                if ($objContent = ContentModel::findById($occ)) {
+                    if($objArticle = ArticleModel::findById($objContent->pid)) {
+                        $url = $urlGenerator->generate($objArticle);
+
+                        if ($this->isBackendRequest()) {
+                            $arrOccurences[] = ['url' => $url, 'title' => $objArticle->title, '_title' => "Seite: {$objArticle->pid} | Artikel: {$objArticle->id} | Element: {$objContent->id}"];
+                        } else {
+                            if($objArticle->published && $objArticle->published) {
+                                $arrOccurences[] = ['url' => $url, 'title' => $objArticle->title, '_title' => "Seite: {$objArticle->pid} | Artikel: {$objArticle->id} | Element: {$objContent->id}"];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $arrOccurences;
+    }
+
+
+
 
     public static function syncQuotes(mixed $varValue, DataContainer $dc): \StdClass
     {

@@ -46,11 +46,43 @@
   &.series {
     ::before { content: "In "; }
   }
+  // metadata
+  &.metadata {
+    &::before {
+      content: "Metadaten";
+      background-color: #ecf4ff;
+    }
+  }
+  // catalogs
+  &.catalogs {
+    &::before {
+      content: "in Katalogen";
+      background-color: #ecf4ff;
+    }
+  }
+  // digitalcopies
+  &.digitalcopies {
+    &::before {
+      content: "Digitalisate";
+      background-color: #ecf4ff;
+    }
+  }
+
+  &.occurrences {
+    &::before {
+      content: "zitiert in:";
+      background-color: #eeffec;
+    }
+
+    .occurrence {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
 }
 
-.tagged.metadata::before       { content: "Metadaten"; background-color: #ecf4ff; }
-.tagged.catalogs::before       { content: "in Katalogen"; background-color: #ecf4ff; }
-.tagged.digitalcopies::before  { content: "Digitalisate"; background-color: #ecf4ff; }
+
 .tagged.counter                { background-color: #ecf4ff; padding: 0 4px; }
 
 .tagged.dataprovider::before   { content: "Datengeber:"; }

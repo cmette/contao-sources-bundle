@@ -2,8 +2,13 @@
 {# rendert alle AutorInnen als Liste #}
 
 {%- block authors_component -%}
-    {%- set authors_attributes = attrs().addClass(settings ? settings.mode : '').addClass('authors') -%}
+    {%-
+        set authors_attributes = attrs()
+            .addClass(settings ? settings.mode : '')
+            .addClass('authors')
+    -%}
     <span{{- authors_attributes -}}>
+    {% set authors = source.getAuthors() %}
     {%- if authors|length > 0 -%}
         {%- for id,author in authors -%}
             {%- set first_names = author.first_name ? ', '~author.getFirstNames() -%}
