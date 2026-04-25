@@ -31,10 +31,13 @@ APA kennt zwei grundsätzliche Elemente:
 **b.) den Eintrag im Literatur- bzw. Quellenverzeichnis** hier (source).  
 
 Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.  
+
 7. Wenn Sie sich in einem Text oder in einem Feld, welches InsertTags verarbeitet, befinden, so können Sie die Quellen hier inline zitieren. Verwenden Sie dazu das InsertTag `{{quote::*}}`.
 > [!NOTE]
-> {{quote::*}} erzeugt am Ort des Auftretens einen Link in Form eines APA-Inline-Zitats und hat folgende Syntax:   
-> **{{quote::sourceID::[p|f]Text}}** wobei  
+> **`{{quote::*}}`** erzeugt am Ort des Auftretens einen Link in Form eines APA-Inline-Zitats und hat folgende Syntax:   
+> 
+> **`{{quote::sourceID::[p|f]Text}}`** wobei
+> 
 > **sourceID** steht für die ID Ihrer Quelle. Bitte schauen Sie in der Auflistung der Quellen und entnehmen Sie dort die ID der Quelle,   
 > **p** oder **f** können folgen, müssen aber nicht. p wird in ", S. " umgewandelt und f in ", folio " (alles noch experimentell, wird noch erweitert...).
 > **Text** kann ein beliebiger Text sein, sollte aber als Angabe der zitierten Seiten verwendet werden.  
@@ -42,7 +45,12 @@ Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.
 > a.) Wird **sourceID** nicht angegeben, so wird das Tag verworfen und die Textstelle bleibt einfach leer.  
 > b.) Wird **sourceID** angegeben, jedoch kann die Quelle nicht gefunden werden (Tippfehler, Quelle gelöscht etc.), dann wird **(Quelle?)** ausgegeben.  
 > c.) Wird weder **p** noch **f** angegeben, so wird nur das inline-Zitat gemäß APA ausgegeben.  
-> d.) Wird die Quelle gefunden, enthält jedoch keine Autoren, so wird nur zum Eintrag im Quellenregister verlinkt.
+> d.) Wird die Quelle gefunden, enthält jedoch keine Autoren, so wird "ohne Autor" ausgegeben und zum Eintrag im Quellenregister verlinkt. Bei Handschriften kann hier ein Titel-Alias verwendet werden.
+
+#### Beispiele
+
+
+
 ### 1. Backend
 Anhand des vom Modul am Backend neu hinzugefügten Menüs **&raquo;Quellenregister&laquo;** sollen die bisher implementierten Funktionen kurz erklärt werden.  
 
