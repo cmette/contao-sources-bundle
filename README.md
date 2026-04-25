@@ -12,25 +12,25 @@ Dabei orientiert sich die aktuelle Version ganz grob an APA 7, was in weiten Ber
 Das grundlegende Konzept des Bundles besteht darin, dass der Redakteur / die Redakteurin Quellen erfassen und zitieren kann, so wie sie es auch in einer wissenschaftlichen Arbeit tun würden. Dabei orientiert sich das System grob an den APA-Richtlinien.
 Eine typische Vorgehensweise könnte wie folgt aussehen:
 1. Sie legen zuerst eine **&raquo;Konfiguration&laquo;** an. 
-2. Sie erfassen eine **&raquo;Quelle&laquo;**. Dabei bemerken Sie, dass der zugehörige Autor noch nicht erfasst wurde.
-3. Sie erfassen also als Nächstes die zur Quelle gehörigen Autoren und Autorinnen und tragen diese in der Quelle nach.
-4. Sie bemerken, dass es sich um einen Reihentitel handelt. Sie erfassen nun die zugehörige Reihe oder Zeitschrift und tragen diese in der Quelle nach.
-5. Sie bemerken, dass der Verlag noch nicht erfasst wurde. Sie erfassen den Verlag und tragen ihn in der Quelle nach.
-6. Dasselbe Konzept verfolgen Sie bei dem Bibliotheken (Archiven und Datengebern).
-#### Sie haben somit die Quelle erfasst. Jetzt können Sie diese im System zitieren.
+2. Sie erfassen eine **Quelle**. Dabei bemerken Sie, dass der zugehörige **Autor** noch nicht erfasst wurde.
+3. Sie erfassen also als Nächstes die zur Quelle gehörigen **Autoren** und **Autorinnen** und tragen diese in der Quelle nach.
+4. Sie bemerken, dass es sich um einen **Reihentitel** handelt. Sie erfassen nun die zugehörige **Reihe oder Zeitschrift** und tragen diese in der Quelle nach.
+5. Sie bemerken, dass der **Verlag** noch nicht erfasst wurde. Sie erfassen den **Verlag** und tragen ihn in der Quelle nach.
+6. Dasselbe Konzept verfolgen Sie bei dem **Bibliotheken (Archiven und Datengebern)**.
+#### Sie haben nun eine Quelle erfasst. Jetzt können Sie diese im System zitieren.
 > [!CAUTION]
-> Das System ist zurzeit noch so ausgelegt, dass Sie auf verschiedenen Ebenen alle unabhängigen Daten (Autor/Reihe/Verlag/Bibliothek) publizieren und wieder depublizieren können. Das führt dazu, dass beispielsweise AutorInnen oder Reihen am Frontend nicht sichtbar sind. Bitte prüfen Sie in diesen Fällen die Sichtbarkeit noch einmal.
+> Das System ist zurzeit noch so ausgelegt, dass Sie auf verschiedenen Ebenen alle unabhängigen Daten (Autor/Reihe/Verlag/Bibliothek) publizieren und wieder depublizieren können. Das führt dazu, dass beispielsweise AutorInnen oder Reihen am Frontend bisweilen nicht sichtbar sind. Bitte prüfen Sie in diesen Fällen die Sichtbarkeit noch einmal.
 
 > [!CAUTION]
-> Wenn Sie im Text Quellen zitieren möchten, so müssen Sie zuerst eine extra Seite anlegen, auf der sie später Ihr Quellenregister anzeigen wollen. Auf dieser Seite müssen Sie die Quellen mit dem Inhaltselement "Quelle" referenzieren. In der Konfiguration müssen Sie diese Seite als Quellenregister auswählen, damit das System &raquo;weiss&laquo;, wohin der Link in einem Inline-Zitat zeigen soll. Klickt man auf ein Inline-Zitat, so gelangt man zur zugehörigen Quelle.   
+> Wenn Sie Quellen im Text (inline) zitieren möchten, so müssen Sie zuerst eine extra Seite anlegen, auf der sie später Ihr Quellenregister anzeigen wollen. Auf dieser Seite müssen Sie die Quellen mit dem Inhaltselement **&raquo;Quelle&laquo;** referenzieren. In der Konfiguration müssen Sie diese Seite als Quellenregister auswählen, damit das System &raquo;weiss&laquo;, wohin der Link in einem Inline-Zitat zeigen soll. Klickt man auf ein Inline-Zitat, so gelangt man zur zugehörigen Quelle.   
 
 #### Zitieren
 APA kennt zwei grundsätzliche Elemente:
 
 **a.) das Inline-Zitat** hier (quote) und  
-**b.) den Eintrag im Literatur- bzw. Quellenverzeichnis** hier (source).
+**b.) den Eintrag im Literatur- bzw. Quellenverzeichnis** hier (source).  
 
-Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.
+Diese beiden Elemente sind mit Hilfe von InertTags umgesetzt.  
 7. Wenn Sie sich in einem Text oder in einem Feld, welches InsertTags verarbeitet, befinden, so können Sie die Quellen hier inline zitieren. Verwenden Sie dazu das InsertTag `{{quote::*}}`.
 > [!NOTE]
 > {{quote::*}} erzeugt am Ort des Auftretens einen Link in Form eines APA-Inline-Zitats und hat folgende Syntax:   
