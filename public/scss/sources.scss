@@ -70,7 +70,7 @@
 
   &.occurrences {
     &::before {
-      content: "zitiert in:";
+      content: "zitiert auf folgenden Seiten:";
       background-color: #eeffec;
     }
 
@@ -135,6 +135,13 @@ tr.hover-row:has(span.used) {
           font-weight: bold;
         }
 
+        &.unpublished {
+          //text-decoration: line-through;
+          color: red;
+        }
+      }
+      // Links auf nicht publizierte Elemente
+      a {
         &.unpublished {
           //text-decoration: line-through;
           color: red;

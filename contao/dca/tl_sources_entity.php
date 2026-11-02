@@ -94,6 +94,17 @@ $GLOBALS['TL_DCA'][$strTable] = [
             #'{occurrences_legend},occurrences;' .
             ''
         ,
+        'certificate' =>
+            '{type_legend},type;' .
+            '{author_legend},authors_hint,authors;' .
+            '{title_legend},title,subtitle,addTitleAlias;' .
+            '{publisher_legend},publisher,edition,year;' .
+            '{catalogs_legend},addCatalogs;' .
+            '{digitalcopies_legend},addDigitalCopies;' .
+            '{image_legend},addImage;' .
+            #'{occurrences_legend},occurrences;' .
+            ''
+        ,
         'map' =>
             '{type_legend},type;' .
             '{author_legend},authors_hint,authors,addTitleAlias;' .
@@ -126,7 +137,7 @@ $GLOBALS['TL_DCA'][$strTable] = [
         'addSeries'         => 'series,volume_title,volume,issue,pages',
         'addCatalogs'       => 'catalogs',
         'addDigitalCopies'  => 'digitalcopies',
-        'addImage'          => 'singleSRC,size,floating,fullsize,overwriteMetaFromSource',
+        'addImage'          => 'singleSRC,size,floating,fullsize,overwriteMetaFromSource,framecolor',
     ],
 
 	// Fields
@@ -672,6 +683,25 @@ $GLOBALS['TL_DCA'][$strTable] = [
             'sql'   => [
                 'type'  => 'boolean',
                 'default' => false
+            ],
+        ],
+        'framecolor'     => [
+            'inputType' => 'text',
+            'search'    => true,
+            'filter'    => false,
+            'sorting'   => true,
+            'eval'          => [
+                'maxlength'     => 6,
+                'colorpicker'   => true,
+                'isHexColor'    => true,
+                'decodeEntities'=> true,
+                'tl_class'      => 'w16 wizard'
+            ],
+            'sql'       => [
+                'type'      => 'string',
+                'length'    => 6,
+                'fixed'     => true,
+                'default'   => '',
             ],
         ],
         /**********************************************************************

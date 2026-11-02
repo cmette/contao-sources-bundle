@@ -27,6 +27,9 @@
 
 {# Media #}
 {% block text_media %}
+    {% if source.framecolor is not empty %}
+    {% set figure_attributes = { style: 'border: 1px solid #'~source.framecolor~';'} %}
+    {% endif %}
     {% if image %}
         {% with {figure: image} %}{{ block('figure_component') }}{% endwith %}
     {% endif %}

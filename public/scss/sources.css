@@ -47,7 +47,7 @@
   background-color: #ecf4ff;
 }
 .tagged.occurrences::before {
-  content: "zitiert in:";
+  content: "zitiert auf folgenden Seiten:";
   background-color: #eeffec;
 }
 .tagged.occurrences .occurrence {
@@ -113,6 +113,9 @@
   font-weight: bold;
 }
 .tl_file_list .source-entity .data span.unpublished {
+  color: red;
+}
+.tl_file_list .source-entity .data a.unpublished {
   color: red;
 }
 

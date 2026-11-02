@@ -17,6 +17,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\File\Metadata;
 use Contao\CoreBundle\Routing\Page\PageRoute;
 use Contao\DataContainer;
+use Contao\Environment;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\Model\Collection;
@@ -26,6 +27,7 @@ use Contao\System;
 use Contao\Validator;
 use Symfony\Bridge\Twig\Validator\Constraints\Twig;
 use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\VarDumper\Caster\ScalarStub;
 use Symfony\Component\VarDumper\VarDumper;
 use Twig\Environment as TwigEnvironment;
@@ -49,15 +51,16 @@ class SourcesEntityModel extends Model
      * vordefinierte Quellentypen.
      */
     public const SOURCE_TYPES = [
-        'monograph',    // Monographie
-        'anthology',    // Sammelband
-        'series',       // Reihe
         'essay',        // Aufsatz
-        'periodical',   // Periodikum
-        'onlinesource', // URL, URN, DOI etc
-        'map',          // Landkarte, Riss, Skizze
-        'handwriting',  // Handschrift
         'photography',  // Fotografie
+        'handwriting',  // Handschrift
+        'map',          // Landkarte, Riss, Skizze
+        'monograph',    // Monographie
+        'periodical',   // Periodikum
+        'series',       // Reihe
+        'anthology',    // Sammelband
+        'onlinesource', // URL, URN, DOI etc
+        'certificate',  // Urkunde
     ];
 
     private const dbg = false;
@@ -68,6 +71,9 @@ class SourcesEntityModel extends Model
      * @var string
      */
     protected static $strTable = 'tl_sources_entity';
+
+    private static array $arrUrlCache = [];
+
     public function __construct($objResult = null)
     {
         parent::__construct($objResult);
@@ -324,25 +330,86 @@ class SourcesEntityModel extends Model
      */
     public function getOccurrences(): array|null
     {
-        $urlGenerator = System::getContainer()->get('contao.routing.content_url_generator');
+        $urlGenerator   = System::getContainer()->get('contao.routing.content_url_generator');
+        $request        = System::getContainer()->get('request_stack')->getCurrentRequest();
 
-        $arrOcc = StringUtil::deserialize($this->occurrences, true);
-        $arrOccurences = [];
+        $arrOcc         = StringUtil::deserialize($this->occurrences, true);
+        $arrOccurences  = [];
 
         if(count($arrOcc) > 0) {
-            foreach ($arrOcc as $occ) {
+            foreach ($arrOcc as $occ)
+            {
                 /* @var ContentModel $objContent */
-                if ($objContent = ContentModel::findById($occ)) {
-                    if($objArticle = ArticleModel::findById($objContent->pid)) {
-                        $url = $urlGenerator->generate($objArticle);
+                if ($objContent = ContentModel::findById($occ))
+                {
+                    $model      = Model::getClassFromTable($objContent->ptable)::findByPk($objContent->pid);
+                    $arguments  = ['absolute'];
+                    $class      = "occurrence";
 
-                        if ($this->isBackendRequest()) {
-                            $arrOccurences[] = ['url' => $url, 'title' => $objArticle->title, '_title' => "Seite: {$objArticle->pid} | Artikel: {$objArticle->id} | Element: {$objContent->id}"];
-                        } else {
-                            if($objArticle->published && $objArticle->published) {
-                                $arrOccurences[] = ['url' => $url, 'title' => $objArticle->title, '_title' => "Seite: {$objArticle->pid} | Artikel: {$objArticle->id} | Element: {$objContent->id}"];
+                    switch($objContent->ptable) {
+                        case 'tl_article':
+                            $url = $urlGenerator->generate($model);
+
+                            if ($this->isBackendRequest()) {
+                                // data on backend
+                                $arrOccurences[] = [
+                                    'class' => $class,
+                                    'url'   => $url,
+                                    'title' => $model->title,
+                                    '_title' => "Seite: {$model->pid} | Artikel: {$model->id} | Element: {$objContent->id}"
+                                ];
+                            } else {
+                                if($model->published && !$objContent->invisible) {
+                                    $page = PageModel::findById($model->pid);
+                                    // data on frontend
+                                    $arrOccurences[] = [
+                                        'class'  => $class,
+                                        'url'    => $url,
+                                        'title'  => $model->title,
+                                        '_title' => "Seite: {$page->title} Artikel: {$model->title}"
+                                    ];
+                                }
                             }
-                        }
+                            break;
+                        case 'tl_glossary_item':
+                            // hole das Glossar
+                            $glossary = $model->getRelated('pid');
+
+                            if ($this->isBackendRequest()) {
+                                $baseDomain = $request->getSchemeAndHttpHost();
+                                // Link Attribute am Backend
+                                $arrOccurences[] = [
+                                    'class'  => (!$model->published || $objContent->invisible)?"$class unpublished":$class,
+                                    'url'    => "$baseDomain/contao?do=glossary&id={$model->id}&table=tl_content",
+                                    'title'  => "Glossar: {$model->keyword}",
+                                    '_title' => "Glossar: {$model->keyword}"
+                                ];
+                            } else {
+                                if ($model->published && !$objContent->invisible) {
+                                    // Link Attribute am Frontend
+                                    $arrOccurences[] = [
+                                        'class'  => $class,
+                                        'url'    => $feurl = $this->generateDetailUrl($model, \in_array('absolute', $arguments, true)) ?: './',
+                                        'title'  => "Glossar: {$model->keyword}",
+                                        '_title' => "Glossar: {$model->keyword}"
+                                    ];
+                                }
+                            }
+
+                            break;
+                        default:
+                            // unbehandelter Verweistyp
+                            if ($this->isBackendRequest()) {
+                                // Link Attribute am Backend
+                                $arrOccurences[] = [
+                                    'class'  => "$class unpublished",
+                                    'url'    => "$baseDomain/contao",
+                                    'title'  => "unbehandelter Verweistyp {$objContent->ptable}",
+                                    '_title' => "unbehandelter Verweistyp {$objContent->ptable}",
+                                ];
+                            } else {
+
+                            }
                     }
                 }
             }
@@ -351,13 +418,15 @@ class SourcesEntityModel extends Model
         return $arrOccurences;
     }
 
-
-
-
+    /**
+     * @param mixed $varValue
+     * @param DataContainer $dc
+     * @return \StdClass
+     */
     public static function syncQuotes(mixed $varValue, DataContainer $dc): \StdClass
     {
         $result = new \StdClass();
-
+        // Counter
         $result->quotesCount = 0;       //
         $result->additions = 0;         // additions
         $result->deletions = 0;         // deletions
@@ -384,7 +453,7 @@ class SourcesEntityModel extends Model
                     },
                     $quotes[0],
                 );
-                self::debug("Es wurden folgebnde soirceIDs gefunden [" . implode(', ', $sourceIds) . "]");
+                self::debug("Es wurden folgebnde sourceIDs gefunden [" . implode(', ', $sourceIds) . "]");
                 // result message
                 $result->quotesCount = count($sourceIds);
                 // remove duplicate entries
@@ -533,6 +602,84 @@ class SourcesEntityModel extends Model
 
         // Strip superfluous fields by intersecting with tl_files.meta.eval.metaFields
         return new Metadata(array_intersect_key($data, array_flip(FilesModel::getMetaFields())));
+    }
+
+    /**
+     * Generate a URL and return it as string.
+     */
+    public function generateDetailUrl($objItem, bool $blnAbsolute = false): string
+    {
+        $strCacheKey = 'id_'.$objItem->id.($blnAbsolute ? '_absolute' : '');
+
+        // Load the URL from cache
+        if (isset(self::$arrUrlCache[$strCacheKey]))
+        {
+            return self::$arrUrlCache[$strCacheKey];
+        }
+
+        // Initialize the cache
+        self::$arrUrlCache[$strCacheKey] = null;
+
+        switch ($objItem->source)
+        {
+            // Link to an external page
+            case 'external':
+                if (str_starts_with($objItem->url, 'mailto:'))
+                {
+                    self::$arrUrlCache[$strCacheKey] = StringUtil::encodeEmail($objItem->url);
+                }
+                else
+                {
+                    $url = $objItem->url;
+
+                    if (self::isRelativeUrl($url))
+                    {
+                        $url = Environment::get('path').'/'.$url;
+                    }
+
+                    self::$arrUrlCache[$strCacheKey] = StringUtil::ampersand($url);
+                }
+                break;
+
+            // Link to an internal page
+            case 'internal':
+                if (($objTarget = $objItem->getRelated('jumpTo')) instanceof PageModel)
+                {
+                    /** @var PageModel $objTarget */
+                    self::$arrUrlCache[$strCacheKey] = StringUtil::ampersand($blnAbsolute ? $objTarget->getAbsoluteUrl() : $objTarget->getFrontendUrl());
+                }
+                break;
+
+            // Link to an article
+            case 'article':
+                if (($objArticle = ArticleModel::findById($objItem->articleId)) instanceof ArticleModel && ($objPid = $objArticle->getRelated('pid')) instanceof PageModel)
+                {
+                    $params = '/articles/'.($objArticle->alias ?: $objArticle->id);
+
+                    /** @var PageModel $objPid */
+                    self::$arrUrlCache[$strCacheKey] = StringUtil::ampersand($blnAbsolute ? $objPid->getAbsoluteUrl($params) : $objPid->getFrontendUrl($params));
+                }
+                break;
+        }
+
+        // Link to the default page
+        if (null === self::$arrUrlCache[$strCacheKey])
+        {
+            $objPage = PageModel::findById($objItem->getRelated('pid')->jumpTo);
+
+            if (!$objPage instanceof PageModel)
+            {
+                self::$arrUrlCache[$strCacheKey] = StringUtil::ampersand(Environment::get('requestUri'));
+            }
+            else
+            {
+                $params = '/'.($objItem->alias ?: $objItem->id);
+
+                self::$arrUrlCache[$strCacheKey] = StringUtil::ampersand($blnAbsolute ? $objPage->getAbsoluteUrl($params) : $objPage->getFrontendUrl($params));
+            }
+        }
+
+        return self::$arrUrlCache[$strCacheKey];
     }
 
 

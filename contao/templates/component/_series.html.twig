@@ -12,7 +12,7 @@
             .addClass(serie.published?' published':' unpublished')
         -%}
         <span{{- series_attributes -}}><i>{{- serie.title -}}</i>
-            {{- source.volume ? ', '~source.volume -}}
+            {{- source.volume ? ', Bd. '~source.volume -}}
             {{- source.issue ? '('~source.issue~')' -}}
             {{- source.volume_title ? ', '~source.volume_title -}}
             {{- source.pages ? ', '~source.pages -}}.

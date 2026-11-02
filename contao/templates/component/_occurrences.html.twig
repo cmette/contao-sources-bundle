@@ -13,8 +13,8 @@
     {%- set occurrences = source.getOccurrences() -%}
     {%- if occurrences|length > 0 -%}
         {%- for id,occurrence in occurrences -%}
-            <a href="{{- occurrence.url -}}" class="occurrence" title="{{- occurrence._title -}}">[{{- occurrence.title -}}]</a>
-    {%- endfor -%}
+            <a href="{{- occurrence.url -}}" class="{{- occurrence.class -}}" title="{{- occurrence._title -}}">{{- occurrence.title -}}</a>{{- (occurrences|length > 1) ? ', ':'' -}}
+        {%- endfor -%}
     {%- else -%}
         <span>{{- ('tl_sources_entity.without_occurrence')|trans([], 'contao_tl_sources_entity') -}}&nbsp;</span>
     {%- endif -%}
